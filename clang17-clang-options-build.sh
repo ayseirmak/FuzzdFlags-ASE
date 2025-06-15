@@ -122,7 +122,7 @@ wget .....
 wget ......
 nano ../CMakeLists.txt # After add_clang_subdirectory(clang-scan-deps) Add add_clang_subdirectory(clang-options)
 
-export AFL_MAP_SIZE=$((1<<22)) 
+export AFL_MAP_SIZE=4194304
 
 mkdir ~/build
 cd ~/build
