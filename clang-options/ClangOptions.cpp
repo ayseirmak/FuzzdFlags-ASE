@@ -34,7 +34,8 @@ static uint16_t getEnvOrDefaultInt(const char* varName, uint16_t defaultVal) {
 }
 
 
-static const std::vector<std::string> flagList = {    
+static const std::vector<std::string> flagList = {
+ "-O0",
  "-flto=thin",
  "-flto",
  "-fPIC", 
@@ -45,7 +46,7 @@ static const std::vector<std::string> flagList = {
  "-march=x86-64-v4",
  "-march=skylake-avx512",  
  "-march=znver4", 
- "-march=native",
+ "-march=x86-64-v2",
  "-mavx",
  "-mavx2",
  "-mavx512f",
@@ -188,7 +189,7 @@ static std::string getFixedFlags() {
         "-c -fpermissive -w "
         "-Wno-implicit-function-declaration -Wno-return-type -Wno-builtin-redeclared "
         "-Wno-implicit-int -Wno-int-conversion "
-        "-march=x86-64-v2 "
+        "-march=native "
         "-I/usr/include";
 
     // Let INCLUDES_DIR override the second -I path
