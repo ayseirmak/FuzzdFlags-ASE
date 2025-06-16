@@ -61,8 +61,8 @@ echo "core" | sudo tee /proc/sys/kernel/core_pattern
 # 4. Download Dockerfile & Helper Scripts & Build Fuzzing Image
 # -------------------------------------------------------
 su - user42
-wget ................................
-wget .................................
+wget 
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/extract_fuzz_stat_dir.sh.
 chmod +x *.sh
 
 # Build Docker image from the local Dockerfile
@@ -82,7 +82,7 @@ chmod -R 777 fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
 # -------------------------------------------------------
 # NOTE: Adjust --cpuset-cpus according to the actual cores on your m510 node.
 # Give each container 3 cores:
-# fuzz01 -> 0-2, fuzz02 -> 3-5, fuzz03 -> 6-8, fuzz04 -> 9-11, fuzz05 -> 12-14
+# for 16 cpu fuzz01 -> 0-2, fuzz02 -> 3-5, fuzz03 -> 6-8, fuzz04 -> 9-11, fuzz05 -> 12-14
 
 docker run -d --name fuzz01 --cpuset-cpus="0-2" \
   -v /users/user42/fuzz01:/users/user42/output-fuzz \
