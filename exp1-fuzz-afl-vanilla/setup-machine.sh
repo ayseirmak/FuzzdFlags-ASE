@@ -61,7 +61,7 @@ echo "core" | sudo tee /proc/sys/kernel/core_pattern
 # 4. Download Dockerfile & Helper Scripts & Build Fuzzing Image
 # -------------------------------------------------------
 su - user42
-wget 
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/exp1-fuzz-afl-vanilla/exp11-dock.dockerfile
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/extract_fuzz_stat_dir.sh.
 chmod +x *.sh
 
