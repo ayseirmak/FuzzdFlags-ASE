@@ -90,8 +90,8 @@ WORKDIR /users/user42
 ENV LLVM_CONFIG=/usr/bin/llvm-config
 
 # Download and install AFL++
-RUN https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/AFLplusplus-latest-mapsize22.tar.gz && \
-    tar -zxvf AFLplusplus-latest-mapsize22.tar.gz
+RUN https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/AFLplusplus-latest-mapsize22-m510.tar.gz && \
+    tar -zxvf AFLplusplus-latest-mapsize22-m510.tar.gz
 
 USER root
 RUN cd /users/user42/AFLplusplus && make install && cd ..
@@ -102,9 +102,9 @@ WORKDIR /users/user42
 RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz && \
     tar -zxvf llvmSS-minimised-corpus.tar.gz
 
-# Download and extract rs-clang-options-build
-RUN .................. && \
-    tar -zxvf exp1-clang-build.tar.gz
+# Download and extract build-clang17
+RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-inst-clang17.tar.gz && \
+    tar -zxvf build-inst-clang17.tar.gz
 
 # Download and extract rs-fuzz-scripts, make scripts executable, and remove tarballs
 RUN wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/24_fuzz.sh && \
