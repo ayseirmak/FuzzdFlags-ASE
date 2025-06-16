@@ -37,7 +37,7 @@ static uint16_t getEnvOrDefaultInt(const char* varName, uint16_t defaultVal) {
 // "-flto=thin", "-flto", "-fPIC", "-fPIE", "-fno-pic", "-fno-pie", "-fuse-init-array"
 // "-march=skylake-avx512", "-mavx512f", "-mavx512vl", "-march=x86-64-v4", "-march=znver4"
 // "-mno-avx2", "-mno-sse4.2" (default behaviour)
-    
+// "-fast", "-freroll-loops", "-fno-reroll-loop", "-fsplit-stack", "-malign-double", "-fwritable-strings", "-fno-asm-blocks","-fblocks", "-fno-blocks"	    
 static const std::vector<std::string> flagList = {
  "-O0",
  "-march=x86-64-v3",
@@ -77,7 +77,6 @@ static const std::vector<std::string> flagList = {
  "-fprotect-parens",
  "-ftls-model=local-exec",
  "-ffp-eval-method=source",
- "-fblocks",
  "-fdenormal-fp-math=positive-zero",
  "-fdenormal-fp-math=preserve-sign",
  "-fno-jump-tables",
@@ -86,7 +85,6 @@ static const std::vector<std::string> flagList = {
  "-ffast-math",
  "-fno-trapping-math",
  "-ffp-exception-behavior=strict",
- "-malign-double",
  "-fno-finite-math-only",
  "-fno-keep-static-consts",
  "-funsigned-bitfields",
@@ -101,19 +99,15 @@ static const std::vector<std::string> flagList = {
  "-fassociative-math",
  "-fsignaling-math",
  "-fno-strict-return",
- "-fno-blocks",
  "-ftls-model=global-dynamic",
  "-fstack-size-section",
  "-fwrapv",
- "-fast",
  "-ffp-model=strict",
  "-flax-vector-conversions=integer",
  "-fstack-protector-all",
  "-Os",
- "-fno-asm-blocks",
  "-fno-math-errno",
  "-fno-approx-func",
- "-fwritable-strings",
  "-fno-protect-parens",
  "-ftls-model=local-dynamic",
  "-fno-fixed-point",
@@ -139,7 +133,6 @@ static const std::vector<std::string> flagList = {
  "-fno-reciprocal-math",
  "-funsigned-char",
  "-frounding-math",
- "-fno-reroll-loops",
  "-fhonor-infinities",
  "-fdenormal-fp-math=ieee",
  "-ffixed-point",
@@ -229,10 +222,10 @@ std::string decodeFlagsFromBinary(const std::vector<uint8_t> &data) {
 
 // Only 2 bytes now! We mod by 2505 to map to test_0.c..test_2504.c
 std::string generateTestFileName(const std::vector<uint8_t> &data) {
-    std::string testFilesDir = getEnvOrDefault("CFILES_DIR", "/users/user42/llvmSS-reindex-cfiles");
+    std::string testFilesDir = getEnvOrDefault("CFILES_DIR", "/users/user42/llvmSS-minimised-corpus");
     // If fewer than 2 bytes, fallback to "hello.c"
     if (data.size() < 2) {
-        return testFilesDir + "/test_1.c";
+        return testFilesDir + "/test_0.c";
     }
 
     // Build 16-bit integer from the first 2 bytes
@@ -241,7 +234,7 @@ std::string generateTestFileName(const std::vector<uint8_t> &data) {
     rawValue |= static_cast<uint16_t>(data[1]) << 8;
 
     // 2,505 .c files → mod 2,505
-    uint16_t fileCount = getEnvOrDefaultInt("FILE_COUNT", 1705);    
+    uint16_t fileCount = getEnvOrDefaultInt("FILE_COUNT", 1811 );    
     uint16_t fileIndex = rawValue % fileCount;
 
     // Construct filename (e.g. test_1234.c)
