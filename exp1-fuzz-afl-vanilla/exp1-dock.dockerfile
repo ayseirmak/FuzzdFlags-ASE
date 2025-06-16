@@ -90,7 +90,7 @@ WORKDIR /users/user42
 ENV LLVM_CONFIG=/usr/bin/llvm-config
 
 # Download and install AFL++
-RUN https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/AFLplusplus-latest-mapsize22-m510.tar.gz && \
+RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/AFLplusplus-latest-mapsize22-m510.tar.gz && \
     tar -zxvf AFLplusplus-latest-mapsize22-m510.tar.gz
 
 USER root
