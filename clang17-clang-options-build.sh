@@ -96,8 +96,8 @@ export LLVM_CONFIG=/usr/bin/llvm-config
 # -------------------------------------------------------
 # Step 5: setup AFL++ from source
 # -------------------------------------------------------
-wget https://github.com/ayseirmak/FuzzdFlags-v2/releases/download/v1.0.0-alpha.1/AFLplusplus-latest-mapsize22.tar.gz
-tar -zxvf AFLplusplus-latest-mapsize22.tar.gz
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/AFLplusplus-latest-mapsize22-m510.tar.gz
+tar -zxvf AFLplusplus-latest-mapsize22-m510.tar.gz
 cd AFLplusplus
 sudo make install
 cd ~
@@ -105,8 +105,8 @@ cd ~
 # -------------------------------------------------------
 # Step 7: Get llvm-test-suite Single Source corpus (after Cmin)
 # -------------------------------------------------------
-wget https://github.com/ayseirmak/FuzzdFlags-v2/releases/download/v1.0.0-alpha.1/llvmSS-corpus.tar.gz
-tar -zxvf llvmSS-corpus.tar.gz
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz
+tar -zxvf llvmSS-minimised-corpus.tar.gz
 
 # -------------------------------------------------------
 # Step 8: Build clang17
@@ -118,8 +118,8 @@ git checkout release/17.x
 
 cd /users/user42/llvm-project/clang/tools
 mkdir -p clang-options && cd clang-options
-wget .....
-wget ......
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/clang-options/ClangOptions.cpp
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/clang-options/CMakeLists.txt
 nano ../CMakeLists.txt # After add_clang_subdirectory(clang-scan-deps) Add add_clang_subdirectory(clang-options)
 
 export AFL_MAP_SIZE=4194304
