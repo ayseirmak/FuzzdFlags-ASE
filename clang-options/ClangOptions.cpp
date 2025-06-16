@@ -180,7 +180,6 @@ static std::string getFixedFlags() {
     //  fallback = "/users/user42/llvmSS-include"
     std::string includesDir = getEnvOrDefault("INCLUDES_DIR", "/users/user42/llvmSS-include");
     baseFlags += " -I" + includesDir;
-    baseFlags += " -lm";
     return baseFlags;
 }
 
