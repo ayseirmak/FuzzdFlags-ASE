@@ -9,7 +9,7 @@ mkdir -p llvmSS-include
 
 c_count=0
 find SingleSource -type f \( -name "*.c" -o -name "*.h" \) \
-  ! -path "SingleSource/Regression/C/gcc-c-torture/*" | while read -r file; do
+  ! -path "SingleSource/Regression/C/gcc-c-torture/execute/builtins" | while read -r file; do
 
     if [[ "$file" == *.c ]]; then
         cp "$file" "llvmSS-c-corpus/test_${c_count}.c"
