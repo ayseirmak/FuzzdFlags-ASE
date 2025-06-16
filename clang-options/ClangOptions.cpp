@@ -33,30 +33,22 @@ static uint16_t getEnvOrDefaultInt(const char* varName, uint16_t defaultVal) {
     return static_cast<uint16_t>(std::stoi(val));
 }
 
-
+// Remove these from flag list
+// "-flto=thin", "-flto", "-fPIC", "-fPIE", "-fno-pic", "-fno-pie", "-fuse-init-array"
+// "-march=skylake-avx512", "-mavx512f", "-mavx512vl", "-march=x86-64-v4", "-march=znver4"
+// "-mno-avx2", "-mno-sse4.2" (default behaviour)
+    
 static const std::vector<std::string> flagList = {
  "-O0",
- "-flto=thin",
- "-flto",
- "-fPIC", 
- "-fPIE", 
- "-fno-pic", 
- "-fno-pie",
  "-march=x86-64-v3",
- "-march=x86-64-v4",
- "-march=skylake-avx512",  
- "-march=znver4", 
  "-march=x86-64-v2",
+ "-march=x86-64",
  "-mavx",
  "-mavx2",
- "-mavx512f",
- "-mavx512vl",
  "-mfma", 
  "-mbmi2",    
  "-msha",      
  "-maes",
- "-mno-avx2", 
- "-mno-sse4.2",
  "-fno-finite-loops",
  "-fexcess-precision=fast",
  "-fno-use-init-array",
@@ -68,7 +60,6 @@ static const std::vector<std::string> flagList = {
  "-fno-unroll-loops",
  "-fstrict-return",
  "-fstack-protector-strong",
- "-fuse-init-array",
  "-fno-honor-infinities",
  "-Oz",
  "-Og",
