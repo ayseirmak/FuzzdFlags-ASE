@@ -159,9 +159,32 @@ sudo chown -R user42:user42 /users/user42
 ./extract_fuzz_stat_dir.sh /users/user42
 tar -czvf exp31-1seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
 
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-clangOpt.tar.gz
+tar -zxvf build-clangOpt.tar.gz
+mkdir -p exp31-fuzzdflags-1seed-queue
+
+# Decrypt the queues from each fuzzing container
+./decrypt_queue.sh fuzz01/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz01-queue
+./decrypt_queue.sh fuzz02/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz02-queue
+./decrypt_queue.sh fuzz03/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz03-queue
+./decrypt_queue.sh fuzz04/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz04-queue
+./decrypt_queue.sh fuzz05/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz05-queue
+tar -czvf exp31-fuzzdflags-1seed-queue.tar.gz -C /users/user42 exp31-fuzzdflags-1seed-queue
+
+
 # -------------------------------------------------------
 # 72. After Fuzzing to Extract Fuzz Statistics 30 seeds
 # -------------------------------------------------------
 sudo chown -R user42:user42 /users/user42
 ./extract_fuzz_stat_dir.sh /users/user42
 tar -czvf exp32-30seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
+
+mkdir -p exp32-fuzzdflags-30seed-queue
+
+# Decrypt the queues from each fuzzing container
+./decrypt_queue.sh fuzz01/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz01-queue
+./decrypt_queue.sh fuzz02/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz02-queue
+./decrypt_queue.sh fuzz03/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz03-queue
+./decrypt_queue.sh fuzz04/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz04-queue
+./decrypt_queue.sh fuzz05/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz05-queue
+tar -czvf exp32-fuzzdflags-30seed-queue.tar.gz -C /users/user42 exp32-fuzzdflags-30seed-queue
