@@ -86,31 +86,31 @@ chmod -R 777 fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
 docker run -d --name fuzz01 --cpuset-cpus="0-2" \
   -v /users/user42/fuzz01:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-1 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 docker run -d --name fuzz02 --cpuset-cpus="3-5" \
   -v /users/user42/fuzz02:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-1 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 docker run -d --name fuzz03 --cpuset-cpus="6-8" \
   -v /users/user42/fuzz03:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-1 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 docker run -d --name fuzz04 --cpuset-cpus="9-11" \
   -v /users/user42/fuzz04:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-1 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 docker run -d --name fuzz05 --cpuset-cpus="12-14" \
   -v /users/user42/fuzz05:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-1 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 echo "All 5 fuzzing containers started."
@@ -124,31 +124,31 @@ echo "All 5 fuzzing containers started."
 docker run -d --name fuzz01 --cpuset-cpus="0-2" \
   -v /users/user42/fuzz01:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-30 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-30 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 docker run -d --name fuzz02 --cpuset-cpus="3-5" \
   -v /users/user42/fuzz02:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-30 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-30 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 docker run -d --name fuzz03 --cpuset-cpus="6-8" \
   -v /users/user42/fuzz03:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-30 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-30 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 docker run -d --name fuzz04 --cpuset-cpus="9-11" \
   -v /users/user42/fuzz04:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-30 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-30 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 docker run -d --name fuzz05 --cpuset-cpus="12-14" \
   -v /users/user42/fuzz05:/users/user42/output-fuzz \
  afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf.sh /users/user42/input-seeds-30 \
+  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-30 \
     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
 
