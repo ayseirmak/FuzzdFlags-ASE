@@ -118,10 +118,14 @@ ENV CFILES_DIR=/users/user42/llvmSS-minimised-corpus/
 ENV FILE_COUNT=1811
 
 # Create inputs-seeds directory, create a seed binary file, then return to home directory
-RUN mkdir -p input-seeds && \
-    cd input-seeds && \
+RUN mkdir -p input-seeds-1 && \
+    cd input-seeds-1 && \
     echo -ne "\x00\x10" > seed.bin && \
     cd ~
+
+# Download input-seeds-30
+RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp3-input-seeds-30.tar.gz && \
+    tar -zxvf exp3-input-seeds-30.tar.gz
 
 # Set proper ownership and writable permissions for /users/user42/
 USER root
