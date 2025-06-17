@@ -35,7 +35,7 @@ for file in "$QUEUE_DIR"/*; do
         echo "File: $file" | tee -a "$OUTPUT_FILE"
         # Run clang-options to "decrypt" the binary file.
         # This should print the fixed flags, mutated flags, and source info.
-        result=$(~/build/bin/clang-options --filebin "$file" --checker)
+        result=$(~/build-clang-options/bin/clang-options --filebin "$file" --checker)
         echo "$result" | tee -a "$OUTPUT_FILE"
     fi
 done
