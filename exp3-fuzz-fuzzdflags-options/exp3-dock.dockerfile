@@ -102,13 +102,9 @@ WORKDIR /users/user42
 RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz && \
     tar -zxvf llvmSS-minimised-corpus.tar.gz
 
-# Download and extract clang-17-build
-RUN wget ;;;;;;;;;;;;;;;;;;; && \
-    tar -zxvf ;;;;;;;;;;;;;;;;;;;
-
 # Download and extract clang-options-build
-RUN wget ;;;;;;;;;;;;;;;;;;; && \
-    tar -zxvf ;;;;;;;;;;;;;;;;;;;
+RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-clangOpt.tar.gz && \
+    tar -zxvf build-clangOpt.tar.gz
 
 # Download and extract fuzz-scripts, make scripts executable, and remove tarballs
 RUN wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/24_fuzz.sh && \
