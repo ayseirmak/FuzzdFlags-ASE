@@ -1,4 +1,5 @@
-import random,re, sys
+import random
+import re
 import subprocess
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -6,48 +7,38 @@ from datetime import datetime, timedelta
 # Parameters
 NUM_TEST_PROGRAMS = 1811
 DURATION_HOURS = 24
-REPEAT_LIMIT = 50 #float('inf')  # Number of iterations or set to a fixed number
+REPEAT_LIMIT = 50  # Number of iterations
+
+# Output directory
 OUTPUT_DIR = Path("output-nrs")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-ASM_RE      = re.compile(r'\b(__)?asm\b')
-TYPEOF_RE   = re.compile(r'\btypeof\b')
+# Regex for guards
+ASM_RE = re.compile(r'\b(__)?asm\b')
+TYPEOF_RE = re.compile(r'\btypeof\b')
 
-def needs_asm(source_text: str)     -> bool: return bool(ASM_RE.search(source_text))
-def needs_typeof(source_text: str)  -> bool: return bool(TYPEOF_RE.search(source_text))
+def needs_asm(src_text: str) -> bool:
+    return bool(ASM_RE.search(src_text))
+
+def needs_typeof(src_text: str) -> bool:
+    return bool(TYPEOF_RE.search(src_text))
 
 def read_source(path: Path) -> str:
     return path.read_text(encoding='utf8', errors='ignore')
 
-# Base flags that are always included
-FAST_BUNDLES = {"-ffast-math", "-Ofast", "-fast"}
-FAST_SUBFLAGS = {
-    "-fapprox-func", "-fno-approx-func",
-    "-freciprocal-math", "-fno-reciprocal-math",
-    "-fassociative-math", "-fno-associative-math",
-    "-ffp-contract=fast", "-ffp-contract=off",
-    "-funsafe-math-optimizations", "-fno-unsafe-math-optimizations"
-    # ‘mreassociate’ is implicit; we just keep catching the bundles above
-}
-
+# Always-used flags
 PLUGIN_FLAGS = [
-    "-c",
-    "-fpermissive",
-    "-w",
-    "-Wno-implicit-function-declaration",
-    "-Wno-return-type",
-    "-Wno-builtin-redeclared",
-    "-Wno-implicit-int",
-    "-Wno-int-conversion",
-    "-march=native",
-    "-I/usr/include",
-    "-I/users/user42/llvmSS-include",
-    "-lm"
+    '-c', '-fpermissive', '-w',
+    '-Wno-implicit-function-declaration',
+    '-Wno-return-type', '-Wno-builtin-redeclared',
+    '-Wno-implicit-int', '-Wno-int-conversion',
+    '-march=native', '-I/usr/include',
+    '-I/users/user42/llvmSS-include'
 ]
 
-# List of additional flags to choose from
+# Candidate flags
 FLAG_LIST = [
-"-O0",
+    "-O0",
  "-march=x86-64-v3",
  "-march=x86-64-v2",
  "-march=x86-64",
@@ -171,162 +162,99 @@ FLAG_LIST = [
  "-ffp-model=fast"
 ]
 
-# ---------- Helper ----------
-def generate_random_flag_subset():
-    bits = [random.choice("01") for _ in FLAG_LIST]
-    if "1" not in bits:
-        bits[random.randrange(len(bits))] = "1"
-    return [flg for flg, b in zip(FLAG_LIST, bits) if b == "1"]
-    
-# --- Sanitise flags ---------------------------------------------------------------
+# Fast bundles/subflags for sanitisation
+FAST_BUNDLES = {"-ffast-math", "-Ofast", "-fast"}
+FAST_SUBFLAGS = {
+    '-fapprox-func', '-fno-approx-func',
+    '-freciprocal-math', '-fno-reciprocal-math',
+    '-fassociative-math', '-fno-associative-math',
+    '-ffp-contract=fast', '-ffp-contract=off',
+    '-funsafe-math-optimizations', '-fno-unsafe-math-optimizations'
+}
+
+# Generate random subset of flags
+def generate_random_flag_subset() -> list[str]:
+    bits = [random.choice('01') for _ in FLAG_LIST]
+    if '1' not in bits:
+        bits[random.randrange(len(bits))] = '1'
+    return [flg for flg, b in zip(FLAG_LIST, bits) if b == '1']
+
+# Sanitise candidate flags
 def sanitise_flags(raw: list[str], src_text: str) -> list[str]:
     flags = raw.copy()
-
-    # --- Guard 1: asm ----------------------------------------------------------------
+    # Guard against inline asm
     if needs_asm(src_text):
-        flags = [f for f in flags if f not in ("-fno-asm", "-fno-asm-blocks")]
-    # (Keep -fasm / -fasm-blocks; they don't break inline asm.)
-
-    # --- Guard 2: typeof --------------------------------------------------------------
-    #if needs_typeof(src_text):
-    #    # inject GNU dialect (only if not already picked)
-    #    if not any(f.startswith("-std=") for f in flags):
-    #        flags.append("-std=gnu11")
-
-    # --- Guard 3: ffp-eval-method vs fast bundles ------------------------------------
-    has_fast     = any(f in FAST_BUNDLES for f in flags)
-    has_subfast  = any(f in FAST_SUBFLAGS for f in flags)
-    if has_fast or has_subfast:
-        flags = [f for f in flags if not f.startswith("-ffp-eval-method=")]
-
+        flags = [f for f in flags if f not in ('-fno-asm', '-fno-asm-blocks')]
+    # Guard fast bundles vs ffp-eval-method
+    if any(f in FAST_BUNDLES for f in flags) or any(f in FAST_SUBFLAGS for f in flags):
+        flags = [f for f in flags if not f.startswith('-ffp-eval-method=')]
     return flags
-    
-def compile_with_flags(src, out_name, extra):
-    
-    cmd = ["/users/user42/build-test/bin/clang", "-x", "c", str(src), "-o", out_name, *PLUGIN_FLAGS, *extra, "-std=gnu11"]
-    try:
-        subprocess.check_output(cmd, stderr=subprocess.STDOUT,timeout=500)
-        return True
-    except subprocess.CalledProcessError:
-        return False
 
-def run_binary(bin_name, inp):
+# Compile with timeout, return status
+def compile_with_flags(src: Path, out_name: str, extra: list[str]) -> str:
+    cmd = ["/users/user42/build-clang17/bin/clang", '-x', 'c', str(src), '-o', out_name,
+           *PLUGIN_FLAGS, *extra]
     try:
-        res = subprocess.run(
-            ["./" + bin_name], input=inp.encode(),
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=10
-        )
-        return res.returncode, res.stdout.strip()
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT, timeout=500)
+        return 'success'
     except subprocess.TimeoutExpired:
-        return -999, b"__TIMEOUT__"
-    except Exception:
-        return -998, b"__ERROR__"
+        return 'hang'
+    except subprocess.CalledProcessError:
+        return 'crash'
 
-# ---------- Main ----------
+# Main fuzz loop
 def main():
-    ok = compile_failed = 0
-    diff_both = diff_rc = diff_out = 0
+    crash_count = hang_count = 0
     iterations = 0
     deadline = datetime.now() + timedelta(hours=DURATION_HOURS)
 
-    # Prepare log files in output directory
-    log_random = OUTPUT_DIR / "randomization_log.txt"
-    log_compile = OUTPUT_DIR / "compile_failure_flags.txt"
-    log_diff_both = OUTPUT_DIR / "diff_both_flags.txt"
-    log_diff_rc = OUTPUT_DIR / "diff_rc_flags.txt"
-    log_diff_out = OUTPUT_DIR / "diff_out_flags.txt"
-    summary_file = OUTPUT_DIR / "summary_counters.txt"
+    # Log files
+    seed_log = OUTPUT_DIR / 'seeds_log.txt'
+    crash_log = OUTPUT_DIR / 'crash_flags.txt'
+    hang_log = OUTPUT_DIR / 'hang_flags.txt'
+    summary_file = OUTPUT_DIR / 'summary_counters.txt'
 
-    with log_random.open("w") as qf:
-        qf.write("Processing naive randomization script'...\n")
-
+    with seed_log.open('w') as log_s, crash_log.open('w') as log_c, hang_log.open('w') as log_h:
         while datetime.now() < deadline and iterations < REPEAT_LIMIT:
-            
-            for b in ("bin1", "bin2"):
-                try:
-                    Path(b).unlink()
-                except FileNotFoundError:
-                    pass
-
             iterations += 1
-            src_idx = random.randint(0, NUM_TEST_PROGRAMS-1)
-            src     = Path(f"/users/user42/llvmSS-minimised-corpus/test_{src_idx}.c")
-            txt     = read_source(src)
-            input_data = str(1000000)
+            src_idx = random.randint(0, NUM_TEST_PROGRAMS - 1)
+            src = Path(f"/users/user42/llvmSS-minimised-corpus/test_{src_idx}.c")
+            txt = read_source(src)
 
-            flag_pairs = []
-            success = True
-            for tag in ("bin1", "bin2"):
-                flags_v1 = generate_random_flag_subset()
-                flags = sanitise_flags(flags_v1, txt)
-                flag_pairs.append(flags)
-                if not compile_with_flags(src, tag, flags):
-                    compile_failed += 1
-                    with log_compile.open("a") as flog:
-                        flog.write("----------------------------------------\n")
-                        flog.write(f"[Checker] Source File: {src}\n")
-                        flog.write(f"[Checker] Fixed Flags: -c {' '.join(PLUGIN_FLAGS)}\n")
-                        flog.write(f"[Checker] Flags: {' '.join(flags)}\n")
-                    success = False
+            # Generate a valid flag set
+            while True:
+                cand = generate_random_flag_subset()
+                san = sanitise_flags(cand, txt)
+                if san:
+                    flags = san
                     break
 
-            if not success:
-                continue
+            test_id = f"iter{iterations}_src{src_idx}"
+            result = compile_with_flags(src, test_id, flags)
 
-            for flags in flag_pairs:
-                flags = flags + ["-std=gnu11"]
-                qf.write("----------------------------------------\n")
-                qf.write(f"[Checker] Source File: {src}\n")
-                qf.write(f"[Checker] Fixed Flags: -c {' '.join(PLUGIN_FLAGS)}\n")
-                qf.write(f"[Checker] Flags: {' '.join(flags)}\n")
+            # Prepare log entry
+            for flog, outcome in [(log_s, result), (log_c, 'crash'), (log_h, 'hang')]:
+                if flog is log_s or result == outcome:
+                    flog.write("----------------------------------------\n")
+                    flog.write(f"[Checker] Source File: {src}\n")
+                    flog.write(f"[Checker] Fixed Flags: {' '.join(PLUGIN_FLAGS)}\n")
+                    flog.write(f"[Checker] Flags: {' '.join(flags)}\n")
+                    if flog is log_s:
+                        flog.write(f"[Checker] Result: {result}\n")
 
-            # rc1, out1 = run_binary("bin1", input_data)
-            # rc2, out2 = run_binary("bin2", input_data)
+            if result == 'crash':
+                crash_count += 1
+            elif result == 'hang':
+                hang_count += 1
 
-            # if rc1 == rc2 and out1 == out2:
-            #     ok += 1
-
-            # elif rc1 != rc2 and out1 != out2:
-            #     diff_both += 1
-            #     with log_diff_both.open("a") as flog:
-            #         for flags in flag_pairs:
-            #             flags_log = flags + ["-std=gnu11"]
-            #             flog.write("----------------------------------------\n")
-            #             flog.write(f"[Checker] Source File: {src}\n")
-            #             flog.write(f"[Checker] Fixed Flags: -c {' '.join(PLUGIN_FLAGS)}\n")
-            #             flog.write(f"[Checker] Flags: {' '.join(flags_log)}\n")
-
-            # elif rc1 != rc2:
-            #     diff_rc += 1
-            #     with log_diff_rc.open("a") as flog:
-            #         for flags in flag_pairs:
-            #             flags_log = flags + ["-std=gnu11"]
-            #             flog.write("----------------------------------------\n")
-            #             flog.write(f"[Checker] Source File: {src}\n")
-            #             flog.write(f"[Checker] Fixed Flags: -c {' '.join(PLUGIN_FLAGS)}\n")
-            #             flog.write(f"[Checker] Flags: {' '.join(flags_log)}\n")
-
-            # else:  # rc1 == rc2 but out1 != out2
-            #     diff_out += 1
-            #     with log_diff_out.open("a") as flog:
-            #         for flags in flag_pairs:
-            #             flags_log = flags + ["-std=gnu11"]
-            #             flog.write("----------------------------------------\n")
-            #             flog.write(f"[Checker] Source File: {src}\n")
-            #             flog.write(f"[Checker] Fixed Flags: -c {' '.join(PLUGIN_FLAGS)}\n")
-            #             flog.write(f"[Checker] Flags: {' '.join(flags_log)}\n")
-
+    # Write summary
     summary = (
-        "Summary:\n"
-        f"  OK                : {ok}\n"
-        f"  COMPILATION FAILED: {compile_failed}\n"
-        f"  DIFF_BOTH (rc+out): {diff_both}\n"
-        f"  DIFF_RC           : {diff_rc}\n"
-        f"  DIFF_OUTPUT       : {diff_out}\n"
-        f"  TOTAL RUNS        : {iterations}\n"
+        f"Total Iterations: {iterations}\n"
+        f"Crashes        : {crash_count}\n"
+        f"Hangs          : {hang_count}\n"
     )
-    print("\n" + summary)
     summary_file.write_text(summary)
+    print(summary)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
