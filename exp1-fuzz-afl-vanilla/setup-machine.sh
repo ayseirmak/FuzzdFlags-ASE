@@ -156,11 +156,22 @@ docker run -d --name fuzz05 --cpuset-cpus="12-14" \
 # -------------------------------------------------------
 sudo chown -R user42:user42 /users/user42
 ./extract_fuzz_stat_dir.sh /users/user42
-tar -czvf exp11-O2-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
+tar -czvf exp11-O2-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05 fuzzer_stats_summary.csv
+tar -czvf exp11-O2-fuzz-results-rep1.tar.gz -C /users/user42/ fuzz01
+tar -czvf exp11-O2-fuzz-results-rep2.tar.gz -C /users/user42/ fuzz02
+tar -czvf exp11-O2-fuzz-results-rep3.tar.gz -C /users/user42/ fuzz03
+tar -czvf exp11-O2-fuzz-results-rep4.tar.gz -C /users/user42/ fuzz04
+tar -czvf exp11-O2-fuzz-results-rep5.tar.gz -C /users/user42/ fuzz05
 
 # -------------------------------------------------------
 # 72. After Fuzzing to Extract Fuzz Statistics -O3
 # -------------------------------------------------------
 sudo chown -R user42:user42 /users/user42
 ./extract_fuzz_stat_dir.sh /users/user42
-tar -czvf exp12-O3-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
+tar -czvf exp12-O3-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05 fuzzer_stats_summary.csv
+tar -czvf exp11-O3-fuzz-results-rep1.tar.gz -C /users/user42/ fuzz01
+tar -czvf exp11-O3-fuzz-results-rep2.tar.gz -C /users/user42/ fuzz02
+tar -czvf exp11-O3-fuzz-results-rep3.tar.gz -C /users/user42/ fuzz03
+tar -czvf exp11-O3-fuzz-results-rep4.tar.gz -C /users/user42/ fuzz04
+tar -czvf exp11-O3-fuzz-results-rep5.tar.gz -C /users/user42/ fuzz05
+
