@@ -1,27 +1,10 @@
-#-fno-PIC / -fno‑PIE / -fPIC / -fPIE removed
-#-lm is added to the plugin flags
-# No -ffp-contract=fast-honor-pragmas 
-# No -fexcess-precision=16 
-# No -fsplit-stack ve -fno-split-stack 
-
-####### remove c++ only flags ############
-# -faccess-control / -fno-access-control,
-# -fassume-unique-vtables/-fno-assume-unique-vtables, 
-# -fforce-emit-vtables, 
-# -fstrict-vtable-pointers/-fno-strict-vtable-pointers
-# -fassume-sane-operator-new / -fno-assume-sane-operator-new
-# -fsized-deallocation / -fno-sized-deallocation
-# -faligned-new	
-# -fstrict-enums/-fno-strict-enums
-
-
 import random,re, sys
 import subprocess
 from pathlib import Path
 from datetime import datetime, timedelta
 
 # Parameters
-NUM_TEST_PROGRAMS = 1705
+NUM_TEST_PROGRAMS = 1811
 DURATION_HOURS = 24
 REPEAT_LIMIT = 50 #float('inf')  # Number of iterations or set to a fixed number
 OUTPUT_DIR = Path("output-nrs")
@@ -64,29 +47,16 @@ PLUGIN_FLAGS = [
 
 # List of additional flags to choose from
 FLAG_LIST = [
-"-O0",    
-"-flto=thin",
-"-flto",
-"-fPIC", 
-"-fPIE", 
-"-fno-pic", 
-"-fno-pie",
- "-march=x86-64",
+"-O0",
  "-march=x86-64-v3",
- "-march=x86-64-v4",
- "-march=skylake-avx512",  
- "-march=znver4", 
  "-march=x86-64-v2",
+ "-march=x86-64",
  "-mavx",
  "-mavx2",
- "-mavx512f",
- "-mavx512vl",
  "-mfma", 
  "-mbmi2",    
  "-msha",      
  "-maes",
- "-mno-avx2", 
- "-mno-sse4.2",
  "-fno-finite-loops",
  "-fexcess-precision=fast",
  "-fno-use-init-array",
@@ -98,7 +68,6 @@ FLAG_LIST = [
  "-fno-unroll-loops",
  "-fstrict-return",
  "-fstack-protector-strong",
- "-fuse-init-array",
  "-fno-honor-infinities",
  "-Oz",
  "-Og",
@@ -116,7 +85,6 @@ FLAG_LIST = [
  "-fprotect-parens",
  "-ftls-model=local-exec",
  "-ffp-eval-method=source",
- "-fblocks",
  "-fdenormal-fp-math=positive-zero",
  "-fdenormal-fp-math=preserve-sign",
  "-fno-jump-tables",
@@ -125,7 +93,6 @@ FLAG_LIST = [
  "-ffast-math",
  "-fno-trapping-math",
  "-ffp-exception-behavior=strict",
- "-malign-double",
  "-fno-finite-math-only",
  "-fno-keep-static-consts",
  "-funsigned-bitfields",
@@ -140,19 +107,15 @@ FLAG_LIST = [
  "-fassociative-math",
  "-fsignaling-math",
  "-fno-strict-return",
- "-fno-blocks",
  "-ftls-model=global-dynamic",
  "-fstack-size-section",
  "-fwrapv",
- "-fast",
  "-ffp-model=strict",
  "-flax-vector-conversions=integer",
  "-fstack-protector-all",
  "-Os",
- "-fno-asm-blocks",
  "-fno-math-errno",
  "-fno-approx-func",
- "-fwritable-strings",
  "-fno-protect-parens",
  "-ftls-model=local-dynamic",
  "-fno-fixed-point",
@@ -178,7 +141,6 @@ FLAG_LIST = [
  "-fno-reciprocal-math",
  "-funsigned-char",
  "-frounding-math",
- "-fno-reroll-loops",
  "-fhonor-infinities",
  "-fdenormal-fp-math=ieee",
  "-ffixed-point",
@@ -288,7 +250,7 @@ def main():
 
             iterations += 1
             src_idx = random.randint(0, NUM_TEST_PROGRAMS-1)
-            src     = Path(f"/users/user42/llvmSS-reindex-cfiles/test_{src_idx}.c")
+            src     = Path(f"/users/user42/llvmSS-minimised-corpus/test_{src_idx}.c")
             txt     = read_source(src)
             input_data = str(1000000)
 
