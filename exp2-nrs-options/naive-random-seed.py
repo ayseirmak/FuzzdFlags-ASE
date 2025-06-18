@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 # Parameters
 NUM_TEST_PROGRAMS = 1811
 DURATION_HOURS = 24
-REPEAT_LIMIT = 50  # Number of iterations
+REPEAT_LIMIT = float('inf')   # Number of iterations 50
 
 # Output directory
 OUTPUT_DIR = Path("output-nrs")
