@@ -161,19 +161,28 @@ tar -czvf exp31-1seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03
 
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-clangOpt.tar.gz
 tar -zxvf build-clangOpt.tar.gz
-mkdir -p exp31-fuzzdflags-1seed-queue
+mkdir -p exp31-1seed-fuzz-queue
 
 export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
 export CFILES_DIR=/users/user42/llvmSS-minimised-corpus/
 export FILE_COUNT=1811
 
 # Decrypt the queues from each fuzzing container
-./decrypt_queue.sh fuzz01/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz01-queue
-./decrypt_queue.sh fuzz02/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz02-queue
-./decrypt_queue.sh fuzz03/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz03-queue
-./decrypt_queue.sh fuzz04/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz04-queue
-./decrypt_queue.sh fuzz05/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz05-queue
-tar -czvf exp31-fuzzdflags-1seed-queue.tar.gz -C /users/user42 exp31-fuzzdflags-1seed-queue 
+./decrypt_queue.sh fuzz01/default/queue/ exp31-1seed-fuzz-queue/fuzz01-queue
+./decrypt_queue.sh fuzz02/default/queue/ exp31-1seed-fuzz-queue/fuzz02-queue
+./decrypt_queue.sh fuzz03/default/queue/ exp31-1seed-fuzz-queue/fuzz03-queue
+./decrypt_queue.sh fuzz04/default/queue/ exp31-1seed-fuzz-queue/fuzz04-queue
+./decrypt_queue.sh fuzz05/default/queue/ exp31-1seed-fuzz-queue/fuzz05-queue
+tar -czvf exp31-1seed-fuzz-queue.tar.gz -C /users/user42 exp31-1seed-fuzz-queue 
+
+# Decrypt the hangs from each fuzzing container
+mkdir -p exp31-1seed-fuzz-hangs
+./decrypt_queue.sh fuzz01/default/hangs/ exp31-1seed-fuzz-hangs/fuzz01-hangs
+./decrypt_queue.sh fuzz02/default/hangs/ exp31-1seed-fuzz-hangs/fuzz02-hangs
+./decrypt_queue.sh fuzz03/default/hangs/ exp31-1seed-fuzz-hangs/fuzz03-hangs
+./decrypt_queue.sh fuzz04/default/hangs/ exp31-1seed-fuzz-hangs/fuzz04-hangs
+./decrypt_queue.sh fuzz05/default/hangs/ exp31-1seed-fuzz-hangs/fuzz05-hangs
+tar -czvf exp31-1seed-fuzz-hangs.tar.gz -C /users/user42 exp31-1seed-fuzz-hangs 
 
 
 # -------------------------------------------------------
@@ -183,12 +192,29 @@ sudo chown -R user42:user42 /users/user42
 ./extract_fuzz_stat_dir.sh /users/user42
 tar -czvf exp32-30seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05 fuzzer_stats_summary.csv
 
-mkdir -p exp32-fuzzdflags-30seed-queue
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-clangOpt.tar.gz
+tar -zxvf build-clangOpt.tar.gz
+mkdir -p exp32-30seed-fuzz-queue
+
+export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
+export CFILES_DIR=/users/user42/llvmSS-minimised-corpus/
+export FILE_COUNT=1811
 
 # Decrypt the queues from each fuzzing container
-./decrypt_queue.sh fuzz01/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz01-queue
-./decrypt_queue.sh fuzz02/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz02-queue
-./decrypt_queue.sh fuzz03/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz03-queue
-./decrypt_queue.sh fuzz04/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz04-queue
-./decrypt_queue.sh fuzz05/default/queue/ exp32-fuzzdflags-30seed-queue/fuzz05-queue
-tar -czvf exp32-fuzzdflags-30seed-queue.tar.gz -C /users/user42 exp32-fuzzdflags-30seed-queue
+./decrypt_queue.sh fuzz01/default/queue/ exp32-30seed-fuzz-queue/fuzz01-queue
+./decrypt_queue.sh fuzz02/default/queue/ exp32-30seed-fuzz-queue/fuzz02-queue
+./decrypt_queue.sh fuzz03/default/queue/ exp32-30seed-fuzz-queue/fuzz03-queue
+./decrypt_queue.sh fuzz04/default/queue/ exp32-30seed-fuzz-queue/fuzz04-queue
+./decrypt_queue.sh fuzz05/default/queue/ exp32-30seed-fuzz-queue/fuzz05-queue
+tar -czvf exp32-30seed-fuzz-queue.tar.gz -C /users/user42 exp32-30seed-fuzz-queue
+
+# Decrypt the hangs from each fuzzing container
+ mkdir -p exp32-30seed-fuzz-hangs
+./decrypt_queue.sh fuzz01/default/hangs/ exp32-30seed-fuzz-hangs/fuzz01-hangs
+./decrypt_queue.sh fuzz02/default/hangs/ exp32-30seed-fuzz-hangs/fuzz02-hangs
+./decrypt_queue.sh fuzz03/default/hangs/ exp32-30seed-fuzz-hangs/fuzz03-hangs
+./decrypt_queue.sh fuzz04/default/hangs/ exp32-30seed-fuzz-hangs/fuzz04-hangs
+./decrypt_queue.sh fuzz05/default/hangs/ exp32-30seed-fuzz-hangs/fuzz05-hangs
+tar -czvf exp32-30seed-fuzz-hangs.tar.gz -C /users/user42 exp32-30seed-fuzz-hangs 
+
+
