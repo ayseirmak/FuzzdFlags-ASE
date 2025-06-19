@@ -11,7 +11,20 @@ sudo apt-get update && sudo apt-get upgrade -y
 sudo chown -R user42:user42 /users/user42/
 
 su - user42
-# I need to add coveragescripts here (wget)
+# wget default setup scripts
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/0-install-compilers-local.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/1-clone-llvm.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/2-llvm-cov-install.sh
+
+# wget baseline coverage experiment scripts
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/edit/main/coverage/30-gfauto-dir.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/40-coverage-analysis-dir.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/5-cov-table.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/51-inner-LH_file.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/61-backend-cov-analysis.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/62-middleend-cov-analysis.sh
+
+
 sudo chown -R user42:user42 /users/user42/
 chmod 777 *.sh
 
