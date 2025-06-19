@@ -157,11 +157,15 @@ docker run -d --name fuzz05 --cpuset-cpus="12-14" \
 # -------------------------------------------------------
 sudo chown -R user42:user42 /users/user42
 ./extract_fuzz_stat_dir.sh /users/user42
-tar -czvf exp31-1seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
+tar -czvf exp31-1seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05 fuzzer_stats_summary.csv
 
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-clangOpt.tar.gz
 tar -zxvf build-clangOpt.tar.gz
 mkdir -p exp31-fuzzdflags-1seed-queue
+
+export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
+export CFILES_DIR=/users/user42/llvmSS-minimised-corpus/
+export FILE_COUNT=1811
 
 # Decrypt the queues from each fuzzing container
 ./decrypt_queue.sh fuzz01/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz01-queue
@@ -169,7 +173,7 @@ mkdir -p exp31-fuzzdflags-1seed-queue
 ./decrypt_queue.sh fuzz03/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz03-queue
 ./decrypt_queue.sh fuzz04/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz04-queue
 ./decrypt_queue.sh fuzz05/default/queue/ exp31-fuzzdflags-1seed-queue/fuzz05-queue
-tar -czvf exp31-fuzzdflags-1seed-queue.tar.gz -C /users/user42 exp31-fuzzdflags-1seed-queue
+tar -czvf exp31-fuzzdflags-1seed-queue.tar.gz -C /users/user42 exp31-fuzzdflags-1seed-queue 
 
 
 # -------------------------------------------------------
@@ -177,7 +181,7 @@ tar -czvf exp31-fuzzdflags-1seed-queue.tar.gz -C /users/user42 exp31-fuzzdflags-
 # -------------------------------------------------------
 sudo chown -R user42:user42 /users/user42
 ./extract_fuzz_stat_dir.sh /users/user42
-tar -czvf exp32-30seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
+tar -czvf exp32-30seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05 fuzzer_stats_summary.csv
 
 mkdir -p exp32-fuzzdflags-30seed-queue
 
