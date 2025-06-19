@@ -57,7 +57,7 @@ echo "core" | sudo tee /proc/sys/kernel/core_pattern
 # 4. Download Dockerfile & Helper Scripts & Build Fuzzing Image
 # -------------------------------------------------------
 su - user42
-wget https://github.com/ayseirmak/FuzzdFlags/releases/download/v2.0-beta/exp3-nrs-dock.dockerfile
+wget -----------------------exp3-nrs-dock.dockerfile
 
 # Build Docker image from the local Dockerfile
 docker build -f exp3-nrs-dock.dockerfile -t nrs-img .
@@ -69,10 +69,8 @@ mkdir -p rep01 rep02 rep03 rep04 rep05
 chown -R user42:user42 rep01 rep02 rep03 rep04 rep05
 chmod -R 777 rep01 rep02 rep03 rep04 rep05
 
-
-
 # -------------------------------------------------------
-# 6. Launch 5  Containers
+# 61. Launch 5  Containers for nrs
 # -------------------------------------------------------
 # NOTE: Adjust --cpuset-cpus according to the actual cores on your m510 node.
 # Give each container 3 cores:
@@ -81,28 +79,80 @@ chmod -R 777 rep01 rep02 rep03 rep04 rep05
 docker run -d --name rep01 --cpuset-cpus="0-2" \
   -v /users/user42/rep01:/users/user42/output-nrs \
   nrs-img \
-  python3 naive-random-seed.py
+  python3 nrs.py
 
 docker run -d --name rep02 --cpuset-cpus="3-5" \
   -v /users/user42/rep02:/users/user42/output-nrs \
   nrs-img \
-  python3 naive-random-seed.py
+  python3 nrs.py
 
 docker run -d --name rep03 --cpuset-cpus="6-8" \
   -v /users/user42/rep03:/users/user42/output-nrs \
   nrs-img \
-  python3 naive-random-seed.py
+  python3 nrs.py
 
 docker run -d --name rep04 --cpuset-cpus="9-11" \
   -v /users/user42/rep04:/users/user42/output-nrs \
   nrs-img \
-  python3 naive-random-seed.py
+  python3 nrs.py
 
 docker run -d --name rep05 --cpuset-cpus="12-14" \
   -v /users/user42/rep05:/users/user42/output-nrs \
   nrs-img \
-  python3 naive-random-seed.py
+  python3 nrs.py
 
 echo "All 5 containers started."
 # -------------------------------------------------------
-tar -czvf exp3-nrs-gen-result.tar.gz -C /users/user42/ rep01 rep02 rep03 rep04 rep05
+
+# -------------------------------------------------------
+# 62. Launch 5  Containers for nrs-semi-smart
+# -------------------------------------------------------
+# NOTE: Adjust --cpuset-cpus according to the actual cores on your m510 node.
+# Give each container 3 cores:
+# rep01 -> 0-2, rep02 -> 3-5, rep03 -> 6-8, rep04 -> 9-11, rep05 -> 12-14
+
+docker run -d --name rep01 --cpuset-cpus="0-2" \
+  -v /users/user42/rep01:/users/user42/output-nrs \
+  nrs-img \
+  python3 nrs-semi-smart.py
+
+docker run -d --name rep02 --cpuset-cpus="3-5" \
+  -v /users/user42/rep02:/users/user42/output-nrs \
+  nrs-img \
+  python3 nrs-semi-smart.py
+
+docker run -d --name rep03 --cpuset-cpus="6-8" \
+  -v /users/user42/rep03:/users/user42/output-nrs \
+  nrs-img \
+  python3 nrs-semi-smart.py
+
+docker run -d --name rep04 --cpuset-cpus="9-11" \
+  -v /users/user42/rep04:/users/user42/output-nrs \
+  nrs-img \
+  python3 nrs-semi-smart.py
+
+docker run -d --name rep05 --cpuset-cpus="12-14" \
+  -v /users/user42/rep05:/users/user42/output-nrs \
+  nrs-img \
+  python3 nrs-semi-smart.py
+  
+# -------------------------------------------------------
+# 71. After nrs generation, get results
+# -------------------------------------------------------
+tar -czvf exp21-nrs-result.tar.gz -C /users/user42/ rep01 rep02 rep03 rep04 rep05
+tar -czvf exp21-nrs-result-rep1.tar.gz -C /users/user42/ rep01
+tar -czvf exp21-nrs-result-rep2.tar.gz -C /users/user42/ rep02
+tar -czvf exp21-nrs-result-rep3.tar.gz -C /users/user42/ rep03
+tar -czvf exp21-nrs-result-rep4.tar.gz -C /users/user42/ rep04
+tar -czvf exp21-nrs-result-rep5.tar.gz -C /users/user42/ rep05
+# -------------------------------------------------------
+# 72. After nrs-semi-smart generation, get results
+# -------------------------------------------------------
+tar -czvf exp22-nrs-semi-smart-result.tar.gz -C /users/user42/ rep01 rep02 rep03 rep04 rep05
+tar -czvf exp22-nrs-semi-smart-result-rep1.tar.gz -C /users/user42/ rep01
+tar -czvf exp22-nrs-semi-smart-result-rep2.tar.gz -C /users/user42/ rep02
+tar -czvf exp22-nrs-semi-smart-result-rep3.tar.gz -C /users/user42/ rep03
+tar -czvf exp22-nrs-semi-smart-result-rep4.tar.gz -C /users/user42/ rep04
+tar -czvf exp22-nrs-semi-smart-result-rep5.tar.gz -C /users/user42/ rep05
+
+
