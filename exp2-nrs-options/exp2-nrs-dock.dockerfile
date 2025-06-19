@@ -90,16 +90,20 @@ WORKDIR /users/user42
 ENV LLVM_CONFIG=/usr/bin/llvm-config
 
 # Download and extract C-programset-reindexed
-RUN wget https://github.com/ayseirmak/FuzzdFlags/releases/download/v1.0-alpha/llvmSS-reindex-after-Cmin.tar.gz && \
-    tar -zxvf llvmSS-reindex-after-Cmin.tar.gz
+RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz && \
+    tar -zxvf llvmSS-minimised-corpus.tar.gz
 
-# Download and extract rs-clang-options-build
-RUN wget https://github.com/ayseirmak/FuzzdFlags/releases/download/v2.0-beta/exp1-clang-build.tar.gz && \
-    tar -zxvf exp1-clang-build.tar.gz
+# Download and extract instrumented clang-17
+RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-inst-clang17.tar.gz && \
+    tar -zxvf build-inst-clang17.tar.gz
 
-# Download naive-random-seed.py generator script
-RUN wget https://github.com/ayseirmak/FuzzdFlags/releases/download/v2.0-beta/naive-random-seed.py && \
-    chmod +x naive-random-seed.py
+# Download nrs.py generator script
+RUN wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/exp2-nrs-options/nrs.py && \
+    chmod +x nrs.py
+
+# Download nrs.py generator script
+RUN wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/exp2-nrs-options/nrs-semi-smart.py && \
+    chmod +x nrs-semi-smart.py
 
 # Set proper ownership and writable permissions for /users/user42/
 USER root
