@@ -35,16 +35,17 @@ We evaluate FuzzdFlags alongside ClangOptions to answer:
 RQ1 (Coverage): To what extent does our flag mutator enhance AFL++’s efficacy in increasing code coverage?
 RQ2 (Throughput): Does our flag mutation mechanism maintain an effective fuzzing throughput comparable to standard AFL++?
 
-We compare FuzzdFlags fuzzing mode with three fuzzing approaches  
+## Experiment Configurations
+| Method | Fuzzing Strategy | Input Corpus | Compiler Flags| Experiment Setup |
+|-----|------------------|--------------|-----------------------|------------|
+| **Baseline** | None (static compilation only)| LLVM-SS      | `-O0`, `-O2`, `-O3` | - Compile each program at `-O0`, `-O2`, and `-O3`  <br> - Measure coverage on Clang 19 with `gcov`                            |
+| **AFL++ (vanilla)**          | In-process fuzzing of each program with AFL++ | LLVM-SS      | `-O2`, `-O3` | - Fuzz each program separately at `-O2` and `-O3`  <br> - 5 runs per optimization level  <br> - Compute average coverage with `gcov` |
+| **NRS on corpus & flags**    | Naive random seed selection across programs and flags | LLVM-SS | Dynamic range | - Use NRS and NRS-semi-smart generators to pick (program, flag-list) combos  <br> - 5 runs per generator  <br> - Compute average coverage with `gcov` |
+| **AFL++ + flag fuzzing**     | Fuzzing of program–flag combinations via AFL++ | LLVM-SS  | Dynamic range | - Fuzz (program, flag-list) combos with AFL++ and clangOptions, using 1 and 30 initial seeds  <br> - 5 runs per initial-seed setting  <br> - Compute average coverage with `gcov` |
 
-| Methods | Fuzzing Strategy | Input Corpus | Compiler Flags |
-|---------|------------------|--------------|----------------|
-|Baseline | No fuzzing; static compilation only | LLVM-SS|  -O0/-O2/-O3 (fixed) |
-|AFL++ vanilla| Fuzzing input corpus only | LLVM-SS | -O2/-O3 (fixed) |
-|AFL++ and GrayC| Fuzzing input corpus only via C grammar mutator of GrayC | LLVM-SS | -O2/-O3 (fixed) |
-|FuzzdFlags - fuzzing mode | Fuzzing of input corpus and flag list combination | LLVM-SS | Dynamic range of flags |
 
-Each configuration was fuzzed for 24 hours, repeated 5 times, and we measured coverage & throughput as the mean across those runs.
+> **Note:** Each configuration was fuzzed for 24 hours, repeated 5 times, and both coverage and throughput were reported as the mean across those runs.  
+
 
 ## Experimental Setup
 
