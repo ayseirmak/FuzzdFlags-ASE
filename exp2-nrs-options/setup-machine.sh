@@ -57,10 +57,10 @@ echo "core" | sudo tee /proc/sys/kernel/core_pattern
 # 4. Download Dockerfile & Helper Scripts & Build Fuzzing Image
 # -------------------------------------------------------
 su - user42
-wget -----------------------exp3-nrs-dock.dockerfile
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/exp2-nrs-options/exp2-nrs-dock.dockerfile
 
 # Build Docker image from the local Dockerfile
-docker build -f exp3-nrs-dock.dockerfile -t nrs-img .
+docker build -f exp2-nrs-dock.dockerfile -t nrs-img .
 
 # -------------------------------------------------------
 # 5. Prepare Output Directories
