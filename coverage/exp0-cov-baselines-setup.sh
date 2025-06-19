@@ -36,11 +36,11 @@ tar -zxvf llvmSS-reindex-after-Cmin.tar.gz
 
 mkdir -p coverage-measurement
 cd coverage-measurement
-mkdir -p baselines-cov/baseline-o1-cov baselines-cov/baseline-o2-cov baselines-cov/baseline-o3-cov
+mkdir -p baselines-cov/baseline-o0-cov baselines-cov/baseline-o2-cov baselines-cov/baseline-o3-cov
 cd ~
 
-cd /users/user42/coverage-measurement/baselines-cov/baseline-o1-cov
-nohup /users/user42/3-gfauto-directory.sh /users/user42/coverage/llvm-clang-1 /users/user42/llvmSS-reindex-cfiles /users/user42/coverage/llvm-clang-1/llvm-install/usr/local/bin/clang -O1 > cov-input.log 2>&1 &
+cd /users/user42/coverage-measurement/baselines-cov/baseline-o0-cov
+nohup /users/user42/3-gfauto-directory.sh /users/user42/coverage/llvm-clang-1 /users/user42/llvmSS-reindex-cfiles /users/user42/coverage/llvm-clang-1/llvm-install/usr/local/bin/clang -O0 > cov-input.log 2>&1 &
 
 cd /users/user42/coverage-measurement/baselines-cov/baseline-o2-cov
 nohup /users/user42/3-gfauto-directory.sh /users/user42/coverage/llvm-clang-2 /users/user42/llvmSS-reindex-cfiles /users/user42/coverage/llvm-clang-2/llvm-install/usr/local/bin/clang -O2 > cov-input.log 2>&1 &
@@ -49,11 +49,11 @@ cd /users/user42/coverage-measurement/baselines-cov/baseline-o3-cov
 nohup /users/user42/3-gfauto-directory.sh /users/user42/coverage/llvm-clang-3 /users/user42/llvmSS-reindex-cfiles /users/user42/coverage/llvm-clang-3/llvm-install/usr/local/bin/clang -O3 > cov-input.log 2>&1 &
 
 cd ~
-nohup /users/user42/4-cov-analysis-single.sh ~/coverage-measurement/baselines-cov/baseline-o1-cov /users/user42/coverage/llvm-clang-1/coverage_processed/x-line-0/cov.out table_line_cov_O1.csv > cov-mes-O1.log 2>&1 &
+nohup /users/user42/4-cov-analysis-single.sh ~/coverage-measurement/baselines-cov/baseline-o0-cov /users/user42/coverage/llvm-clang-1/coverage_processed/x-line-0/cov.out table_line_cov_O1.csv > cov-mes-O0.log 2>&1 &
 nohup /users/user42/4-cov-analysis-single.sh ~/coverage-measurement/baselines-cov/baseline-o2-cov /users/user42/coverage/llvm-clang-2/coverage_processed/x-line-0/cov.out table_line_cov_O2.csv > cov-mes-O2.log 2>&1 &
 nohup /users/user42/4-cov-analysis-single.sh ~/coverage-measurement/baselines-cov/baseline-o3-cov /users/user42/coverage/llvm-clang-3/coverage_processed/x-line-0/cov.out table_line_cov_O3.csv > cov-mes-O3.log 2>&1 &
 
 tar -czvf baselines-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ baselines-cov
-tar -czvf cov-baseline-o1-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
+tar -czvf cov-baseline-o0-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
 tar -czvf cov-baseline-o2-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
 tar -czvf cov-baseline-o3-result.tar.gz -C /users/user42/coverage/llvm-clang-3 coverage_processed coverage_gcda_files
