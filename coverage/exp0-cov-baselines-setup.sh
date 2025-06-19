@@ -10,6 +10,7 @@ sudo chmod 777 /users/user42
 sudo apt-get update && sudo apt-get upgrade -y
 sudo chown -R user42:user42 /users/user42/
 
+cd /users/user42
 su - user42
 # wget default setup scripts
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/0-install-compilers-local.sh
