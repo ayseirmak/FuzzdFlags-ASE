@@ -18,7 +18,7 @@ wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/2-llvm-cov-install.sh
 
 # wget baseline coverage experiment scripts
-wget https://github.com/ayseirmak/FuzzdFlags-ASE/edit/main/coverage/30-gfauto-dir.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/30-gfauto-dir.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/40-coverage-analysis-dir.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/5-cov-table.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/51-inner-LH_file.sh
@@ -45,8 +45,8 @@ rm Pipfile.lock (if Python3.8 or above)
 ./dev_shell.sh.template
 cd ../..
 
-wget https://github.com/ayseirmak/FuzzdFlags/releases/download/v1.0-alpha/llvmSS-reindex-after-Cmin.tar.gz
-tar -zxvf llvmSS-reindex-after-Cmin.tar.gz
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz
+tar -zxvf llvmSS-minimised-corpus.tar.gz
 
 mkdir -p coverage-measurement
 cd coverage-measurement
