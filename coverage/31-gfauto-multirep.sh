@@ -35,7 +35,7 @@ mkdir -p "$gcda_dir"
 current_folder=$(pwd)
 
 # Process each fuzz queue file
-for queueFolder in "$fuzzQueueDir"/*; do
+for queueFolder in "$fuzzQueueDir"/*/; do
   repetition=$(basename "$queueFolder")     # e.g., m1-fuzz01-queue
   echo "=== PROCESSING: $repetition ==="
   
