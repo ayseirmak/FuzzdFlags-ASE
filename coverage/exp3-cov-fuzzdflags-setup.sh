@@ -49,10 +49,10 @@ tar -zxvf llvmSS-minimised-corpus.tar.gz
 mkdir -p /users/user42/fuzzdflags-1-seed
 mkdir -p /users/user42/fuzzdflags-30-seed
 
-# I need to add fuzzdflags 1 seed queue here (wget)
-tar -zxvf exp31-fuzzdflags-1seed-queue.tar.gz --strip-components=1 -C /users/user42/fuzzdflags-1-seed
-# I need to fuzzdflags 30 seed queue here (wget)
-tar -zxvf exp32-fuzzdflags-30seed-queue.tar.gz --strip-components=1 -C /users/user42/fuzzdflags-30-seed
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp31-1seed-fuzz-queue.tar.gz
+tar -zxvf exp31-1seed-fuzz-queue.tar.gz --strip-components=1 -C /users/user42/fuzzdflags-1-seed
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp32-30seed-fuzz-queue.tar.gz
+tar -zxvf exp32-30seed-fuzz-queue.tar.gz --strip-components=1 -C /users/user42/fuzzdflags-30-seed
 
 mkdir -p coverage-measurement
 cd coverage-measurement
