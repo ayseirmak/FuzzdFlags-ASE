@@ -71,4 +71,4 @@ nohup /users/user42/41-cov-analysis-multirep.sh ~/coverage-measurement/nrs-cov/n
 
 tar -czvf exp2-nrs-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ nrs-cov
 tar -czvf exp21-nrs-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
-tar -czvf exp32-fuzzdflags-30seed-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
+tar -czvf exp22-nrs-semi-smart-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
