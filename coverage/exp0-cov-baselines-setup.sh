@@ -60,7 +60,7 @@ cd /users/user42/coverage-measurement/baselines-cov/baseline-o2-cov
 nohup /users/user42/30-gfauto-dir.sh /users/user42/coverage/llvm-clang-2 /users/user42/llvmSS-minimised-corpus /users/user42/coverage/llvm-clang-2/llvm-install/usr/local/bin/clang -O2 > cov-input.log 2>&1 &
 
 cd /users/user42/coverage-measurement/baselines-cov/baseline-o3-cov
-nohup /users/user42/30-gfauto-dir.sh /users/user42/coverage/llvm-clang-3 /users/user42/lvmSS-minimised-corpus /users/user42/coverage/llvm-clang-3/llvm-install/usr/local/bin/clang -O3 > cov-input.log 2>&1 &
+nohup /users/user42/30-gfauto-dir.sh /users/user42/coverage/llvm-clang-3 /users/user42/llvmSS-minimised-corpus /users/user42/coverage/llvm-clang-3/llvm-install/usr/local/bin/clang -O3 > cov-input.log 2>&1 &
 
 cd ~
 nohup /users/user42/4-cov-analysis-single.sh ~/coverage-measurement/baselines-cov/baseline-o0-cov /users/user42/coverage/llvm-clang-1/coverage_processed/x-line-0/cov.out table_line_cov_O1.csv > cov-mes-O0.log 2>&1 &
