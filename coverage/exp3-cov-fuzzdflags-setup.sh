@@ -9,8 +9,22 @@ sudo chown -R user42:user42 /users/user42
 sudo chmod 777 /users/user42
 sudo apt-get update && sudo apt-get upgrade -y
 
+cd /users/user42
 su - user42
-# I need to add coveragescripts here (wget)
+# wget default setup scripts
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/0-install-compilers-local.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/1-clone-llvm.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/2-llvm-cov-install.sh
+
+# wget baseline coverage experiment scripts
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/32-gfauto-nrs-fuzzdflags.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/41-cov-analysis-multirep.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/5-cov-table.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/51-inner-LH_file.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/61-backend-cov-analysis.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/62-middleend-cov-analysis.sh
+
+
 sudo chown -R user42:user42 /users/user42/
 chmod 777 *.sh
 
@@ -29,32 +43,32 @@ rm Pipfile.lock (if Python3.8 or above)
 ./dev_shell.sh.template
 cd ../..
 
-wget https://github.com/ayseirmak/FuzzdFlags/releases/download/v1.0-alpha/llvmSS-reindex-after-Cmin.tar.gz
-tar -zxvf llvmSS-reindex-after-Cmin.tar.gz
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz
+tar -zxvf llvmSS-minimised-corpus.tar.gz
 
 mkdir -p /users/user42/fuzzdflags-1-seed
-mkdir -p /users/user42/fuzzdflags-10-seed
+mkdir -p /users/user42/fuzzdflags-30-seed
 
 # I need to add fuzzdflags 1 seed queue here (wget)
-tar -zxvf exp21-fuzzdflags-1seed-queue.tar.gz --strip-components=1 -C /users/user42/fuzzdflags-1-seed
-# I need to fuzzdflags 10 seed queue here (wget)
-tar -zxvf exp22-fuzzdflags-10seed-queue.tar.gz --strip-components=1 -C /users/user42/fuzzdflags-10-seed
+tar -zxvf exp31-fuzzdflags-1seed-queue.tar.gz --strip-components=1 -C /users/user42/fuzzdflags-1-seed
+# I need to fuzzdflags 30 seed queue here (wget)
+tar -zxvf exp32-fuzzdflags-30seed-queue.tar.gz --strip-components=1 -C /users/user42/fuzzdflags-30-seed
 
-mkdir -p coverage-measurment
-cd coverage-measurment
-mkdir -p fuzzdflags-cov/fuzzdflags-1seed-cov fuzzdflags-cov/fuzzdflags-10seed-cov
+mkdir -p coverage-measurement
+cd coverage-measurement
+mkdir -p fuzzdflags-cov/fuzzdflags-1seed-cov fuzzdflags-cov/fuzzdflags-30seed-cov
 cd ~
 
-cd /users/user42/coverage-measurment/fuzzdflags-cov/fuzzdflags-1seed-cov
-nohup /users/user42/3-gfauto-fuzzdflags.sh /users/user42/fuzzdflags-1-seed /users/user42/coverage/llvm-clang-1 > exp21-fuzzDflags-1seed-cov.log 2>&1 &
+cd /users/user42/coverage-measurement/fuzzdflags-cov/fuzzdflags-1seed-cov
+nohup /users/user42/32-gfauto-nrs-fuzzdflags.sh /users/user42/fuzzdflags-1-seed /users/user42/coverage/llvm-clang-1 > exp31-fuzzDflags-1seed-cov.log 2>&1 &
 
-cd /users/user42/coverage-measurment/fuzzdflags-cov/fuzzdflags-10seed-cov
-nohup /users/user42/3-gfauto-fuzzdflags.sh /users/user42/fuzzdflags-10-seed /users/user42/coverage/llvm-clang-2 > exp22-fuzzDflags-10seed-cov.log 2>&1 &
+cd /users/user42/coverage-measurement/fuzzdflags-cov/fuzzdflags-30seed-cov
+nohup /users/user42/32-gfauto-nrs-fuzzdflags.sh /users/user42/fuzzdflags-30-seed /users/user42/coverage/llvm-clang-2 > exp32-fuzzDflags-30seed-cov.log 2>&1 &
 
 cd ~
-nohup /users/user42/4-cov-analysis-multidir.sh ~/coverage-measurment/fuzzdflags-cov/fuzzdflags-1seed-cov /users/user42/coverage/llvm-clang-1 table_line_cov_1seed.csv > cov-mes-fuzzdflag-1seed.log 2>&1 &
-nohup /users/user42/4-cov-analysis-multidir.sh ~/coverage-measurment/fuzzdflags-cov/fuzzdflags-10seed-cov /users/user42/coverage/llvm-clang-2 table_line_cov_10seed.csv > cov-mes-fuzzdflag-10seed.log 2>&1 &
+nohup /users/user42/41-cov-analysis-multirep.sh ~/coverage-measurement/fuzzdflags-cov/fuzzdflags-1seed-cov /users/user42/coverage/llvm-clang-1 table_line_cov_1seed.csv > cov-mes-fuzzdflag-1seed.log 2>&1 &
+nohup /users/user42/41-cov-analysis-multirep.sh ~/coverage-measurement/fuzzdflags-cov/fuzzdflags-30seed-cov /users/user42/coverage/llvm-clang-2 table_line_cov_30seed.csv > cov-mes-fuzzdflag-30seed.log 2>&1 &
 
-tar -czvf fuzzdflags-cov-analysis.tar.gz -C /users/user42/coverage-measurment/ fuzzdflags-cov
-tar -czvf cov-fuzzdflags-1seed-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
-tar -czvf cov-fuzzdflags-10seed-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
+tar -czvf exp3-fuzzdflags-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ fuzzdflags-cov
+tar -czvf exp31-fuzzdflags-1seed-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
+tar -czvf exp32-fuzzdflags-30seed-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
