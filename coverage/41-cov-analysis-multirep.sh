@@ -28,9 +28,11 @@ exec >"$LOGFILE" 2>&1
 echo "===== STARTING SCRIPT at $(date) ====="
 # Move into m2 directory (if it exists)
 cd "$workdir" || { echo "Could not cd to $workdir "; exit 1; }
+mapfile -t coverage_dirs < <(find "$llvm_file/coverage_processed" -maxdepth 1 -mindepth 1 -type d | sort)
 
 # Loop from 1 to 5
 for i in 1 2 3 4 5; do
+  covdir=${coverage_dirs[$i]}
   echo
   echo "===== PROCESSING rep$i at $(date) ====="
   rm -rf "$workdir/rep$i" || { echo "Could not remove $workdir/rep$i"; exit 1; }
@@ -40,7 +42,7 @@ for i in 1 2 3 4 5; do
   # 1) Run the coverage table script
   #    Adjust paths/names as needed:
   /users/user42/5-cov-table.sh \
-    ""$llvm_file"/coverage_processed/fuzz0${i}/line/cov.out" \
+    "${covdir}/line/cov.out" \
     "$table_name"
 
   # 2) Summation commands:
