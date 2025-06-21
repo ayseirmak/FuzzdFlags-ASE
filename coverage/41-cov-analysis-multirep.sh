@@ -32,7 +32,7 @@ mapfile -t coverage_dirs < <(find "$llvm_file/coverage_processed" -maxdepth 1 -m
 
 # Loop from 1 to 5
 for i in 1 2 3 4 5; do
-  covdir=${coverage_dirs[$i]}
+  covdir=${coverage_dirs[$i-1]}
   echo
   echo "===== PROCESSING rep$i at $(date) ====="
   rm -rf "$workdir/rep$i" || { echo "Could not remove $workdir/rep$i"; exit 1; }
