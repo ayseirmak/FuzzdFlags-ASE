@@ -66,7 +66,7 @@ cd /users/user42/coverage-measurement/nrs-cov/nrs
 nohup /users/user42/32-gfauto-nrs-fuzzdflags.sh /users/user42/nrs /users/user42/coverage/llvm-clang-1 > exp21-nrs-cov.log 2>&1 &
 
 cd /users/user42/coverage-measurement/nrs-cov/nrs-semi-smart
-nohup /users/user42/32-gfauto-nrs-fuzzdflags.sh /users/user42/nrs-semi-smart /users/user42/coverage/llvm-clang-2 > ex232-nrs-semi-smart-cov.log 2>&1 &
+nohup /users/user42/32-gfauto-nrs-fuzzdflags.sh /users/user42/nrs-semi-smart /users/user42/coverage/llvm-clang-2 > exp22-nrs-semi-smart-cov.log 2>&1 &
 
 cd ~
 nohup /users/user42/41-cov-analysis-multirep.sh ~/coverage-measurement/nrs-cov/nrs /users/user42/coverage/llvm-clang-1 table_line_cov_nrs.csv > cov-mes-nrs.log 2>&1 &
