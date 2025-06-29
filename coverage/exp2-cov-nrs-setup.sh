@@ -54,8 +54,8 @@ tar -zxvf exp21-nrs-seeds.tar.gz --strip-components=1 -C /users/user42/nrs
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp22-nrs-semi-smart-seeds.tar.gz
 tar -zxvf exp22-nrs-semi-smart-seeds.tar.gz --strip-components=1 -C  /users/user42/nrs-semi-smart
 
-rm nrs/crash_flags.txt  nrs/hang_flags.txt nrs/summary_counters.txt
-rm nrs-semi-smart/crash_flags.txt  nrs-semi-smart/hang_flags.txt nrs-semi-smart/summary_counters.txt
+# rm nrs/crash_flags.txt  nrs/hang_flags.txt nrs/summary_counters.txt
+# rm nrs-semi-smart/crash_flags.txt  nrs-semi-smart/hang_flags.txt nrs-semi-smart/summary_counters.txt
 
 mkdir -p coverage-measurement
 cd coverage-measurement
