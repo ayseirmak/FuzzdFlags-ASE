@@ -120,7 +120,8 @@ cd /users/user42/llvm-project/clang/tools
 mkdir -p clang-options && cd clang-options
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/clang-options/ClangOptions.cpp
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/clang-options/CMakeLists.txt
-nano ../CMakeLists.txt # After add_clang_subdirectory(clang-scan-deps) Add add_clang_subdirectory(clang-options)
+# nano ../CMakeLists.txt # After add_clang_subdirectory(clang-scan-deps) Add add_clang_subdirectory(clang-options)
+sed -i '/add_clang_subdirectory(clang-scan-deps)/a add_clang_subdirectory(clang-options)' ../CMakeLists.txt
 
 export AFL_MAP_SIZE=4194304
 
