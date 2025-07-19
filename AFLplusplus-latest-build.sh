@@ -98,7 +98,7 @@ export LLVM_CONFIG=/usr/bin/llvm-config
 # -------------------------------------------------------
 git clone https://github.com/AFLplusplus/AFLplusplus
 cd AFLplusplus
-# AFL++ include/config.h MAP_SIZE_POW2=16 ~> MAP_SIZE_POW2=23 (4 MiB)
+sed -i 's/#define MAP_SIZE_POW2.*/#define MAP_SIZE_POW2 22/' include/config.h
 make distrib
 sudo make install
 
