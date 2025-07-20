@@ -18,7 +18,7 @@ wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/
 
 # wget baseline coverage experiment scripts
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/32-gfauto-nrs-fuzzdflags.sh
-wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/41-cov-analysis-multirep.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/41-cov-analysis-multirep-v2.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/5-cov-table.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/51-inner-LH_file.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/61-backend-cov-analysis.sh
@@ -49,8 +49,8 @@ tar -zxvf llvmSS-minimised-corpus.tar.gz
 mkdir -p /users/user42/nrs
 mkdir -p /users/user42/nrs-semi-smart
 
-wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp21-nrs-seeds.tar.gz
-tar -zxvf exp21-nrs-seeds.tar.gz --strip-components=1 -C /users/user42/nrs
+# wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp21-nrs-seeds.tar.gz
+# tar -zxvf exp21-nrs-seeds.tar.gz --strip-components=1 -C /users/user42/nrs
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp22-nrs-semi-smart-seeds.tar.gz
 tar -zxvf exp22-nrs-semi-smart-seeds.tar.gz --strip-components=1 -C  /users/user42/nrs-semi-smart
 
@@ -59,19 +59,20 @@ tar -zxvf exp22-nrs-semi-smart-seeds.tar.gz --strip-components=1 -C  /users/user
 
 mkdir -p coverage-measurement
 cd coverage-measurement
-mkdir -p nrs-cov/nrs nrs-cov/nrs-semi-smart
+# mkdir -p nrs-cov/nrs 
+mkdir -p nrs-cov/nrs-semi-smart
 cd ~
 
-cd /users/user42/coverage-measurement/nrs-cov/nrs
-nohup /users/user42/32-gfauto-nrs-fuzzdflags.sh /users/user42/nrs /users/user42/coverage/llvm-clang-1 > exp21-nrs-cov.log 2>&1 &
+# cd /users/user42/coverage-measurement/nrs-cov/nrs
+# nohup /users/user42/32-gfauto-nrs-fuzzdflags.sh /users/user42/nrs /users/user42/coverage/llvm-clang-1 > exp21-nrs-cov.log 2>&1 &
 
 cd /users/user42/coverage-measurement/nrs-cov/nrs-semi-smart
 nohup /users/user42/32-gfauto-nrs-fuzzdflags.sh /users/user42/nrs-semi-smart /users/user42/coverage/llvm-clang-2 > exp22-nrs-semi-smart-cov.log 2>&1 &
 
 cd ~
-nohup /users/user42/41-cov-analysis-multirep.sh ~/coverage-measurement/nrs-cov/nrs /users/user42/coverage/llvm-clang-1 table_line_cov_nrs.csv > cov-mes-nrs.log 2>&1 &
-nohup /users/user42/41-cov-analysis-multirep.sh ~/coverage-measurement/nrs-cov/nrs-semi-smart /users/user42/coverage/llvm-clang-2 table_line_cov_nrs-semi-smart.csv > cov-mes-nrs-semi-smart.log 2>&1 &
+# nohup /users/user42/41-cov-analysis-multirep-v2.sh ~/coverage-measurement/nrs-cov/nrs /users/user42/coverage/llvm-clang-1 table_line_cov_nrs.csv > cov-mes-nrs.log 2>&1 &
+nohup /users/user42/41-cov-analysis-multirep-v2.sh ~/coverage-measurement/nrs-cov/nrs-semi-smart /users/user42/coverage/llvm-clang-2 table_line_cov_nrs-semi-smart.csv table_function_cov_nrs-semi-smart.csv > cov-mes-nrs-semi-smart.log 2>&1 &
 
-tar -czvf exp2-nrs-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ nrs-cov
-tar -czvf exp21-nrs-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
-tar -czvf exp22-nrs-semi-smart-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
+# tar -czvf exp2-nrs-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ nrs-cov
+# tar -czvf exp21-nrs-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
+# tar -czvf exp22-nrs-semi-smart-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
