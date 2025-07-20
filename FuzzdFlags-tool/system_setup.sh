@@ -150,11 +150,11 @@ tar -zxvf llvmSS-minimised-corpus.tar.gz
 mkdir -p /users/user42/difftest-compilers && cd /users/user42/difftest-compilers
 wget https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-14.2.0.tar.gz
 tar -xvf gcc-14.2.0.tar.gz
-cd gcc-14.2.0
+cd gcc-releases-gcc-14.2.0
 ./contrib/download_prerequisites
 cd ..  
 mkdir gcc14-build && cd gcc14-build
-../gcc-14.2.0/configure --prefix=/opt/gcc-14 \
+../gcc-releases-gcc-14.2.0/configure --prefix=/opt/gcc-14 \
     --disable-multilib --disable-bootstrap \
     --enable-languages=c,c++,lto,objc,obj-c++ \
     --enable-targets=x86
