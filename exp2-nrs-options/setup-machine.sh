@@ -77,9 +77,9 @@ chmod -R 777 rep01 rep02 rep03 rep04 rep05
 # Give each container 3 cores:
 # rep01 -> 0-2, rep02 -> 3-5, rep03 -> 6-8, rep04 -> 9-11, rep05 -> 12-14
 
-docker run -d --name rep01 --cpuset-cpus="0-2" \
-  -v /users/user42/rep01:/users/user42/output-nrs \
-  nrs-img \
+# docker run -d --name rep01 --cpuset-cpus="0-2" \
+#   -v /users/user42/rep01:/users/user42/output-nrs \
+#   nrs-img \
   python3 nrs.py
 
 docker run -d --name rep02 --cpuset-cpus="3-5" \
@@ -112,48 +112,48 @@ echo "All 5 containers started."
 # Give each container 3 cores:
 # rep01 -> 0-2, rep02 -> 3-5, rep03 -> 6-8, rep04 -> 9-11, rep05 -> 12-14
 
-docker run -d --name rep01 --cpuset-cpus="0-2" \
-  -v /users/user42/rep01:/users/user42/output-nrs \
-  nrs-img \
-  python3 nrs-semi-smart.py
+# docker run -d --name rep01 --cpuset-cpus="0-2" \
+#   -v /users/user42/rep01:/users/user42/output-nrs \
+#   nrs-img \
+#   python3 nrs-semi-smart.py
 
-docker run -d --name rep02 --cpuset-cpus="3-5" \
-  -v /users/user42/rep02:/users/user42/output-nrs \
-  nrs-img \
-  python3 nrs-semi-smart.py
+# docker run -d --name rep02 --cpuset-cpus="3-5" \
+#   -v /users/user42/rep02:/users/user42/output-nrs \
+#   nrs-img \
+#   python3 nrs-semi-smart.py
 
-docker run -d --name rep03 --cpuset-cpus="6-8" \
-  -v /users/user42/rep03:/users/user42/output-nrs \
-  nrs-img \
-  python3 nrs-semi-smart.py
+# docker run -d --name rep03 --cpuset-cpus="6-8" \
+#   -v /users/user42/rep03:/users/user42/output-nrs \
+#   nrs-img \
+#   python3 nrs-semi-smart.py
 
-docker run -d --name rep04 --cpuset-cpus="9-11" \
-  -v /users/user42/rep04:/users/user42/output-nrs \
-  nrs-img \
-  python3 nrs-semi-smart.py
+# docker run -d --name rep04 --cpuset-cpus="9-11" \
+#   -v /users/user42/rep04:/users/user42/output-nrs \
+#   nrs-img \
+#   python3 nrs-semi-smart.py
 
-docker run -d --name rep05 --cpuset-cpus="12-14" \
-  -v /users/user42/rep05:/users/user42/output-nrs \
-  nrs-img \
-  python3 nrs-semi-smart.py
+# docker run -d --name rep05 --cpuset-cpus="12-14" \
+#   -v /users/user42/rep05:/users/user42/output-nrs \
+#   nrs-img \
+#   python3 nrs-semi-smart.py
   
 # -------------------------------------------------------
 # 71. After nrs generation, get results
 # -------------------------------------------------------
-tar -czvf exp21-nrs-result.tar.gz -C /users/user42/ rep01 rep02 rep03 rep04 rep05
-tar -czvf exp21-nrs-result-rep1.tar.gz -C /users/user42/ rep01
-tar -czvf exp21-nrs-result-rep2.tar.gz -C /users/user42/ rep02
-tar -czvf exp21-nrs-result-rep3.tar.gz -C /users/user42/ rep03
-tar -czvf exp21-nrs-result-rep4.tar.gz -C /users/user42/ rep04
-tar -czvf exp21-nrs-result-rep5.tar.gz -C /users/user42/ rep05
+# tar -czvf exp21-nrs-result.tar.gz -C /users/user42/ rep01 rep02 rep03 rep04 rep05
+# tar -czvf exp21-nrs-result-rep1.tar.gz -C /users/user42/ rep01
+# tar -czvf exp21-nrs-result-rep2.tar.gz -C /users/user42/ rep02
+# tar -czvf exp21-nrs-result-rep3.tar.gz -C /users/user42/ rep03
+# tar -czvf exp21-nrs-result-rep4.tar.gz -C /users/user42/ rep04
+# tar -czvf exp21-nrs-result-rep5.tar.gz -C /users/user42/ rep05
 
-mkdir -p exp21-nrs-seeds
-cp rep01/seeds_log.txt exp21-nrs-seeds/rep01_seeds
-cp rep02/seeds_log.txt exp21-nrs-seeds/rep02_seeds
-cp rep03/seeds_log.txt exp21-nrs-seeds/rep03_seeds
-cp rep04/seeds_log.txt exp21-nrs-seeds/rep04_seeds
-cp rep05/seeds_log.txt exp21-nrs-seeds/rep05_seeds
-tar -czvf exp21-nrs-seeds.tar.gz -C /users/user42/ exp21-nrs-seeds
+# mkdir -p exp21-nrs-seeds
+# cp rep01/seeds_log.txt exp21-nrs-seeds/rep01_seeds
+# cp rep02/seeds_log.txt exp21-nrs-seeds/rep02_seeds
+# cp rep03/seeds_log.txt exp21-nrs-seeds/rep03_seeds
+# cp rep04/seeds_log.txt exp21-nrs-seeds/rep04_seeds
+# cp rep05/seeds_log.txt exp21-nrs-seeds/rep05_seeds
+# tar -czvf exp21-nrs-seeds.tar.gz -C /users/user42/ exp21-nrs-seeds
 
 # -------------------------------------------------------
 # 72. After nrs-semi-smart generation, get results
