@@ -200,3 +200,8 @@ cmake -G Ninja ../llvm-project/llvm \
   -DLLVM_BUILD_EXAMPLES="OFF"
 ninja -j$(nproc)
 sudo ninja install
+# -------------------------------------------------------
+# Step 12: Update PATH to use compilers in diff-test mode
+# -------------------------------------------------------
+export PATH=/opt/gcc-14/bin:/opt/llvm-19/bin:/opt/llvm-latest/bin:$PATH
+source ~/.bashrc
