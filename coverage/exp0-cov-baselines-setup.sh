@@ -1,6 +1,6 @@
 
 #!/bin/bash
-# This script is for setting up a local environment for the input corpus coverage with -O2 flag.
+# User Setup and Permissions for cloudlab m510 machine
 sudo useradd -m -d /users/user42 -s /bin/bash user42
 sudo passwd user42
 sudo usermod -aG sudo user42
@@ -12,6 +12,7 @@ sudo chown -R user42:user42 /users/user42/
 
 cd /users/user42
 su - user42
+
 # wget default setup scripts
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/0-install-compilers-local.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/1-clone-llvm.sh
@@ -19,11 +20,11 @@ wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/
 
 # wget baseline coverage experiment scripts
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/30-gfauto-rep.sh
-wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/40-cov-analysis-rep.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/40-cov-analysis-rep-v2.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/5-cov-table.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/51-inner-LH_file.sh
-wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/61-backend-cov-analysis.sh
-wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/62-middleend-cov-analysis.sh
+# wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/61-backend-cov-analysis.sh
+# wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/62-middleend-cov-analysis.sh
 
 
 sudo chown -R user42:user42 /users/user42/
@@ -36,6 +37,7 @@ nohup ./2-llvm-cov-install.sh /users/user42/coverage <TMP_SOURCE_FOLDER> 1 > /tm
 nohup ./2-llvm-cov-install.sh /users/user42/coverage <TMP_SOURCE_FOLDER> 2 > /tmp/llvm2-cov-install.log 2>&1 &
 nohup ./2-llvm-cov-install.sh /users/user42/coverage <TMP_SOURCE_FOLDER> 3 > /tmp/llvm3-cov-install.log 2>&1 &
 
+# please follow the instructions here: https://github.com/google/graphicsfuzz. You can try the following instruction we used to set up the tool:
 git clone https://github.com/google/graphicsfuzz.git
 cd graphicsfuzz/gfauto/
 python3 --version # 3.10.2
@@ -63,11 +65,11 @@ cd /users/user42/coverage-measurement/baselines-cov/baseline-o3-cov
 nohup /users/user42/30-gfauto-rep.sh /users/user42/coverage/llvm-clang-3 /users/user42/llvmSS-minimised-corpus /users/user42/coverage/llvm-clang-3/llvm-install/usr/local/bin/clang -O3 > cov-input.log 2>&1 &
 
 cd ~
-nohup /users/user42/40-cov-analysis-rep.sh ~/coverage-measurement/baselines-cov/baseline-o0-cov /users/user42/coverage/llvm-clang-1/coverage_processed/x-line-0/cov.out table_line_cov_O0.csv > cov-mes-O0.log 2>&1 &
-nohup /users/user42/40-cov-analysis-rep.sh ~/coverage-measurement/baselines-cov/baseline-o2-cov /users/user42/coverage/llvm-clang-2/coverage_processed/x-line-0/cov.out table_line_cov_O2.csv > cov-mes-O2.log 2>&1 &
-nohup /users/user42/40-cov-analysis-rep.sh ~/coverage-measurement/baselines-cov/baseline-o3-cov /users/user42/coverage/llvm-clang-3/coverage_processed/x-line-0/cov.out table_line_cov_O3.csv > cov-mes-O3.log 2>&1 &
+nohup /users/user42/40-cov-analysis-rep.sh ~/coverage-measurement/baselines-cov/baseline-o0-cov /users/user42/coverage/llvm-clang-1/coverage_processed/x-line-0/cov.out /users/user42/coverage/llvm-clang-1/coverage_processed/x-0/cov.out table_line_cov_O0.csv table_function_cov_O0.csv > cov-mes-O0.log 2>&1 &
+nohup /users/user42/40-cov-analysis-rep.sh ~/coverage-measurement/baselines-cov/baseline-o2-cov /users/user42/coverage/llvm-clang-2/coverage_processed/x-line-0/cov.out /users/user42/coverage/llvm-clang-2/coverage_processed/x-0/cov.out table_line_cov_O2.csv  table_function_cov_O2.csv > cov-mes-O2.log 2>&1 &
+nohup /users/user42/40-cov-analysis-rep.sh ~/coverage-measurement/baselines-cov/baseline-o3-cov /users/user42/coverage/llvm-clang-3/coverage_processed/x-line-0/cov.out /users/user42/coverage/llvm-clang-3/coverage_processed/x-0/cov.out table_line_cov_O3.csv table_function_cov_O3.csv > cov-mes-O3.log 2>&1 &
 
-tar -czvf exp0-baselines-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ baselines-cov
-tar -czvf exp01-baseline-O0-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
-tar -czvf exp02-baseline-O2-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
-tar -czvf exp03-baseline-O3-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-3 coverage_processed coverage_gcda_files
+# tar -czvf exp0-baselines-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ baselines-cov
+# tar -czvf exp01-baseline-O0-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-1 coverage_processed coverage_gcda_files
+# tar -czvf exp02-baseline-O2-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
+# tar -czvf exp03-baseline-O3-cov-result.tar.gz -C /users/user42/coverage/llvm-clang-3 coverage_processed coverage_gcda_files
