@@ -83,37 +83,37 @@ chmod -R 777 fuzz01 fuzz02 fuzz03 fuzz04 fuzz05
 # Give each container 3 cores:
 # for 16 cpu fuzz01 -> 0-2, fuzz02 -> 3-5, fuzz03 -> 6-8, fuzz04 -> 9-11, fuzz05 -> 12-14
 
-docker run -d --name fuzz01 --cpuset-cpus="0-2" \
-  -v /users/user42/fuzz01:/users/user42/output-fuzz \
- afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
-    /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
+# docker run -d --name fuzz01 --cpuset-cpus="0-2" \
+#   -v /users/user42/fuzz01:/users/user42/output-fuzz \
+#  afl-clang-opts-img \
+#   /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
+#     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
-docker run -d --name fuzz02 --cpuset-cpus="3-5" \
-  -v /users/user42/fuzz02:/users/user42/output-fuzz \
- afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
-    /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
+# docker run -d --name fuzz02 --cpuset-cpus="3-5" \
+#   -v /users/user42/fuzz02:/users/user42/output-fuzz \
+#  afl-clang-opts-img \
+#   /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
+#     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
-docker run -d --name fuzz03 --cpuset-cpus="6-8" \
-  -v /users/user42/fuzz03:/users/user42/output-fuzz \
- afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
-    /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
+# docker run -d --name fuzz03 --cpuset-cpus="6-8" \
+#   -v /users/user42/fuzz03:/users/user42/output-fuzz \
+#  afl-clang-opts-img \
+#   /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
+#     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
-docker run -d --name fuzz04 --cpuset-cpus="9-11" \
-  -v /users/user42/fuzz04:/users/user42/output-fuzz \
- afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
-    /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
+# docker run -d --name fuzz04 --cpuset-cpus="9-11" \
+#   -v /users/user42/fuzz04:/users/user42/output-fuzz \
+#  afl-clang-opts-img \
+#   /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
+#     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
-docker run -d --name fuzz05 --cpuset-cpus="12-14" \
-  -v /users/user42/fuzz05:/users/user42/output-fuzz \
- afl-clang-opts-img \
-  /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
-    /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
+# docker run -d --name fuzz05 --cpuset-cpus="12-14" \
+#   -v /users/user42/fuzz05:/users/user42/output-fuzz \
+#  afl-clang-opts-img \
+#   /users/user42/24_fuzz.sh run_AFL_conf_clangopt.sh /users/user42/input-seeds-1 \
+#     /users/user42/output-fuzz -O0 /users/user42/build-clang-options/bin/clang-options
 
-echo "All 5 fuzzing containers started."
+# echo "All 5 fuzzing containers started."
 
 # -------------------------------------------------------
 # 62. Launch 5 Fuzzing Containers for 30 seed
@@ -155,34 +155,34 @@ docker run -d --name fuzz05 --cpuset-cpus="12-14" \
 # -------------------------------------------------------
 # 71. After Fuzzing to Extract Fuzz Statistics 1 seed
 # -------------------------------------------------------
-sudo chown -R user42:user42 /users/user42
-./extract_fuzz_stat_dir.sh /users/user42
-tar -czvf exp31-1seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05 fuzzer_stats_summary.csv
+# sudo chown -R user42:user42 /users/user42
+# ./extract_fuzz_stat_dir.sh /users/user42
+# tar -czvf exp31-1seed-fuzz-results.tar.gz -C /users/user42/ fuzz01 fuzz02 fuzz03 fuzz04 fuzz05 fuzzer_stats_summary.csv
 
-wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-clangOpt.tar.gz
-tar -zxvf build-clangOpt.tar.gz
-mkdir -p exp31-1seed-fuzz-queue
+# wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-clangOpt.tar.gz
+# tar -zxvf build-clangOpt.tar.gz
+# mkdir -p exp31-1seed-fuzz-queue
 
-export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
-export CFILES_DIR=/users/user42/llvmSS-minimised-corpus/
-export FILE_COUNT=1811
+# export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
+# export CFILES_DIR=/users/user42/llvmSS-minimised-corpus/
+# export FILE_COUNT=1811
 
 # Decrypt the queues from each fuzzing container
-./decrypt_queue.sh fuzz01/default/queue/ exp31-1seed-fuzz-queue/fuzz01-queue
-./decrypt_queue.sh fuzz02/default/queue/ exp31-1seed-fuzz-queue/fuzz02-queue
-./decrypt_queue.sh fuzz03/default/queue/ exp31-1seed-fuzz-queue/fuzz03-queue
-./decrypt_queue.sh fuzz04/default/queue/ exp31-1seed-fuzz-queue/fuzz04-queue
-./decrypt_queue.sh fuzz05/default/queue/ exp31-1seed-fuzz-queue/fuzz05-queue
-tar -czvf exp31-1seed-fuzz-queue.tar.gz -C /users/user42 exp31-1seed-fuzz-queue 
+# ./decrypt_queue.sh fuzz01/default/queue/ exp31-1seed-fuzz-queue/fuzz01-queue
+# ./decrypt_queue.sh fuzz02/default/queue/ exp31-1seed-fuzz-queue/fuzz02-queue
+# ./decrypt_queue.sh fuzz03/default/queue/ exp31-1seed-fuzz-queue/fuzz03-queue
+# ./decrypt_queue.sh fuzz04/default/queue/ exp31-1seed-fuzz-queue/fuzz04-queue
+# ./decrypt_queue.sh fuzz05/default/queue/ exp31-1seed-fuzz-queue/fuzz05-queue
+# tar -czvf exp31-1seed-fuzz-queue.tar.gz -C /users/user42 exp31-1seed-fuzz-queue 
 
 # Decrypt the hangs from each fuzzing container
-mkdir -p exp31-1seed-fuzz-hangs
-./decrypt_queue.sh fuzz01/default/hangs/ exp31-1seed-fuzz-hangs/fuzz01-hangs
-./decrypt_queue.sh fuzz02/default/hangs/ exp31-1seed-fuzz-hangs/fuzz02-hangs
-./decrypt_queue.sh fuzz03/default/hangs/ exp31-1seed-fuzz-hangs/fuzz03-hangs
-./decrypt_queue.sh fuzz04/default/hangs/ exp31-1seed-fuzz-hangs/fuzz04-hangs
-./decrypt_queue.sh fuzz05/default/hangs/ exp31-1seed-fuzz-hangs/fuzz05-hangs
-tar -czvf exp31-1seed-fuzz-hangs.tar.gz -C /users/user42 exp31-1seed-fuzz-hangs 
+# mkdir -p exp31-1seed-fuzz-hangs
+# ./decrypt_queue.sh fuzz01/default/hangs/ exp31-1seed-fuzz-hangs/fuzz01-hangs
+# ./decrypt_queue.sh fuzz02/default/hangs/ exp31-1seed-fuzz-hangs/fuzz02-hangs
+# ./decrypt_queue.sh fuzz03/default/hangs/ exp31-1seed-fuzz-hangs/fuzz03-hangs
+# ./decrypt_queue.sh fuzz04/default/hangs/ exp31-1seed-fuzz-hangs/fuzz04-hangs
+# ./decrypt_queue.sh fuzz05/default/hangs/ exp31-1seed-fuzz-hangs/fuzz05-hangs
+# tar -czvf exp31-1seed-fuzz-hangs.tar.gz -C /users/user42 exp31-1seed-fuzz-hangs 
 
 
 # -------------------------------------------------------
