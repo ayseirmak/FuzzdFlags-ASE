@@ -19,11 +19,11 @@ wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/
 
 # wget baseline coverage experiment scripts
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/31-gfauto-multirep.sh
-wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/41-cov-analysis-multirep.sh
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/41-cov-analysis-multirep-v2.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/5-cov-table.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/51-inner-LH_file.sh
-wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/61-backend-cov-analysis.sh
-wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/62-middleend-cov-analysis.sh
+# wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/61-backend-cov-analysis.sh
+# wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/coverage/62-middleend-cov-analysis.sh
 
 sudo chown -R user42:user42 /users/user42/
 chmod 777 *.sh
@@ -66,9 +66,9 @@ cd /users/user42/coverage-measurement/afl-vanilla-cov/afl-vanilla-o3-cov
 nohup /users/user42/31-gfauto-multirep.sh  /users/user42/afl-vanilla-fuzz-o3 /users/user42/coverage/llvm-clang-3  -O3 > cov-llvm3-input.log 2>&1 &
 
 cd ~
-nohup /users/user42/41-cov-analysis-multirep.sh ~/coverage-measurement/afl-vanilla-cov/afl-vanilla-o2-cov  /users/user42/coverage/llvm-clang-2 table_line_cov_afl_o2.csv > cov-mes-afl-o2.log 2>&1 &
-nohup /users/user42/41-cov-analysis-multirep.sh ~/coverage-measurement/afl-vanilla-cov/afl-vanilla-o3-cov  /users/user42/coverage/llvm-clang-3 table_line_cov_afl_o3.csv > cov-mes-afl-o3.log 2>&1 &
+nohup /users/user42/41-cov-analysis-multirep-v2.sh ~/coverage-measurement/afl-vanilla-cov/afl-vanilla-o2-cov  /users/user42/coverage/llvm-clang-2 table_line_cov_afl_o2.csv table_function_cov_afl_o2.csv > cov-mes-afl-o2.log 2>&1 &
+nohup /users/user42/41-cov-analysis-multirep-v2.sh ~/coverage-measurement/afl-vanilla-cov/afl-vanilla-o3-cov  /users/user42/coverage/llvm-clang-3 table_line_cov_afl_o3.csv table_function_cov_afl_o3.csv > cov-mes-afl-o3.log 2>&1 &
 
-tar -czvf afl-vanilla-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ afl-vanilla-cov
-tar -czvf cov-afl-vanilla-o2-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
-tar -czvf cov-afl-vanilla-o3-result.tar.gz -C /users/user42/coverage/llvm-clang-3 coverage_processed coverage_gcda_files
+# tar -czvf afl-vanilla-cov-analysis.tar.gz -C /users/user42/coverage-measurement/ afl-vanilla-cov
+# tar -czvf cov-afl-vanilla-o2-result.tar.gz -C /users/user42/coverage/llvm-clang-2 coverage_processed coverage_gcda_files
+# tar -czvf cov-afl-vanilla-o3-result.tar.gz -C /users/user42/coverage/llvm-clang-3 coverage_processed coverage_gcda_files
