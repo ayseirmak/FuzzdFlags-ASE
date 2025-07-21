@@ -201,3 +201,7 @@ cmake -G Ninja ../llvm-project/llvm \
 ninja -j$(nproc)
 sudo ninja install
 
+# Download FuzzdFlags -fuzz Mode initial input-seeds-30
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp3-input-seeds-30.tar.gz && \
+tar -zxvf exp3-input-seeds-30.tar.gz
+
