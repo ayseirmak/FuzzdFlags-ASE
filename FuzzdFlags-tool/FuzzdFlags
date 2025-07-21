@@ -13,17 +13,17 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 show_usage() {
   echo "Usage:"
   echo ""
-  echo "  . $0 -fuzz <c-dir> <include-dir> <time-seconds> [--conf <run_conf_script>] [--no-cmin]"
+  echo "   $0 -fuzz <c-dir> <include-dir> <time-seconds> [--conf <run_conf_script>] [--no-cmin]"
   echo "    * Minimizes c-files (afl-cmin) unless --no-cmin is given."
   echo "    * Reindexes them, then starts fuzzing for <time-seconds> with an optional custom conf script."
   echo "    * Creates a afl-cmin-output-<timestamp> and reindex-output-<timestamp> folders automatically."
   echo "    * Creates a fuzz-output-<timestamp> folder automatically."
   echo "___________________________________________________________________________________________________"
   echo ""
-  echo "  . $0 -difftest <fuzzed_queue/crash/hang_dir> <diff_out_dir> <target_name> <target_cmp_path>"
+  echo "   $0 -difftest <fuzzed_queue/crash/hang_dir> <diff_out_dir> <target_name> <target_cmp_path>"
   echo "    * Performs differential testing on the fuzzed queue, crashes, or hangs directories."
   echo "    * Creates a difftest-output-<timestamp> folder automatically."
-  echo "    * By default differential testing compiled with stable Gcc-14, Clang-18 and user-defined compiler"
+  echo "    * By default differential testing compiled with stable Gcc-14, Clang-19 and user-defined compiler by default it is Clang-trunk"
   echo "    * If you run -difftest in a different shell session than -fuzz, remember that previously"
   echo "      exported environment variables may not be set anymore."
   echo "    * Please export the following variables:"
@@ -32,7 +32,7 @@ show_usage() {
   echo "        INCLUDES_DIR (the directory of includes which are mendotory for C files)"
   echo "___________________________________________________________________________________________________"
   echo ""
-  echo "  . $0 -f_ddebug <clang_path> <test_c_file> <combination_sizes> <flags...>"
+  echo "   $0 -f_ddebug <clang_path> <test_c_file> <combination_sizes> <flags...>"
   echo "    * Performs flag-based delta debugging for a single .c file on a specified clang compiler."
   echo "    * Generate log files as <test_c_basename>_<size>.log "
   echo "    * If you run -f_ddebug in a different shell session than -fuzz or -difftest remember that previously"
@@ -42,9 +42,9 @@ show_usage() {
   echo "___________________________________________________________________________________________________"
   echo ""
   echo "Examples:"
-  echo "  . $0 -fuzz /abs_path/to/c-files /abs_path/to/include 3600"
-  echo "  . $0 -difftest /abs_path/to/fuzz-output/queue Clang-trunk /abs_path/to/target_cmp"
-  echo "  . $0 -f_ddebug /abs_path/to/target_cmp /abs_path/to/c-file \"1,2,3\" -O1 -O2 -fno-strict-return"
+  echo "   $0 -fuzz /abs_path/to/c-files /abs_path/to/include 3600"
+  echo "   $0 -difftest /abs_path/to/fuzz-output/queue Clang-trunk /abs_path/to/target_cmp"
+  echo "   $0 -f_ddebug /abs_path/to/target_cmp /abs_path/to/c-file \"1,2,3\" -O1 -O2 -fno-strict-return"
   echo "___________________________________________________________________________________________________"
   echo ""
   echo "NOTE: Make sure you have set the basic environment variables INSTRUMENTED_CLANG_PATH and"
@@ -65,6 +65,13 @@ fi
 
 SUBCOMMAND="$1"
 shift
+
+case "$SUBCOMMAND" in
+-hlp|-h|--help)
+    show_usage
+    exit 0
+    ;;
+esac
 
 case "$SUBCOMMAND" in
 -fuzz)
@@ -128,20 +135,19 @@ case "$SUBCOMMAND" in
     ############################################################################
     if [ "$NO_CMIN" -eq 0 ]; then
       CMOUT_DIR="${OUTPUT_DIR}/afl-cmin-output-${timestamp}"
-      mkdir -p "$CMOUT_DIR"
+      mkdir -p "$CMOUT_DIR" 
 
       pushd "$CMOUT_DIR" >/dev/null
       echo "[*]Running afl-cmin to reduce corpus"
-
       AFL_DEBUG=1 AFL_USE_ASAN=0 AFL_PRINT_FILENAMES=1 AFL_DEBUG_CHILD_OUTPUT=1 \
         afl-cmin \
           -i "$CFILES_DIR" \
-          -o ./after-Cmin-cfiles \
+          -o "$CMOUT_DIR"/after-Cmin-cfiles \
           -m none -t 500 -T 12 \
           -- "$INSTRUMENTED_CLANG_PATH" -x c -c -O3 -fpermissive \
             -w -Wno-implicit-function-declaration -Wno-implicit-int -Wno-return-type -Wno-builtin-redeclared -Wno-int-conversion \
-            -target x86_64-linux-gnu -march=native -I/usr/include -I"$INCLUDES_DIR" \
-            @@ -o /dev/null 2>&1 | tee ./afl-cmin-errors.log
+            -march=native -I/usr/include -I"$INCLUDES_DIR" \
+            @@ -o /dev/null 2>&1 | tee "$CMOUT_DIR"/afl-cmin-errors.log
 
       popd >/dev/null
       # Check that afl-cmin produced the minimized corpus folder
@@ -177,8 +183,8 @@ case "$SUBCOMMAND" in
     fi
 
     # 1) Copy files as test_0.c, test_1.c, ...
-    find "$(pwd)" -type f -name "*.c" | sort | awk -v reindex="${REINDEX_DIR}/reindex-cfiles" '{
-    printf "cp \"%s\" \"%s/test_%d.c\"\n", $0, reindex, (NR-1)
+    find "$(pwd)" -type f | sort | awk -v reindex="${REINDEX_DIR}/reindex-cfiles" '{
+      printf "cp \"%s\" \"%s/test_%d.c\"\n", $0, reindex, (NR-1)
     }' | bash
 
     popd >/dev/null
@@ -195,7 +201,7 @@ case "$SUBCOMMAND" in
     fi
 
     # Each line:  test_0.c : /abs/path/to/foo.c
-    find "$(pwd)" -type f -name "*.c" | sort | awk '{
+    find "$(pwd)" -type f | sort | awk '{
     printf "test_%d.c : %s\n", (NR-1), $0
     }' > "${REINDEX_DIR}/c_name_index_mapping.txt"
 
