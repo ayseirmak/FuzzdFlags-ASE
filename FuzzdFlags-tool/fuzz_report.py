@@ -140,7 +140,7 @@ def main():
                     sys.exit(1)
                 # Run clang-options in checker mode
                 result = subprocess.run(
-                    ["/users/user42/build-test/bin/clang-options", "--checker", "--filebin", full_path],
+                    [clang_options_path, "--checker", "--filebin", full_path],
                     capture_output=True,
                     text=True
                 )
@@ -268,8 +268,8 @@ def check_if_seed_file(queue_filename):
     Returns (True, "seed1.bin") or (False, None).
     Adjust to your naming scheme as needed.
     """
-    # One approach: if "orig:seed" is in the filename, extract the substring
-    if "orig:seed" in queue_filename:
+    # One approach: if "orig:" is in the filename, extract the substring
+    if "orig:" in queue_filename:
         # e.g. queue_filename might be "d:000000,time:0,execs:0,orig:seed1.bin"
         # Let's parse the part after "orig:"
         parts = queue_filename.split("orig:")
