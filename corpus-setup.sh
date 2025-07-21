@@ -50,8 +50,8 @@ LD=/usr/local/bin/afl-clang-fast++ cmake -G Ninja -Wall ../llvm-project/llvm/ \
 ninja clang  
 
 AFL_DEBUG=1 AFL_USE_ASAN=0 AFL_PRINT_FILENAMES=1 AFL_DEBUG_CHILD_OUTPUT=1 \ 
-afl-cmin -i /users/user42/llvmSS-c-corpus -o /users/user42/llvmSS-c-corpus-after-Cmin \
--m none -t 500 -T 12 -- /users/user42/build-clang17/bin/clang -x c -c -O3 -fpermissive \
+afl-cmin -i /users/user42/llvmSS-c-corpus-org -o /users/user42/llvmSS-c-corpus-after-Cmin \
+-m none -t 500 -T 12 -- /users/user42/build/bin/clang -x c -c -O3 -fpermissive \
 -w -Wno-implicit-function-declaration -Wno-implicit-int -Wno-return-type -Wno-builtin-redeclared -Wno-int-conversion  \
 -march=native -I/usr/include -I/users/user42/llvmSS-include @@  -o /dev/null > /users/user42/afl-cmin-errors.log 2>&1
 
