@@ -140,8 +140,10 @@ cmake -G Ninja ../llvm-project/llvm \
 ninja clang-options
 cd ~
 # -------------------------------------------------------
-# Step 8: Get llvm-test-suite Single Source input program corpus (after Cmin)
+# Step 8: Get llvm-test-suite Single Source input program corpus (before and after Cmin)
 # -------------------------------------------------------
+https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-corpus.tar.gz
+tar -zxvf llvmSS-corpus.tar.gz
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz
 tar -zxvf llvmSS-minimised-corpus.tar.gz
 # -------------------------------------------------------
@@ -201,9 +203,9 @@ cmake -G Ninja ../llvm-project/llvm \
 ninja -j$(nproc)
 sudo ninja install
 
-# Download FuzzdFlags -fuzz Mode initial input-seeds-30
-wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp3-input-seeds-30.tar.gz && \
-tar -zxvf exp3-input-seeds-30.tar.gz
+# -------------------------------------------------------
+# Step 12: Setup Tool Source Project 
+# -------------------------------------------------------
 
 mkdir -p FuzzdFlags-project && cd FuzzdFlags-project
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/FuzzdFlags-tool/FuzzdFlags
@@ -213,5 +215,8 @@ wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/FuzzdFlags-tool/run_AFL_conf_default.sh
 wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/FuzzdFlags-tool/fuzz_report.py
 
+# Download FuzzdFlags -fuzz Mode initial input-seeds-30
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp3-input-seeds-30.tar.gz && \
+tar -zxvf exp3-input-seeds-30.tar.gz
 sudo chown -R user42:user42 /users/user42
 sudo chmod -R 755 /users/user42
