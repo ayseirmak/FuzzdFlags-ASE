@@ -74,7 +74,7 @@ def main():
         "-Wno-return-type",
         "-Wno-builtin-redeclared",
         "-Wno-int-conversion",
-        "-march=x86-64",
+        "-march=native",
         "-I/usr/include",
         f"-I{INCLUDES_DIR}",
     ]
@@ -145,7 +145,7 @@ def main():
                     continue
 
                 # If compilation succeeded, run the binary
-                run_proc = subprocess.run([temp_executable])
+                run_proc = subprocess.run([temp_executable, "10000000"])
                 if is_crash(run_proc.returncode):
                     print(f"  -> RUNTIME CRASH! (execution returncode={run_proc.returncode})")
                     log_file.write(f"RUNTIME CRASH (rc={run_proc.returncode}) with flags: {combo_flags}\n")
