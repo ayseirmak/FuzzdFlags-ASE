@@ -4,21 +4,26 @@ cd llvm-test-suite
 cp -r SingleSource ../
 cd ..
 rm -rf llvm-test-suite
+
 mkdir -p llvmSS-c-corpus
+mkdir -p llvmSS-c-corpus-org
 mkdir -p llvmSS-include
 
 c_count=0
-find SingleSource -type f \( -name "*.c" -o -name "*.h" \) \
-  ! -path "SingleSource/Regression/C/gcc-c-torture/execute/builtins" | while read -r file; do
 
+find SingleSource -type f \( -name "*.c" -o -name "*.h" \) \
+  ! -path "SingleSource/Regression/C/gcc-c-torture/execute/builtins/*" | while read -r file; do
+    base=$(basename "$file")
     if [[ "$file" == *.c ]]; then
-        cp "$file" "llvmSS-c-corpus/test_${c_count}.c"
-        cp "$file" llvmSS-include/
+        cp "$file" "llvmSS-c-corpus/test_${c_count}.c" # Get Single Source C programs and reindex the,
+        cp "$file" "llvmSS-c-corpus-org/test_${c_count}_${base}"
+        cp "$file" "llvmSS-include/${base}"
         ((c_count++))
     elif [[ "$file" == *.h ]]; then
-        cp "$file" llvmSS-include/
+        cp "$file" "llvmSS-include/${base}"
     fi
-  done
+done
+
   
 cd ~
 git clone https://github.com/llvm/llvm-project.git
