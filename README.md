@@ -3,6 +3,11 @@ FuzzdFlags is a fuzzing and compiler-testing tool designed to systematically exp
 
 ### Docker Image For Tool Reproducability
 
+```bash
+## Pulling the Docker image
+docker pull ayseirmak/fuzzdflags-dev:latest
+docker run -it ayseirmak/fuzzdflags-dev:latest /bin/sh
+```
 
 
 
