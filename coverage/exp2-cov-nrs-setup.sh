@@ -46,7 +46,7 @@ cd ../..
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz
 tar -zxvf llvmSS-minimised-corpus.tar.gz
 
-mkdir -p /users/user42/nrs
+# mkdir -p /users/user42/nrs
 mkdir -p /users/user42/nrs-semi-smart
 
 # wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp21-nrs-seeds.tar.gz
