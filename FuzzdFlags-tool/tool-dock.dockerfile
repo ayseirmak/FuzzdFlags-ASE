@@ -155,7 +155,7 @@ RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-al
     tar -zxvf llvmSS-minimised-corpus.tar.gz
 
   # Download and extract C corpus-original
-RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-corpus-org.tar.gz
+RUN wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-corpus-org.tar.gz && \
     tar -zxvf llvmSS-corpus-org.tar.gz 
       
 # Download and extract clang-options-build
@@ -172,13 +172,22 @@ RUN mkdir -p FuzzdFlags-project && cd FuzzdFlags-project && \
     wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/FuzzdFlags-tool/fuzz_report.py && \
     wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp3-input-seeds-30.tar.gz && \
     chmod +x *.sh && \
-    tar -zxvf exp3-input-seeds-30.tar.gz  
-      
+    chmod +x FuzzdFlags && \
+    chmod +x f_deltadebug.py && \
+    chmod +x fuzz_report.py && \
+    tar -zxvf exp3-input-seeds-30.tar.gz && \
+    mv input-seeds-30 input-seeds && \
+    rm -rf exp3-input-seeds-30.tar.gz
+
+RUN rm -rf ~/llvmSS-minimised-corpus.tar.gz && \
+    rm -rf ~/llvmSS-corpus-org.tar.gz && \
+    rm -rf ~/build-clangOpt.tar.gz && \
+    rm -rf ~/AFLplusplus-latest-mapsize22-m510.tar.gz
+
 # Set proper ownership and writable permissions for /users/user42/
 USER root
 RUN chown -R user42:user42 /users/user42/ && chmod -R u+w /users/user42/
 USER user42
 
 WORKDIR /users/user42/FuzzdFlags-project
-ENTRYPOINT ["/bin/bash"]
-
+CMD ["/bin/bash"]
