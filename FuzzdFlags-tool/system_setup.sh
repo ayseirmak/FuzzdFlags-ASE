@@ -9,8 +9,7 @@ sudo usermod -aG kclsystemfuzz-PG user42
 sudo chown -R user42:kclsystemfuzz-PG /users/user42
 sudo chmod 777 /users/user42
 sudo chown -R user42:user42 /users/user42/
-cd /users/user42
-su user42
+
 # -------------------------------------------------------
 # Step 1: Update & upgrade the system, install core tools
 # -------------------------------------------------------
@@ -84,6 +83,8 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 sudo apt-get install -y clang-14 lldb-14 lld-14
 sudo ln -s /usr/bin/llvm-config-14 /usr/bin/llvm-config
 echo 'export LLVM_CONFIG=/usr/bin/llvm-config' >> ~/.bashrc
+cd /users/user42
+su user42
 # -------------------------------------------------------
 # Step 5: setup AFL++ from source
 # -------------------------------------------------------
