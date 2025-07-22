@@ -2,13 +2,13 @@
 FuzzdFlags is a fuzzing and compiler-testing tool designed to systematically explore compiler behaviours and uncover hidden bugs through efficient mutation of compiler flags and source file combinations.  
 
 ### Docker Image For Tool Reproducability
-
-```bash
+To quickly get started without manually following the Tool Setup & Installation Steps, you can use the pre-built Docker image that contains the full FuzzdFlags environment:
+```
 ## Pulling the Docker image
 docker pull ayseirmak/fuzzdflags-dev:latest
 docker run -it ayseirmak/fuzzdflags-dev:latest /bin/sh
 ```
-
+This image includes all required dependencies, compilers, AFL++, and the FuzzdFlags tool pre-installed, ensuring a consistent and reproducible environment.
 
 
 ## Abstract
@@ -39,7 +39,7 @@ FuzzdFlags is likely to work on other Unix-like systems, but Linux is preferred 
 Fuzzing can be CPU-intensive, and more RAM may be useful to handle the compiler and multiple processes.
 - **Storage:** Ensure you have at least 45 gigabytes of free disk space for the fuzzing output directories. AFL++ will store generated test cases and logs; if running for long durations, this can accumulate. Using an SSD or a RAM disk for the fuzzing output (AFL’s temp dir) can improve performance, but it’s optional.
 
-### Tool Setup & Installation Steps
+## Tool Setup & Installation Steps
 
 1. Corpus Integration
 2. System Installations & Environment Configuration
