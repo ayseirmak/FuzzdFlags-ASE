@@ -396,8 +396,8 @@ export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
 export INSTRUMENTED_CLANG_OPTIONS_PATH=/users/user42/build-clang-options/bin/clang-options
 export CFILES_DIR=/users/user42/llvmSS-minimised-corpus
 export INCLUDES_DIR=/users/user42/llvmSS-include
-mkdir -p FuzzdFlags-output && cd FuzzdFlags-output
-../FuzzdFlags -difftest /users/user42/FuzzdFlags-project/FuzzdFlags-output/fuzz-output-20250721_182910/default/queue/ clang-latest /opt/llvm-latest/bin/clang-22
+mkdir -p FuzzdFlags-output2 && cd FuzzdFlags-output2
+../FuzzdFlags -difftest /users/user42/FuzzdFlags-project/FuzzdFlags-output/fuzz-output-20250723_030014/default/queue/ clang-latest /opt/llvm-latest/bin/clang-22
 ```
 
 **Expected Terminal Output:**
