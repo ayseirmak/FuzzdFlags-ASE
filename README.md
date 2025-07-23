@@ -484,7 +484,7 @@ FuzzdFlags experiments are fully reproducible using our provided shell scripts a
 
 ### Experiment Configurations
 | Method | Fuzzing Strategy | Compiler Flags| Experiment Setup |
-|-----|------------------|--------------|-----------------------|------------|
+|-----|------------------|-----------------------|------------|
 | **Baseline Compilation** | None (static compilation only)| `-O0`, `-O2`, `-O3` | - Compile each program at `-O0`, `-O2`, and `-O3`  <br> - Measure coverage on Clang 19 with `gcov`                            |
 |  **AFL++ Vanilla**          | In-process fuzzing of each program with AFL++ | `-O2`, `-O3` | - Fuzz each program separately at `-O2` and `-O3`  <br> - 5 runs per optimization level  <br> - Compute average coverage with `gcov-11` |
 | **FuzzdFlags Blackbox**    | Black-box random seed selection across programs and flags with implemented static, ruleset to filter out obviously incompatible flag combinations  | Dynamic range | - Use NRS-semi-smart generators to pick (program, flag-list) combos  <br> - 5 runs per generator  <br> - Compute average coverage with `gcov-11` |
