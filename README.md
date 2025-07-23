@@ -331,10 +331,11 @@ export INSTRUMENTED_CLANG_OPTIONS_PATH=/abs/path/to/instrumented/clang-options
 
 **Example Usage**
 ```
-user42@node0:~/FuzzdFlags-project$ export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
-user42@node0:~/FuzzdFlags-project$ export INSTRUMENTED_CLANG_OPTIONS_PATH=/users/user42/build-clang-options/bin/clang-options 
-user42@node0:~/FuzzdFlags-project$ mkdir -p FuzzdFlags-output && cd FuzzdFlags-output
-user42@node0:~/FuzzdFlags-project$ ~/FuzzdFlags-project/FuzzdFlags -fuzz /users/user42/llvmSS-c-corpus-org /users/user42/llvmSS-include 360
+export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
+export INSTRUMENTED_CLANG_OPTIONS_PATH=/users/user42/build-clang-options/bin/clang-options 
+mkdir -p FuzzdFlags-output && cd FuzzdFlags-output
+../FuzzdFlags -fuzz /users/user42/llvmSS-c-corpus-org /users/user42/llvmSS-include 360
+../FuzzdFlags -fuzz /users/user42/llvmSS-minimised-corpus /users/user42/llvmSS-include 300 --no-cmin
 ```
 
 **Expected Terminal Output:**
@@ -391,12 +392,12 @@ export INCLUDES_DIR=/abs/path/to/include-dir
 
 **Example Usage**
 ```
-user42@node0:~/FuzzdFlags-project$ export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
-user42@node0:~/FuzzdFlags-project$ export INSTRUMENTED_CLANG_OPTIONS_PATH=/users/user42/build-clang-options/bin/clang-options
-user42@node0:~/FuzzdFlags-project$ export CFILES_DIR=/users/user42/llvmSS-minimised-corpus
-user42@node0:~/FuzzdFlags-project$ export INCLUDES_DIR=/users/user42/llvmSS-include
-user42@node0:~/FuzzdFlags-project$ mkdir -p FuzzdFlags-output && cd FuzzdFlags-output
-user42@node0:~/FuzzdFlags-project$ ~/FuzzdFlags-project/FuzzdFlags -difftest /users/user42/FuzzdFlags-project/FuzzdFlags-output/fuzz-output-20250721_182910/default/queue/ clang-latest /opt/llvm-latest/bin/clang-22
+export INSTRUMENTED_CLANG_PATH=/users/user42/build/bin/clang
+export INSTRUMENTED_CLANG_OPTIONS_PATH=/users/user42/build-clang-options/bin/clang-options
+export CFILES_DIR=/users/user42/llvmSS-minimised-corpus
+export INCLUDES_DIR=/users/user42/llvmSS-include
+mkdir -p FuzzdFlags-output && cd FuzzdFlags-output
+../FuzzdFlags -difftest /users/user42/FuzzdFlags-project/FuzzdFlags-output/fuzz-output-20250721_182910/default/queue/ clang-latest /opt/llvm-latest/bin/clang-22
 ```
 
 **Expected Terminal Output:**
@@ -449,9 +450,9 @@ export INCLUDES_DIR=/abs/path/to/llvm/include
 
 **Example Usage**
 ```
-user42@node0:~/FuzzdFlags-project$ export INCLUDES_DIR=/users/user42/llvmSS-include
-user42@node0:~/FuzzdFlags-project$ mkdir -p FuzzdFlags-output && cd FuzzdFlags-output
-user42@node0:~/FuzzdFlags-project$ ../FuzzdFlags -f_ddebug /opt/llvm-latest/bin/clang-22 /users/user42/llvmSS-minimised-corpus/test_300.c "1,2,3" -march=x86-64-v2 -march=x86-64 -mavx -mavx2 -O0 -march=x86-64-v3 -funsigned-bitfields -flax-vector-conversions -fno-stack-protector -fstrict-float-cast-overflow -ffp-eval-method=extended
+export INCLUDES_DIR=/users/user42/llvmSS-include
+mkdir -p FuzzdFlags-output && cd FuzzdFlags-output
+../FuzzdFlags -f_ddebug /opt/llvm-latest/bin/clang-22 /users/user42/llvmSS-minimised-corpus/test_300.c "1,2,3" -march=x86-64-v2 -march=x86-64 -mavx -mavx2 -O0 -march=x86-64-v3 -funsigned-bitfields -flax-vector-conversions -fno-stack-protector -fstrict-float-cast-overflow -ffp-eval-method=extended
 ```
 
 **Expected Terminal Output:**
