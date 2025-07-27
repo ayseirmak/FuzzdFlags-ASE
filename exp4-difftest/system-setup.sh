@@ -103,6 +103,7 @@ cmake -G Ninja ../llvm-project/llvm \
   -DLLVM_BUILD_DOCS="OFF" \
   -DLLVM_BUILD_EXAMPLES="OFF"
 ninja -j$(nproc)
+tar -czvf buildClang-19.tar.gz -C /users/user42/difftest-compilers llvm-19-build
 sudo ninja install
 
 cd /users/user42/difftest-compilers
@@ -121,6 +122,7 @@ cmake -G Ninja ../llvm-project/llvm \
   -DLLVM_BUILD_DOCS="OFF" \
   -DLLVM_BUILD_EXAMPLES="OFF"
 ninja -j$(nproc)
+tar -czvf buildClang-latest-22.tar.gz -C /users/user42/difftest-compilers llvm-latest-build
 sudo ninja install
     
 
