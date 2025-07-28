@@ -109,7 +109,7 @@ tar -zxvf build-clangOpt.tar.gz
 
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/buildClang-19.tar.gz && \
 tar -zxvf buildClang-19.tar.gz
-cd /users/user42/llvm-19-build && sudo make install
+cd /users/user42/llvm-19-build && sudo ninja install
 cd /users/user42
 
 # cd /users/user42/difftest-compilers
@@ -133,6 +133,6 @@ cd /users/user42
     
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/buildClang-latest-22.tar.gz && \
 tar -zxvf buildClang-latest-22.tar.gz
-cd /users/user42/llvm-latest-build && sudo make install
+cd /users/user42/llvm-latest-build && sudo ninja install
 cd /users/user42
 
