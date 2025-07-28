@@ -87,43 +87,52 @@ tar -zxvf llvmSS-minimised-corpus.tar.gz
 wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/build-clangOpt.tar.gz && \
 tar -zxvf build-clangOpt.tar.gz
 
-mkdir -p /users/user42/difftest-compilers && cd /users/user42/difftest-compilers
-git clone https://github.com/llvm/llvm-project.git
-cd llvm-project
-git checkout release/19.x
-mkdir -p ../llvm-19-build && cd ../llvm-19-build
-cmake -G Ninja ../llvm-project/llvm \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/opt/llvm-19 \
-  -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
-  -DCMAKE_C_COMPILER=gcc-11 \
-  -DCMAKE_CXX_COMPILER=g++-11 \
-  -DBUILD_SHARED_LIBS=OFF \
-  -DLLVM_TARGETS_TO_BUILD=X86 \
-  -DLLVM_BUILD_DOCS="OFF" \
-  -DLLVM_BUILD_EXAMPLES="OFF"
-ninja -j$(nproc)
-tar -czvf buildClang-19.tar.gz -C /users/user42/difftest-compilers llvm-19-build
-sudo ninja install
 
-cd /users/user42/difftest-compilers
-cd llvm-project
-git fetch origin
-git checkout main
-mkdir -p ../llvm-latest-build && cd ../llvm-latest-build
-cmake -G Ninja ../llvm-project/llvm \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INSTALL_PREFIX=/opt/llvm-latest \
-  -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
-  -DCMAKE_C_COMPILER=gcc-11 \
-  -DCMAKE_CXX_COMPILER=g++-11 \
-  -DBUILD_SHARED_LIBS=OFF \
-  -DLLVM_TARGETS_TO_BUILD=X86 \
-  -DLLVM_BUILD_DOCS="OFF" \
-  -DLLVM_BUILD_EXAMPLES="OFF"
-ninja -j$(nproc)
-tar -czvf buildClang-latest-22.tar.gz -C /users/user42/difftest-compilers llvm-latest-build
-sudo ninja install
+# mkdir -p /users/user42/difftest-compilers && cd /users/user42/difftest-compilers
+# git clone https://github.com/llvm/llvm-project.git
+# cd llvm-project
+# git checkout release/19.x
+# mkdir -p ../llvm-19-build && cd ../llvm-19-build
+# cmake -G Ninja ../llvm-project/llvm \
+#   -DCMAKE_BUILD_TYPE=Release \
+#   -DCMAKE_INSTALL_PREFIX=/opt/llvm-19 \
+#   -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
+#   -DCMAKE_C_COMPILER=gcc-11 \
+#   -DCMAKE_CXX_COMPILER=g++-11 \
+#   -DBUILD_SHARED_LIBS=OFF \
+#   -DLLVM_TARGETS_TO_BUILD=X86 \
+#   -DLLVM_BUILD_DOCS="OFF" \
+#   -DLLVM_BUILD_EXAMPLES="OFF"
+# ninja -j$(nproc)
+# tar -czvf buildClang-19.tar.gz -C /users/user42/difftest-compilers llvm-19-build
+# sudo ninja install
+
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/buildClang-19.tar.gz && \
+tar -zxvf buildClang-19.tar.gz
+cd /users/user42/llvm-19-build && sudo make install
+cd /users/user42
+
+# cd /users/user42/difftest-compilers
+# cd llvm-project
+# git fetch origin
+# git checkout main
+# mkdir -p ../llvm-latest-build && cd ../llvm-latest-build
+# cmake -G Ninja ../llvm-project/llvm \
+#   -DCMAKE_BUILD_TYPE=Release \
+#   -DCMAKE_INSTALL_PREFIX=/opt/llvm-latest \
+#   -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
+#   -DCMAKE_C_COMPILER=gcc-11 \
+#   -DCMAKE_CXX_COMPILER=g++-11 \
+#   -DBUILD_SHARED_LIBS=OFF \
+#   -DLLVM_TARGETS_TO_BUILD=X86 \
+#   -DLLVM_BUILD_DOCS="OFF" \
+#   -DLLVM_BUILD_EXAMPLES="OFF"
+# ninja -j$(nproc)
+# tar -czvf buildClang-latest-22.tar.gz -C /users/user42/difftest-compilers llvm-latest-build
+# sudo ninja install
     
-
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/buildClang-latest-22.tar.gz && \
+tar -zxvf buildClang-latest-22.tar.gz
+cd /users/user42/llvm-latest-build && sudo make install
+cd /users/user42
 
