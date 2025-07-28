@@ -1,83 +1,96 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 1) List your clang binaries here
-COMPILERS=(clang-12 clang-13 clang-14)
+# ─── 1) Define your three compiler versions ────────────────────────────
+COMPILERS=(clang-17 clang-19 clang-22)
 
-# 2) Pick your C standard (must be supported by all versions)
-STD="-std=c11"
+# ─── 2) C standard and flags ──────────────────────────────────────────
+STD="-std=gnu89"   # maximum backward compatibility (old K&R code + GNU extensions)
+COMMON_FLAGS=(
+  -O0
+  $STD
+  -fpermissive
+  -w
+  -Wno-implicit-function-declaration
+  -Wno-implicit-int
+  -Wno-return-type
+  -Wno-builtin-declaration-mismatch
+  -Wno-int-conversion
+  -march=native
+  -lm
+  -I/usr/include
+  -I"${INCLUDES_DIR:-.}"
+)
 
-# 3) Find all .c files in the current directory
+# ─── 3) Collect all .c files ───────────────────────────────────────────
 PROGRAMS=( *.c )
+TOTAL=${#PROGRAMS[@]}
+echo "Found $TOTAL programs to test."
 
-# Temporary storage
-TMPDIR="$(mktemp -d)"
-trap 'rm -rf "$TMPDIR"' EXIT
+# ─── 4) Prepare output directories ────────────────────────────────────
+BASELOG="golden_reference"
+rm -rf "$BASELOG"
+mkdir -p "$BASELOG"/{logs,summary}
 
-echo
-echo "Testing ${#PROGRAMS[@]} programs with ${#COMPILERS[@]} compilers at -O0"
-echo
+# Summary CSV header
+echo "program,compiler,comp_rc,exec_rc,compile_stdout,compile_stderr,exec_stdout,exec_stderr" \
+  > "$BASELOG/summary/results.csv"
 
+# ─── 5) Loop over each program and compiler ────────────────────────────
 for SRC in "${PROGRAMS[@]}"; do
   NAME="${SRC%.c}"
-  echo "--- $SRC ---"
+  echo "=== Testing $SRC ==="
+  
+  # Track if outputs are consistent across compilers
+  declare -A comp_rc exec_rc
 
-  declare -A compile_code run_code output
-
-  # Compile & run under each compiler
   for COMP in "${COMPILERS[@]}"; do
-    BIN="$TMPDIR/${NAME}-$COMP"
-    echo -n "[$COMP] Compiling... "
-    $COMP -O0 $STD -o "$BIN" "$SRC"
-    compile_code[$COMP]=$?
-    echo "exit=${compile_code[$COMP]}"
-
-    if [ "${compile_code[$COMP]}" -eq 0 ]; then
-      echo -n "       Running… "
-      # capture both exit code and stdout
-      OUT="$TMPDIR/out-$COMP.txt"
-      "$BIN" >"$OUT" 2>&1
-      run_code[$COMP]=$?
-      output[$COMP]="$(<"$OUT")"
-      echo "exit=${run_code[$COMP]}"
+    OUTDIR="$BASELOG/logs/$NAME/$COMP"
+    mkdir -p "$OUTDIR"
+    
+    BIN="$OUTDIR/$NAME"
+    
+    # 5a) Compile, capture stdout/stderr
+    echo "[ $COMP ] Compiling..."
+    "${COMP}" "${COMMON_FLAGS[@]}" -o "$BIN" "$SRC" \
+      >"$OUTDIR/compile.stdout" \
+      2>"$OUTDIR/compile.stderr"
+    comp_rc[$COMP]=$?
+    
+    # 5b) Run only if compile succeeded
+    if [ "${comp_rc[$COMP]}" -eq 0 ]; then
+      echo "[ $COMP ] Executing..."
+      "$BIN" \
+        >"$OUTDIR/exec.stdout" \
+        2>"$OUTDIR/exec.stderr"
+      exec_rc[$COMP]=$?
     else
-      echo "       (skipped run)"
-      run_code[$COMP]="<no-binary>"
-      output[$COMP]=""
+      exec_rc[$COMP]="<no-run>"
+      touch "$OUTDIR/exec.stdout" "$OUTDIR/exec.stderr"
     fi
+
+    # 5c) Append to summary CSV (escape quotes)
+    csout=$(sed 's/"/""/g' "$OUTDIR/compile.stdout")
+    cserr=$(sed 's/"/""/g' "$OUTDIR/compile.stderr")
+    esout=$(sed 's/"/""/g' "$OUTDIR/exec.stdout")
+    eserr=$(sed 's/"/""/g' "$OUTDIR/exec.stderr")
+    echo "\"$NAME\",\"$COMP\",${comp_rc[$COMP]},${exec_rc[$COMP]},\"$csout\",\"$cserr\",\"$esout\",\"$eserr\"" \
+      >> "$BASELOG/summary/results.csv"
   done
 
-  # Compare results
-  echo -n "  Compile codes equal? "
-  if printf "%s\n" "${compile_code[@]}" | uniq | wc -l | grep -q '^1$'; then
-    echo "✅"
-  else
-    echo "❌  ${compile_code[@]}"
-  fi
+  # 5d) Check for consistency of return codes
+  unique_comp_rc=$(printf "%s\n" "${comp_rc[@]}" | sort -u | wc -l)
+  unique_exec_rc=$(printf "%s\n" "${exec_rc[@]}" | sort -u | wc -l)
 
-  echo -n "  Run codes equal?     "
-  if printf "%s\n" "${run_code[@]}" | uniq | wc -l | grep -q '^1$'; then
-    echo "✅"
-  else
-    echo "❌  ${run_code[@]}"
-  fi
-
-  echo -n "  Stdout equal?        "
-  # we diff all outputs pairwise
-  FIRST="${output[${COMPILERS[0]}]}"
-  SAME=true
-  for COMP in "${COMPILERS[@]:1}"; do
-    if [ "$FIRST" != "${output[$COMP]}" ]; then
-      SAME=false
-      break
-    fi
-  done
-  if $SAME; then
-    echo "✅"
-  else
-    echo "❌ (see \$TMPDIR/out-*.txt)"
+  if [ "$unique_comp_rc" -ne 1 ] || [ "$unique_exec_rc" -ne 1 ]; then
+    echo ">>> Inconsistent behavior detected; marking $SRC for removal."
+    echo "$SRC" >> "$BASELOG/summary/bad_tests.lst"
   fi
 
   echo
 done
 
+echo "Step 1 complete. Logs and summary in '$BASELOG/'."
+echo "- 'logs/<program>/<compiler>/' holds separate stdout/stderr files."
+echo "- 'summary/results.csv' aggregates all return codes and outputs."
+echo "- 'summary/bad_tests.lst' lists programs with inconsistent -O0 behavior."
