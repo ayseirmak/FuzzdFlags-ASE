@@ -34,19 +34,6 @@ wide['output_mismatch']  = wide.apply(stdout_diff, axis=1)
 inconsistent = wide.query('compile_mismatch or exec_mismatch or output_mismatch')
 inconsistent.to_csv("/users/user42/difftest/inconsistents.csv", index=True)
 
-summary = (
-    inconsistent
-    .assign(mismatch_type=lambda d:
-            np.select(
-                [d.compile_mismatch,
-                 d.exec_mismatch & ~d.output_mismatch,
-                 d.output_mismatch],
-                ['compile‑time', 'return‑code', 'stdout/stderr'],
-                default='multiple'))
-    .reset_index()
-    [['program', 'flags', 'mismatch_type']]
-)
-
 if 'exec_mismatch' in df.columns:
     df_exec_mismatch = df[df['exec_mismatch'] == True].copy()
 else:
