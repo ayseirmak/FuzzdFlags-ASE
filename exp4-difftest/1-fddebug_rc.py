@@ -34,7 +34,7 @@ for idx, row in df.iterrows():
     prog_no = get_prog_no(prog)
     print(f'Processing {prog} (No: {prog_no})')
     for ver in clang_versions:
-        rc = row.get(f'exec_rc_clang{ver}', 0)
+        rc = row.get(f'exec_rc_clang-{ver}', 0)
         print(f'  Clang-{ver} return code: {rc}')
         if rc=="[134]" or rc=="[139]":
             # Build command
