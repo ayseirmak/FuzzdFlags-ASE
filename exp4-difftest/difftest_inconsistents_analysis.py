@@ -33,3 +33,73 @@ wide['output_mismatch']  = wide.apply(stdout_diff, axis=1)
 
 inconsistent = wide.query('compile_mismatch or exec_mismatch or output_mismatch')
 inconsistent.to_csv("/users/user42/difftest/inconsistents.csv", index=True)
+
+summary = (
+    inconsistent
+    .assign(mismatch_type=lambda d:
+            np.select(
+                [d.compile_mismatch,
+                 d.exec_mismatch & ~d.output_mismatch,
+                 d.output_mismatch],
+                ['compile‑time', 'return‑code', 'stdout/stderr'],
+                default='multiple'))
+    .reset_index()
+    [['program', 'flags', 'mismatch_type']]
+)
+
+output_file_path_rc = '/users/user42/difftest/hash1-mismatches_return‑code_analysis.csv'
+
+try:
+    summary.to_csv(output_file_path_rc, index=False)
+    print(f"DataFrame successfully saved to '{output_file_path}'")
+except Exception as e:
+    print(f"An error occurred while saving the file: {e}")
+
+if 'output_mismatch' in df.columns:
+    df_output_mismatch = df[df['output_mismatch'] == True].copy()
+    print("DataFrame filtered for output mismatches:")
+    display(df_output_mismatch.head())
+else:
+    print("The 'output_mismatch' column does not exist in the DataFrame.")
+    df_output_mismatch = pd.DataFrame() # Create an empty DataFrame if the column is missing
+
+output_cols = [col for col in df_output_mismatch.columns if col.startswith('exec_stdout_hash_clang-')]
+
+def analyze_outputs(row):
+    outputs = [row[col] for col in output_cols]
+    distinct_outputs = set(outputs)
+    count = len(distinct_outputs)
+
+    versions_info = {}
+    if count > 1:
+        if count == 2:
+            # Find the two distinct outputs
+            output1, output2 = list(distinct_outputs)
+            versions_with_output1 = [output_cols[i] for i, output in enumerate(outputs) if output == output1]
+            versions_with_output2 = [output_cols[i] for i, output in enumerate(outputs) if output == output2]
+
+            # Determine which group has two versions and which has one
+            if len(versions_with_output1) == 2:
+                versions_info['same'] = versions_with_output1
+                versions_info['different'] = versions_with_output2
+            else:
+                versions_info['same'] = versions_with_output2
+                versions_info['different'] = versions_with_output1
+        else:
+             # For more than 2 distinct outputs, list all versions that are different from the first
+            baseline_output = outputs[0]
+            versions_info['different'] = [output_cols[i] for i, output in enumerate(outputs) if output != baseline_output]
+
+
+    return count, versions_info
+
+# Apply the function to create the new columns
+df_output_mismatch[['distinct_output_count', 'versions_with_different_output']] = df_output_mismatch.apply(analyze_outputs, axis=1, result_type='expand')
+
+output_file_path_stdout = '/users/user42/difftest/hash1_mismatch_stdout_analysis.csv'
+
+try:
+    df_output_mismatch.to_csv(output_file_path, index=False)
+    print(f"DataFrame successfully saved to '{output_file_path}'")
+except Exception as e:
+    print(f"An error occurred while saving the file: {e}")
