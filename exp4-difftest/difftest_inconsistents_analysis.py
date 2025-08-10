@@ -47,6 +47,29 @@ summary = (
     [['program', 'flags', 'mismatch_type']]
 )
 
+if 'exec_mismatch' in df.columns:
+    df_exec_mismatch = df[df['exec_mismatch'] == True].copy()
+else:
+    # If exec_mismatch not present, assume all rows are exec mismatches
+    df_exec_mismatch = df.copy()
+
+# Identify execution return code columns
+exec_cols = [col for col in df_exec_mismatch.columns if col.startswith('exec_rc_')]
+
+# Compute unique exec return codes and their counts per (program, flags)
+summary = (
+    df_exec_mismatch
+    .groupby(['program', 'flags'])[exec_cols]
+    .agg(lambda s: sorted(set(s.dropna())))
+    .rename(columns={col: f"{col}" for col in exec_cols})
+    .reset_index()
+)
+
+# Also compute number of distinct exec rc values
+summary['distinct_exec_rc_count'] = summary[[f"{col}_uniq" for col in exec_cols]].apply(lambda row: len(set().union(*row)), axis=1)
+
+
+
 output_file_path_rc = '/users/user42/difftest/hash1-mismatches_return‑code_analysis.csv'
 
 try:
