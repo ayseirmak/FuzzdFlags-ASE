@@ -51,7 +51,7 @@ output_file_path_rc = '/users/user42/difftest/hash1-mismatches_return‑code_ana
 
 try:
     summary.to_csv(output_file_path_rc, index=False)
-    print(f"DataFrame successfully saved to '{output_file_path}'")
+    print(f"DataFrame successfully saved to '{output_file_path_rc}'")
 except Exception as e:
     print(f"An error occurred while saving the file: {e}")
 
@@ -99,7 +99,7 @@ df_output_mismatch[['distinct_output_count', 'versions_with_different_output']] 
 output_file_path_stdout = '/users/user42/difftest/hash1_mismatch_stdout_analysis.csv'
 
 try:
-    df_output_mismatch.to_csv(output_file_path, index=False)
-    print(f"DataFrame successfully saved to '{output_file_path}'")
+    df_output_mismatch.to_csv(output_file_path_stdout, index=False)
+    print(f"DataFrame successfully saved to '{output_file_path_stdout}'")
 except Exception as e:
     print(f"An error occurred while saving the file: {e}")
