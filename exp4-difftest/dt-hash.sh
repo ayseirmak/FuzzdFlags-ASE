@@ -31,7 +31,7 @@ COMPILE_TIMEOUT=60
 EXEC_TIMEOUT=30
 
 # Input/Output files
-SEEDS_FILE="/users/user42/difftest/unique_pairs.csv"
+SEEDS_FILE="/users/user42/unique_pairs.csv"
 OUTPUT_CSV="seed_results_1000000_hash.csv"
 LOG_ROOT="runs_hash"
 
