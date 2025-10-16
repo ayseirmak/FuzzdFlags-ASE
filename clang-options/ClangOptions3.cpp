@@ -447,7 +447,7 @@ static std::string generateTestFileName(const std::vector<uint8_t> &data) {
     uint16_t rawValue = (uint16_t)data[0] | (uint16_t)data[1] << 8;
 
     // Varsayılanı FP dataset boyutu olarak ayarla (override: FILE_COUNT env)
-    uint16_t fileCount = getEnvOrDefaultInt("FILE_COUNT", 13356);
+    uint16_t fileCount = getEnvOrDefaultInt("FILE_COUNT", 1811);
     uint16_t fileIndex = (fileCount == 0) ? 0 : (rawValue % fileCount);
 
     char buffer[32];
