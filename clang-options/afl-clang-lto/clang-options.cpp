@@ -368,11 +368,11 @@ int runClangCompilation(const std::string &sourceFile, const std::string &flags)
 
 int main(int argc, char* argv[]) {
     
-    llvm::InitLLVM X(argc, argv);
-    llvm::InitializeAllTargets();
-    llvm::InitializeAllTargetMCs();
-    llvm::InitializeAllAsmParsers();
-    llvm::InitializeAllAsmPrinters();
+    // llvm::InitLLVM X(argc, argv);
+    // llvm::InitializeAllTargets();
+    // llvm::InitializeAllTargetMCs();
+    // llvm::InitializeAllAsmParsers();
+    // llvm::InitializeAllAsmPrinters();
 
     if (argc == 2 && std::string(argv[1]) == "--version") {
         std::cout << "Clang version: " << clang::getClangFullVersion() << std::endl;
