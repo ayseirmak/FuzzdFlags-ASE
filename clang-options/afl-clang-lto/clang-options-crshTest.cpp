@@ -1,0 +1,489 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <memory>
+
+#include "clang/Basic/Version.h"
+#include "clang/Driver/Driver.h"
+#include "clang/Driver/Compilation.h"
+#include "clang/Frontend/TextDiagnosticPrinter.h"
+#include "llvm/TargetParser/Host.h"
+#include "llvm/Support/raw_ostream.h"
+#include "llvm/Support/FileSystem.h"
+#include "llvm/Option/Option.h"
+#include "llvm/ADT/SmallVector.h"
+#include "llvm/Support/VirtualFileSystem.h"
+
+#include "clang/Frontend/CompilerInstance.h"
+#include "clang/Frontend/CompilerInvocation.h"
+#include "clang/FrontendTool/Utils.h"      // ExecuteCompilerInvocation
+#include "clang/Driver/Job.h"              // Command, CC1Command
+#include <cstring>
+#include "llvm/Support/TargetSelect.h"
+#include "llvm/Support/InitLLVM.h"
+
+#include <csignal>
+#include <thread>
+#include <chrono>
+
+
+static inline const clang::driver::Command* toCmdPtr(const clang::driver::Command &R) { return &R; }
+static inline const clang::driver::Command* toCmdPtr(const clang::driver::Command *P) { return P; }
+template <typename T>
+static inline const clang::driver::Command* toCmdPtr(const std::unique_ptr<T> &P) { return P.get(); }
+
+// -----------------------------------------------------------------------------
+// 1) Helpers to get environment variables with fallback defaults
+// -----------------------------------------------------------------------------
+
+// Reads string from ENV. If not set, returns defaultVal.
+static std::string getEnvOrDefault(const char* varName, const char* defaultVal) {
+    const char* val = std::getenv(varName);
+    return (val ? std::string(val) : std::string(defaultVal));
+}
+
+// Reads int from ENV. If not set, returns defaultVal.
+static uint16_t getEnvOrDefaultInt(const char* varName, uint16_t defaultVal) {
+    const char* val = std::getenv(varName);
+    if (!val) return defaultVal;
+    return static_cast<uint16_t>(std::stoi(val));
+}
+
+// Remove these from flag list
+// "-flto=thin", "-flto", "-fPIC", "-fPIE", "-fno-pic", "-fno-pie", "-fuse-init-array"
+// "-march=skylake-avx512", "-mavx512f", "-mavx512vl", "-march=x86-64-v4", "-march=znver4"
+// "-mno-avx2", "-mno-sse4.2" (default behaviour)
+// "-fast", "-freroll-loops", "-fno-reroll-loop", "-fsplit-stack", "-malign-double", "-fwritable-strings", "-fno-asm-blocks","-fblocks", "-fno-blocks"	    
+static const std::vector<std::string> flagList = {
+ "-O0",
+ "-march=x86-64-v3",
+ "-march=x86-64-v2",
+ "-march=x86-64",
+ "-mavx",
+ "-mavx2",
+ "-mfma", 
+ "-mbmi2",    
+ "-msha",      
+ "-maes",
+ "-fno-finite-loops",
+ "-fexcess-precision=fast",
+ "-fno-use-init-array",
+ "-faligned-allocation",
+ "-ftrapping-math",
+ "-fexcess-precision=standard",
+ "-fno-addrsig",
+ "-fno-honor-nans",
+ "-fno-unroll-loops",
+ "-fstrict-return",
+ "-fstack-protector-strong",
+ "-fno-honor-infinities",
+ "-Oz",
+ "-Og",
+ "-fsigned-zeros",
+ "-fno-unsafe-math-optimizations",
+ "-funsafe-math-optimizations",
+ "-fjump-tables",
+ "-O3",
+ "-fno-strict-overflow",
+ "-fno-associative-math",
+ "-ffp-exception-behavior=ignore",
+ "-fno-strict-aliasing",
+ "-funroll-loops",
+ "-ffinite-math-only",
+ "-fprotect-parens",
+ "-ftls-model=local-exec",
+ "-ffp-eval-method=source",
+ "-fdenormal-fp-math=positive-zero",
+ "-fdenormal-fp-math=preserve-sign",
+ "-fno-jump-tables",
+ "-femulated-tls",
+ "-fstrict-overflow",
+ "-ffast-math",
+ "-fno-trapping-math",
+ "-ffp-exception-behavior=strict",
+ "-fno-finite-math-only",
+ "-fno-keep-static-consts",
+ "-funsigned-bitfields",
+ "-ffp-model=precise",
+ "-fno-unsigned-char",
+ "-ftrapv",
+ "-fno-unique-section-names",
+ "-fno-signed-char",
+ "-flax-vector-conversions",
+ "-funique-section-names",
+ "-fno-rounding-math",
+ "-fassociative-math",
+ "-fsignaling-math",
+ "-fno-strict-return",
+ "-ftls-model=global-dynamic",
+ "-fstack-size-section",
+ "-fwrapv",
+ "-ffp-model=strict",
+ "-flax-vector-conversions=integer",
+ "-fstack-protector-all",
+ "-Os",
+ "-fno-math-errno",
+ "-fno-approx-func",
+ "-fno-protect-parens",
+ "-ftls-model=local-dynamic",
+ "-fno-fixed-point",
+ "-ffp-contract=off",
+ "-fno-align-functions",
+ "-fstrict-aliasing",
+ "-fno-stack-protector",
+ "-flax-vector-conversions=none",
+ "-falign-functions",
+ "-fno-strict-float-cast-overflow",
+ "-fvectorize",
+ "-faddrsig",
+ "-ffp-eval-method=double",
+ "-fapprox-func",
+ "-ffp-exception-behavior=maytrap",
+ "-fhonor-nans",
+ "-ftls-model=initial-exec",
+ "-ffinite-loops",
+ "-fkeep-static-consts",
+ "-fstrict-float-cast-overflow",
+ "-ffp-contract=fast",
+ "-fno-fast-math",
+ "-fno-reciprocal-math",
+ "-funsigned-char",
+ "-frounding-math",
+ "-fhonor-infinities",
+ "-fdenormal-fp-math=ieee",
+ "-ffixed-point",
+ "-fno-signaling-math",
+ "-fno-lax-vector-conversions",
+ "-fno-keep-persistent-storage-variables",
+ "-fkeep-persistent-storage-variables",
+ "-fstack-protector",
+ "-Ofast",
+ "-ffp-eval-method=extended",
+ "-O2",
+ "-ffp-contract=on",
+ "-fno-asm",
+ "-fno-wrapv",
+ "-fno-vectorize",
+ "-fsigned-char",
+ "-ffunction-sections",
+ "-fno-stack-size-section",
+ "-fno-signed-zeros",
+ "-O1",
+ "-funwind-tables",
+ "-fsigned-bitfields",
+ "-fno-unwind-tables",
+ "-fno-function-sections",
+ "-freciprocal-math",
+ "-fmath-errno",
+ "-fno-aligned-allocation",
+ "-ffp-model=fast"
+};
+
+// -----------------------------------------------------------------------------
+// 3) Instead of a fixed string, build flags dynamically using environment vars
+// -----------------------------------------------------------------------------
+static std::string getFixedFlags() {
+    // Base flags (minus the old -I /users/user42/llvmSS-include)
+    // We'll keep -I/usr/include, but the second include dir will come from ENV.
+    std::string baseFlags =
+        "-c -fpermissive -w "
+        "-Wno-implicit-function-declaration -Wno-return-type -Wno-builtin-redeclared "
+        "-Wno-implicit-int -Wno-int-conversion "
+        "-march=native "
+        "-I/usr/include";
+
+    // Let INCLUDES_DIR override the second -I path
+    //  fallback = "/users/user42/llvmSS-include"
+    std::string includesDir = getEnvOrDefault("INCLUDES_DIR", "/users/user42/llvmSS-include");
+    baseFlags += " -I" + includesDir;
+    return baseFlags;
+}
+
+// Bayt -> Flags Mapping Fuction
+
+std::string decodeByteToFlags(uint8_t b) {
+    if (b < flagList.size())
+        return flagList[b];
+    return "";
+}
+
+// Read Binary File
+std::vector<uint8_t> readBinaryFile(const std::string &filename) {
+    std::ifstream file(filename, std::ios::binary);
+    if (!file) {
+        std::cerr << "Error: Could not open binary file " << filename << std::endl;
+        exit(1);
+    }
+    return std::vector<uint8_t>((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+}
+
+std::string decodeFlagsFromBinarySub(const std::vector<uint8_t> &data) {
+    std::string flags;
+    // Skip first 2 bytes for file index, flags start from the 3rd byte
+    for (size_t i = 2; i < data.size(); i++) {
+        std::string flagSet = decodeByteToFlags(data[i]);
+        if (!flagSet.empty()) {
+            flags += flagSet + " ";
+        }
+    }
+    return flags;
+}
+
+// Binary Content to Clang Options
+// Now we skip only the first 2 bytes (not 4) to decode flags
+std::string decodeFlagsFromBinary(const std::vector<uint8_t> &data) {
+    return getFixedFlags() + " " + decodeFlagsFromBinarySub(data);
+}
+
+// Only 2 bytes now! We mod by 2505 to map to test_0.c..test_2504.c
+std::string generateTestFileName(const std::vector<uint8_t> &data) {
+    std::string testFilesDir = getEnvOrDefault("CFILES_DIR", "/users/user42/llvmSS-minimised-corpus");
+    // If fewer than 2 bytes, fallback to "hello.c"
+    if (data.size() < 2) {
+        return testFilesDir + "/test_0.c";
+    }
+
+    // Build 16-bit integer from the first 2 bytes
+    uint16_t rawValue = 0;
+    rawValue |= static_cast<uint16_t>(data[0]) << 0;
+    rawValue |= static_cast<uint16_t>(data[1]) << 8;
+
+    // 2,505 .c files → mod 2,505
+    uint16_t fileCount = getEnvOrDefaultInt("FILE_COUNT", 1811 );    
+    uint16_t fileIndex = rawValue % fileCount;
+
+    // Construct filename (e.g. test_1234.c)
+    char buffer[32];
+    snprintf(buffer, sizeof(buffer), "/test_%u.c", fileIndex);
+    return testFilesDir + std::string(buffer);
+}
+
+// Parse text file (same as before)
+std::pair<std::string, std::string> parseTextFile(const std::string &filename) {
+    std::ifstream infile(filename);
+    if (!infile) {
+        std::cerr << "Error: Could not open text file " << filename << std::endl;
+        exit(1);
+    }
+
+    std::string sourceFile;
+    std::string flags;
+    if (!std::getline(infile, sourceFile)) {
+        std::cerr << "Error: Text file " << filename << " is empty or missing source file path." << std::endl;
+        exit(1);
+    }
+    if (!std::getline(infile, flags)) {
+        // No flags line? Just leave it empty
+        flags = "";
+    }
+
+    return std::make_pair(sourceFile, flags);
+}
+
+// Clang Compilation
+int runClangCompilation(const std::string &sourceFile, const std::string &flags) {
+    llvm::IntrusiveRefCntPtr<clang::DiagnosticOptions> diagOpts = new clang::DiagnosticOptions();
+    llvm::IntrusiveRefCntPtr<clang::DiagnosticsEngine> diags = new clang::DiagnosticsEngine(
+        new clang::DiagnosticIDs(),
+        diagOpts,
+        new clang::TextDiagnosticPrinter(llvm::errs(), diagOpts.get())
+    );
+
+    std::string compilerPath = getEnvOrDefault("INSTRUMENTED_CLANG_PATH", "/users/user42/build/bin/clang");    
+    clang::driver::Driver driver(compilerPath, llvm::sys::getDefaultTargetTriple(), *diags);
+
+    std::vector<std::string> args = { compilerPath, "-x", "c", sourceFile };
+
+    // Split the flags string by spaces
+    std::istringstream flagStream(flags);
+    std::string flag;
+    while (flagStream >> flag) {
+        args.push_back(flag);
+    }
+
+    // Convert args to const char*
+    std::vector<const char*> cArgs;
+    for (const std::string &arg : args) {
+        cArgs.push_back(arg.c_str());
+    }
+
+    clang::driver::Compilation* rawCompilation = driver.BuildCompilation(cArgs);
+    if (!rawCompilation) {
+        llvm::errs() << "Error: Failed to build the compilation job.\n";
+        return 1;
+    }
+
+    std::unique_ptr<clang::driver::Compilation> C(rawCompilation);
+
+    const clang::driver::Command *CC1Cmd = nullptr;
+
+    for (const auto &J : C->getJobs()) {
+        const clang::driver::Command *Job = toCmdPtr(J);
+        if (!Job) continue;
+        const auto &Argv = Job->getArguments();
+        bool hasCC1 = false;
+        for (const char *A : Argv) {
+            if (A && (std::strcmp(A, "-cc1") == 0 || std::strcmp(A, "-cc1as") == 0)) {
+                hasCC1 = true; break;
+            }
+        }
+
+        if (hasCC1) { CC1Cmd = Job; break; }
+    }
+
+    if (!CC1Cmd) {
+        // Fallback: execute normally (assembler/linker, etc.), or just bail out.
+        llvm::errs() << "No cc1 job produced.\n";
+        llvm::SmallVector<std::pair<int,const clang::driver::Command*>,4> Failing;
+        return driver.ExecuteCompilation(*C, Failing);
+    }
+
+    // Build a cc1 CompilerInvocation in-process
+    clang::CompilerInstance Clang;
+    auto CI = std::make_unique<clang::CompilerInvocation>();
+    
+    clang::CompilerInvocation::CreateFromArgs(*CI, CC1Cmd->getArguments(), *diags);
+    
+    Clang.setInvocation(std::move(CI));
+
+    // Reuse your diagnostics printer
+    Clang.createDiagnostics(new clang::TextDiagnosticPrinter(llvm::errs(), diagOpts.get()), true);
+    if (!Clang.hasDiagnostics()) return 1;
+
+    // Run the frontend in this process
+    bool ok = clang::ExecuteCompilerInvocation(&Clang);
+    return ok ? 0 : 1;
+
+    // std::unique_ptr<clang::driver::Compilation> compilation(rawCompilation);
+    // llvm::SmallVector<std::pair<int, const clang::driver::Command*>, 4> FailingCommands;
+    // int result = driver.ExecuteCompilation(*compilation, FailingCommands);
+
+    // if (result != 0) {
+    //     llvm::errs() << "Compilation failed with error code " << result << ".\n";
+    //     for (const auto &cmd : FailingCommands) {
+    //         llvm::errs() << "Failed Command: " << cmd.second->getExecutable() << "\n";
+    //     }
+    // }
+    // return result;
+}
+
+static void selfTestTripwires(const std::vector<uint8_t>& data) {
+  if (data.size() >= 4) {
+    for (size_t i = 0; i + 4 <= data.size(); ++i) {
+      if (!memcmp(&data[i], "CRSH", 4)) { 
+        // Write a file to signal crash
+        std::string crashFile = getEnvOrDefault("CRASH_FILE", "/tmp/crash_signal.txt");
+        std::ofstream ofs(crashFile);
+        ofs << "Crash triggered by CRSH tripwire.\n";
+        ofs.close();
+        std::raise(SIGABRT); 
+    }
+      if (!memcmp(&data[i], "HANG", 4)) {
+        uint16_t ms = getEnvOrDefaultInt("HANG_MS", 2000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+      }
+    }
+  }
+}
+
+
+int main(int argc, char* argv[]) {
+    
+    // llvm::InitLLVM X(argc, argv);
+    // llvm::InitializeAllTargets();
+    // llvm::InitializeAllTargetMCs();
+    // llvm::InitializeAllAsmParsers();
+    // llvm::InitializeAllAsmPrinters();
+
+    if (argc == 2 && std::string(argv[1]) == "--version") {
+        std::cout << "Clang version: " << clang::getClangFullVersion() << std::endl;
+        return 0;
+    }
+
+    // Command-line parameters
+    std::string fileBin;
+    std::string fileTxt;
+    bool checkerMode = false;
+
+    // Parse arguments
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg == "--filebin") {
+            if (i + 1 < argc) {
+                fileBin = argv[++i];
+            } else {
+                std::cerr << "Error: --filebin requires a file path.\n";
+                return 1;
+            }
+        } else if (arg == "--filetxt") {
+            if (i + 1 < argc) {
+                fileTxt = argv[++i];
+            } else {
+                std::cerr << "Error: --filetxt requires a file path.\n";
+                return 1;
+            }
+        } else if (arg == "--checker") {
+            checkerMode = true;
+        } 
+        // Add more arguments as needed
+    }
+
+    // If no input provided, print usage
+    if (fileBin.empty() && fileTxt.empty()) {
+        std::cerr << "Usage: " << argv[0] << " --filebin <binary_input> [--checker]\n"
+                  << "       " << argv[0] << " --filetxt <text_input> [--checker]\n"
+                  << "       " << argv[0] << " --version\n";
+        return 1;
+    }
+
+    // Determine which input to parse
+    std::string sourceFile;
+    std::string flags;
+    std::string subflags;
+
+    if (!fileBin.empty()) {
+        // Read and decode from binary
+        std::vector<uint8_t> data = readBinaryFile(fileBin);
+        selfTestTripwires(data);
+        sourceFile = generateTestFileName(data);
+        subflags = decodeFlagsFromBinarySub(data);   // uses 2 bytes
+        flags = decodeFlagsFromBinary(data);       // skip 2 bytes for flags
+    } else if (!fileTxt.empty()) {
+        // Read from text
+        auto parsed = parseTextFile(fileTxt);
+        sourceFile = parsed.first;
+        flags = parsed.second;
+    }
+
+    // Checker mode: only print file & flags, no compilation
+    if (checkerMode) {
+        std::cout << "[Checker] Source File: " << sourceFile << std::endl;
+        std::cout << "[Checker] Fixed Flags: " << getFixedFlags() << std::endl;
+        std::cout << "[Checker] Flags: " << subflags << std::endl;
+        return 0;
+    }
+
+    // Compile
+    std::cout << "Using Source File: " << sourceFile << std::endl;
+    std::cout << "Using Flags: " << flags << std::endl;
+
+    return runClangCompilation(sourceFile, flags);
+}
+
+// A simple fuzzing run to verify that crashes can be triggered with selfTestTripwires()
+// mkdir -p /tmp/smoke-src
+// cat >/tmp/smoke-src/test_0.c <<'EOF'
+// int main(void){ return 0; }
+// EOF
+// export CFILES_DIR=/tmp/smoke-src
+// export FILE_COUNT=1  
+// mkdir -p /tmp/safe-seed
+// printf '\x00\x01' > /tmp/safe-seed/seed_ok
+// echo 'kw="CRSH"' > /tmp/crash.dict
+// AFL_MAP_SIZE=4194304 AFL_SKIP_BIN_CHECK=1 \
+// afl-fuzz -m none -t 1000 \
+//   -i /tmp/safe-seed -o /tmp/out-crash \
+//   -M f0 -x /tmp/crash.dict -- \
+//   /users/a_irmak/build/bin/clang-options --filebin @@
