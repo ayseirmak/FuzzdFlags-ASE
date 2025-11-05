@@ -24,6 +24,7 @@ sudo apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -
 echo "[*] Setting perf event paranoid to '-1'..."
 echo "kernel.perf_event_paranoid=-1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
+cd ~
 
 echo "[*] Installing latest CMake..."
 sudo apt-get update
@@ -65,21 +66,33 @@ export CC=afl-clang-lto
 export CXX=afl-clang-lto++
 export AR=/usr/lib/llvm-14/bin/llvm-ar
 export RANLIB=/usr/lib/llvm-14/bin/llvm-ranlib
-export AFL_MAP_SIZE=262144
-cmake -G Ninja ~/llvm-project/llvm \   
--DLLVM_ENABLE_PROJECTS="clang" \   
--DLLVM_TARGETS_TO_BUILD="X86" \   
--DCMAKE_BUILD_TYPE=Release \   
--DLLVM_ENABLE_ASSERTIONS=ON \   
--DLLVM_ENABLE_LLD=ON \   
--DLLVM_USE_HOST_TOOLS=ON \   
--DLLVM_TABLEGEN=/users/a_irmak/build-stage0/bin/llvm-tblgen \   
--DCLANG_TABLEGEN=/users/a_irmak/build-stage0/bin/clang-tblgen \   
--DLLVM_BUILD_LLVM_DYLIB=OFF \   
--DLLVM_LINK_LLVM_DYLIB=OFF \   
--DBUILD_SHARED_LIBS=OFF
-ninja clang clang-options
+export AFL_MAP_SIZE=4194304
+cmake -G Ninja ~/llvm-project/llvm \
+  -DLLVM_ENABLE_PROJECTS="clang" \
+  -DLLVM_TARGETS_TO_BUILD="X86" \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DLLVM_ENABLE_ASSERTIONS=ON \
+  -DLLVM_ENABLE_LLD=ON \
+  -DLLVM_USE_HOST_TOOLS=ON \
+  -DLLVM_TABLEGEN=/users/a_irmak/build-stage0/bin/llvm-tblgen \
+  -DCLANG_TABLEGEN=/users/a_irmak/build-stage0/bin/clang-tblgen \
+  -DLLVM_BUILD_LLVM_DYLIB=OFF \
+  -DLLVM_LINK_LLVM_DYLIB=OFF \
+  -DBUILD_SHARED_LIBS=OFF
+ninja clang 
+ninja clang-options
 cd ~
+
+echo "[*] Getting llvmSS Corpus and fuzzing scripts"
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/llvmSS-minimised-corpus.tar.gz && \
+tar -zxvf llvmSS-minimised-corpus.tar.gz
+wget https://github.com/ayseirmak/FuzzdFlags-ASE/releases/download/v1.0.0-alpha.1/exp3-input-seeds-30.tar.gz && \
+tar -zxvf exp3-input-seeds-30.tar.gz
+
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/24_fuzz.sh && \
+wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/exp3-fuzz-fuzzdflags-options/run_AFL_conf_clangopt.sh && \
+chmod +x *.sh && \
+rm *.tar.gz
 
 echo "[*] Setup Fuzzing "
 export CL_RESOURCE_DIR=$(/users/a_irmak/build/bin/clang -print-resource-dir)
@@ -87,5 +100,19 @@ export INSTRUMENTED_CLANG_PATH=/users/a_irmak/build/bin/clang
 export CFILES_DIR=/users/a_irmak/llvmSS-minimised-corpus/
 export FILE_COUNT=1811
 export INCLUDES_DIR=/users/a_irmak/llvmSS-include/
-AFL_MAP_SIZE=4194304 afl-showmap -t 1000 -m none -o /tmp/map0 -- /users/a_irmak/build/bin/clang-options --filebin seed0.bin
-AFL_MAP_SIZE=4194304 afl-showmap -t 1000 -m none -o /tmp/map1 -- /users/a_irmak/build/bin/clang-options --filebin seed1.bin
+# AFL_MAP_SIZE=4194304 afl-showmap -t 1000 -m none -o /tmp/map0 -- /users/a_irmak/build/bin/clang-options --filebin seed0.bin
+# AFL_MAP_SIZE=4194304 afl-showmap -t 1000 -m none -o /tmp/map1 -- /users/a_irmak/build/bin/clang-options --filebin seed1.bin
+
+nohup /users/a_irmak/24_fuzz.sh run_AFL_conf_clangopt.sh /users/a_irmak/input-seeds-30 \
+/users/a_irmak/output-fuzz -O0 /users/a_irmak/build/bin/clang-options > exp1-fuzz-lto.log 2>&1 &
+
+tmux new-session -d -s afl env AFL_MAP_SIZE=4194304 AFL_SKIP_BIN_CHECK=1 AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 afl-fuzz -m none -t 1000 -i /users/a_irmak/input-seeds-1 -o /users/a_irmak/output-fuzz-llvmSS-2 -- /users/a_irmak/build/bin/clang-options --filebin @@
+tmux attach -t afl
+
+echo "[*] Analysing the queue and hangs "
+export INSTRUMENTED_CLANG_PATH=/users/a_irmak/build/bin/clang
+export CFILES_DIR=/users/a_irmak/trial/
+export FILE_COUNT=1811
+export INCLUDES_DIR=/users/a_irmak/llvmSS-include/
+./seed-decoder.sh ./output-fuzz/default/hangs/ llvmSS-lto-hangs
+
