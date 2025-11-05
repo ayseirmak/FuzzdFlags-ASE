@@ -1,0 +1,12 @@
+/users/a_irmak/ff-mutators/build/CMakeFiles/intrinsics_gen.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/omp_gen.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/acc_gen.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/clang-tablegen-targets.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/grayc_core.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/grayc_const.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/grayc_delete.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/grayc_duplicate.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/grayc_expression.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/grayc_jump.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/edit_cache.dir
+/users/a_irmak/ff-mutators/build/CMakeFiles/rebuild_cache.dir
