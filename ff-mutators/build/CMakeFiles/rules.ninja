@@ -137,7 +137,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/users/a_irmak/ff-mutators -B/users/a_irmak/ff-mutators/build
+  command = /usr/bin/cmake --regenerate-during-build -S/users/a_irmak/FuzzdFlags-ASE/ff-mutators -B/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build
   description = Re-running CMake...
   generator = 1
 

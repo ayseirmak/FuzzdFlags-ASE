@@ -98,7 +98,7 @@ extern "C" {
     st->iter  = 0;
     return 1;
   }
-  const char *afl_custom_describe(void *, size_t) { return "grayc-expression"; }
+  const char *afl_custom_describe(void *, size_t) { return "grayc-duplicate"; }
   size_t afl_custom_fuzz(void *data,
                          unsigned char *buf, size_t buf_size,
                          unsigned char **out_buf,

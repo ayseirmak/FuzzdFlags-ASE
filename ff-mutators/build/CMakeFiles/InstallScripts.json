@@ -1,7 +1,7 @@
 {
 	"InstallScripts" : 
 	[
-		"/users/a_irmak/ff-mutators/build/cmake_install.cmake"
+		"/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/cmake_install.cmake"
 	],
 	"Parallel" : false
 }
