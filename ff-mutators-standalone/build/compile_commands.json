@@ -1,0 +1,44 @@
+[
+{
+  "directory": "/users/a_irmak/ff-mutators-standalone/build",
+  "command": "/usr/bin/c++ -DGRAYC_BUILD_TOOL=1 -I/usr/lib/llvm-14/include -I/users/a_irmak/ff-mutators-standalone/utils-fuzzer -O3 -DNDEBUG -std=gnu++17   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/grayc_utils.dir/utils-fuzzer/GrayCCustomRandom.cpp.o -c /users/a_irmak/ff-mutators-standalone/utils-fuzzer/GrayCCustomRandom.cpp",
+  "file": "/users/a_irmak/ff-mutators-standalone/utils-fuzzer/GrayCCustomRandom.cpp",
+  "output": "/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/grayc_utils.dir/utils-fuzzer/GrayCCustomRandom.cpp.o"
+},
+{
+  "directory": "/users/a_irmak/ff-mutators-standalone/build",
+  "command": "/usr/bin/c++ -DGRAYC_BUILD_TOOL=1 -I/usr/lib/llvm-14/include -I/users/a_irmak/ff-mutators-standalone/utils-fuzzer -O3 -DNDEBUG -std=gnu++17   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/grayc_utils.dir/utils-fuzzer/GrayCUtils.cpp.o -c /users/a_irmak/ff-mutators-standalone/utils-fuzzer/GrayCUtils.cpp",
+  "file": "/users/a_irmak/ff-mutators-standalone/utils-fuzzer/GrayCUtils.cpp",
+  "output": "/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/grayc_utils.dir/utils-fuzzer/GrayCUtils.cpp.o"
+},
+{
+  "directory": "/users/a_irmak/ff-mutators-standalone/build",
+  "command": "/usr/bin/c++ -DGRAYC_BUILD_TOOL=1 -I/usr/lib/llvm-14/include -I/users/a_irmak/ff-mutators-standalone/grayc -I/users/a_irmak/ff-mutators-standalone/utils-fuzzer -O3 -DNDEBUG -std=gnu++17   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/JumpMutator.dir/grayc/JumpMutator.cpp.o -c /users/a_irmak/ff-mutators-standalone/grayc/JumpMutator.cpp",
+  "file": "/users/a_irmak/ff-mutators-standalone/grayc/JumpMutator.cpp",
+  "output": "/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/JumpMutator.dir/grayc/JumpMutator.cpp.o"
+},
+{
+  "directory": "/users/a_irmak/ff-mutators-standalone/build",
+  "command": "/usr/bin/c++ -DGRAYC_BUILD_TOOL=1 -I/usr/lib/llvm-14/include -I/users/a_irmak/ff-mutators-standalone/grayc -I/users/a_irmak/ff-mutators-standalone/utils-fuzzer -O3 -DNDEBUG -std=gnu++17   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/ExpressionMutator.dir/grayc/ExpressionMutator.cpp.o -c /users/a_irmak/ff-mutators-standalone/grayc/ExpressionMutator.cpp",
+  "file": "/users/a_irmak/ff-mutators-standalone/grayc/ExpressionMutator.cpp",
+  "output": "/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/ExpressionMutator.dir/grayc/ExpressionMutator.cpp.o"
+},
+{
+  "directory": "/users/a_irmak/ff-mutators-standalone/build",
+  "command": "/usr/bin/c++ -DGRAYC_BUILD_TOOL=1 -I/usr/lib/llvm-14/include -I/users/a_irmak/ff-mutators-standalone/grayc -I/users/a_irmak/ff-mutators-standalone/utils-fuzzer -O3 -DNDEBUG -std=gnu++17   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/DuplicateMutator.dir/grayc/DuplicateMutator.cpp.o -c /users/a_irmak/ff-mutators-standalone/grayc/DuplicateMutator.cpp",
+  "file": "/users/a_irmak/ff-mutators-standalone/grayc/DuplicateMutator.cpp",
+  "output": "/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/DuplicateMutator.dir/grayc/DuplicateMutator.cpp.o"
+},
+{
+  "directory": "/users/a_irmak/ff-mutators-standalone/build",
+  "command": "/usr/bin/c++ -DGRAYC_BUILD_TOOL=1 -I/usr/lib/llvm-14/include -I/users/a_irmak/ff-mutators-standalone/grayc -I/users/a_irmak/ff-mutators-standalone/utils-fuzzer -O3 -DNDEBUG -std=gnu++17   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/ConstantMutator.dir/grayc/ConstantMutator.cpp.o -c /users/a_irmak/ff-mutators-standalone/grayc/ConstantMutator.cpp",
+  "file": "/users/a_irmak/ff-mutators-standalone/grayc/ConstantMutator.cpp",
+  "output": "/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/ConstantMutator.dir/grayc/ConstantMutator.cpp.o"
+},
+{
+  "directory": "/users/a_irmak/ff-mutators-standalone/build",
+  "command": "/usr/bin/c++ -DGRAYC_BUILD_TOOL=1 -I/usr/lib/llvm-14/include -I/users/a_irmak/ff-mutators-standalone/grayc -I/users/a_irmak/ff-mutators-standalone/utils-fuzzer -O3 -DNDEBUG -std=gnu++17   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/DeleteMutator.dir/grayc/DeleteMutator.cpp.o -c /users/a_irmak/ff-mutators-standalone/grayc/DeleteMutator.cpp",
+  "file": "/users/a_irmak/ff-mutators-standalone/grayc/DeleteMutator.cpp",
+  "output": "/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/DeleteMutator.dir/grayc/DeleteMutator.cpp.o"
+}
+]

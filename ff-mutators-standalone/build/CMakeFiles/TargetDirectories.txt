@@ -1,0 +1,12 @@
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/intrinsics_gen.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/omp_gen.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/acc_gen.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/clang-tablegen-targets.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/grayc_utils.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/JumpMutator.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/ExpressionMutator.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/DuplicateMutator.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/ConstantMutator.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/DeleteMutator.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/edit_cache.dir
+/users/a_irmak/ff-mutators-standalone/build/CMakeFiles/rebuild_cache.dir
