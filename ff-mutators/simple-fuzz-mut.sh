@@ -94,19 +94,47 @@ wget https://raw.githubusercontent.com/ayseirmak/FuzzdFlags-ASE/refs/heads/main/
 chmod +x *.sh && \
 rm *.tar.gz
 
-echo "[*] Setup Fuzzing "
+echo "[*] Setup Mutators & Dependencies"
+sudo apt-get install -y libclang-14-dev libclang-cpp14
+git clone https://github.com/ayseirmak/FuzzdFlags-ASE.git
+cd FuzzdFlags-ASE/ff-mutators
+mkdir build && cd build
+cmake -G Ninja \
+  -DCMAKE_C_COMPILER=/usr/bin/clang-14 \
+  -DCMAKE_CXX_COMPILER=/usr/bin/clang++-14 \
+  -DLLVM_DIR=/usr/lib/llvm-14/lib/cmake/llvm \
+  -DClang_DIR=/usr/lib/llvm-14/lib/cmake/clang \
+  -DCMAKE_BUILD_TYPE=Release ..
+ninja 
+cd ~
+
+echo "[*] Setup Standart Fuzzing with mutators  "
 export CL_RESOURCE_DIR=$(/users/a_irmak/build/bin/clang -print-resource-dir)
 export INSTRUMENTED_CLANG_PATH=/users/a_irmak/build/bin/clang
-export CFILES_DIR=/users/a_irmak/llvmSS-minimised-corpus/
 export FILE_COUNT=1811
-export INCLUDES_DIR=/users/a_irmak/llvmSS-include/
-# AFL_MAP_SIZE=4194304 afl-showmap -t 1000 -m none -o /tmp/map0 -- /users/a_irmak/build/bin/clang-options --filebin seed0.bin
-# AFL_MAP_SIZE=4194304 afl-showmap -t 1000 -m none -o /tmp/map1 -- /users/a_irmak/build/bin/clang-options --filebin seed1.bin
 
-nohup /users/a_irmak/24_fuzz.sh run_AFL_conf_clangopt.sh /users/a_irmak/input-seeds-30 \
-/users/a_irmak/output-fuzz -O0 /users/a_irmak/build/bin/clang-options > exp1-fuzz-lto.log 2>&1 &
+export AFL_CUSTOM_MUTATOR_LIBRARY="/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_const.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_delete.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_duplicate.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_expression.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_jump.so" 
 
-tmux new-session -d -s afl env AFL_MAP_SIZE=4194304 AFL_SKIP_BIN_CHECK=1 AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 afl-fuzz -m none -t 1000 -i /users/a_irmak/input-seeds-1 -o /users/a_irmak/output-fuzz-llvmSS-2 -- /users/a_irmak/build/bin/clang-options --filebin @@
+tmux new-session -s afl env AFL_MAP_SIZE=4194304 AFL_SKIP_BIN_CHECK=1 AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 AFL_CUSTOM_MUTATOR_ONLY=1 AFL_CUSTOM_MUTATOR_LIBRARY="/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_const.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_delete.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_duplicate.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_expression.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_jump.so" afl-fuzz -m none -t 15000 -i /users/a_irmak/llvmSS-minimised-corpus -o /users/a_irmak/output-fuzz-mut -- /users/a_irmak/build/bin/clang -x c -c -O2 -include stdlib.h -include stdio.h -Wno-implicit-function-declaration -Wno-unused-value -Wno-implicit-int -Wno-return-type -Wno-builtin-redeclared -Wno-int-conversion -I/usr/include -I/users/a_irmak/llvmSS-include -o /dev/null @@ -w
+tmux attach -t afl
+
+tmux new-session -s afl -- bash -lc '
+  export AFL_MAP_SIZE=4194304
+  export AFL_SKIP_BIN_CHECK=1
+  export AFL_CUSTOM_MUTATOR_ONLY=1
+  export AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
+  export AFL_CUSTOM_MUTATOR_LIBRARY="/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_const.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_delete.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_duplicate.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_expression.so;/users/a_irmak/FuzzdFlags-ASE/ff-mutators/build/libgrayc_jump.so"
+
+  afl-fuzz -m none -t 15000 \
+    -i /users/a_irmak/llvmSS-minimised-corpus \
+    -o /users/a_irmak/output-fuzz-mut-2 \
+    -- /users/a_irmak/build/bin/clang -x c -c -O2 \
+       -include stdlib.h -include stdio.h \
+       -Wno-implicit-function-declaration -Wno-unused-value \
+       -Wno-implicit-int -Wno-return-type -Wno-builtin-redeclared -Wno-int-conversion \
+       -I/usr/include -I/users/a_irmak/llvmSS-include \
+       @@ -w
+'
 tmux attach -t afl
 
 echo "[*] Analysing the queue and hangs "
