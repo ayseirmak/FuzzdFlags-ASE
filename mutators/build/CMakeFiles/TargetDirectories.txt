@@ -1,0 +1,9 @@
+/users/a_irmak/mutators/build/CMakeFiles/intrinsics_gen.dir
+/users/a_irmak/mutators/build/CMakeFiles/omp_gen.dir
+/users/a_irmak/mutators/build/CMakeFiles/acc_gen.dir
+/users/a_irmak/mutators/build/CMakeFiles/RISCVTargetParserTableGen.dir
+/users/a_irmak/mutators/build/CMakeFiles/clang-tablegen-targets.dir
+/users/a_irmak/mutators/build/CMakeFiles/utils-fuzzer.dir
+/users/a_irmak/mutators/build/CMakeFiles/constant-mutator.dir
+/users/a_irmak/mutators/build/CMakeFiles/edit_cache.dir
+/users/a_irmak/mutators/build/CMakeFiles/rebuild_cache.dir

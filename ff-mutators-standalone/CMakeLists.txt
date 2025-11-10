@@ -1,54 +1,90 @@
 cmake_minimum_required(VERSION 3.16)
-project(grayc_mutators LANGUAGES C CXX)
+project(ff_mutators_standalone LANGUAGES CXX)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON) 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Enable the CLI 'main()' inside each mutator (writes <file>.mutated.c).
-add_compile_definitions(GRAYC_BUILD_TOOL=1)
+# Build the CLI tools (enable main() via GRAYC_BUILD_TOOL)
+option(GRAYC_BUILD_TOOLS "Build mutators as command-line tools" ON)
 
+# --- Find LLVM & Clang (MUST be from the same install/prefix!)
+# If CMake can't find these, pass:
+#   -DLLVM_DIR=/path/to/llvm/lib/cmake/llvm
+#   -DClang_DIR=/path/to/llvm/lib/cmake/clang
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 
-message(STATUS "Found LLVM: ${LLVM_PACKAGE_VERSION}")
-message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
-message(STATUS "Using ClangConfig.cmake in: ${Clang_DIR}")
+message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+message(STATUS "LLVM_DIR  = ${LLVM_DIR}")
+message(STATUS "Clang_DIR = ${Clang_DIR}")
 
-include_directories(${LLVM_INCLUDE_DIRS} ${CLANG_INCLUDE_DIRS})
+list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
 
-find_library(CLANG_CPP_LIB clang-cpp HINTS ${LLVM_LIBRARY_DIRS})
-set(CLANG_LIB
-  clangTooling clangFrontend clangSerialization clangParse clangSema
-  clangAnalysis clangAST clangBasic clangEdit clangLex clangDriver
-  clangRewrite
-  LLVMCore LLVMSupport LLVMOption
+# Includes
+include_directories(
+  ${LLVM_INCLUDE_DIRS}
+  ${CLANG_INCLUDE_DIRS}
+  ${CMAKE_CURRENT_SOURCE_DIR}/grayc
+  ${CMAKE_CURRENT_SOURCE_DIR}/utils-fuzzer
 )
 
-add_library(grayc_utils STATIC
-  utils-fuzzer/GrayCCustomRandom.cpp
-  utils-fuzzer/GrayCCustomRandom.h
-  utils-fuzzer/GrayCUtils.cpp
-  utils-fuzzer/GrayCUtils.h
-  utils-fuzzer/GrayCAggressivenessConsts.h
-)
-target_include_directories(grayc_utils PUBLIC utils-fuzzer)
-
-# --- Helper to produce one binary per mutator (flat layout as in your screenshot)
-function(make_mutator name)
-  add_executable(${name}
-    grayc/${name}.cpp
-    grayc/${name}.h
+# --- Prefer monolithic clang-cpp to avoid duplicate registrations
+if (TARGET clang-cpp)
+  set(CLANG_LIBS clang-cpp)
+else()
+  # Fallback to components (only if your install has no clang-cpp).
+  # Keep this list minimal to reduce the chance of duplication.
+  set(CLANG_LIBS
+      clangTooling
+      clangFrontend
+      clangAST
+      clangBasic
+      clangLex
+      clangRewrite
+      clangSerialization
+      clangDriver
+      clangParse
+      clangEdit
+      clangSema
   )
-  target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/grayc)
-  target_link_libraries(${name} PRIVATE grayc_utils ${CLANG_LIB})
+endif()
+
+# Common utility sources
+set(GRAYC_COMMON_SOURCES
+  utils-fuzzer/GrayCUtils.cpp
+  utils-fuzzer/GrayCCustomRandom.cpp
+)
+
+# Helper: add one mutator (as a library and, optionally, an executable)
+function(add_grayc_mutator NAME)
+  set(SRC grayc/${NAME}.cpp)
+  if (NOT EXISTS "${SRC}")
+    message(WARNING "Skipping ${NAME}: ${SRC} not found")
+    return()
+  endif()
+
+  # Library variant (no main())
+  add_library(${NAME}_lib STATIC ${SRC} ${GRAYC_COMMON_SOURCES})
+  target_link_libraries(${NAME}_lib PRIVATE ${CLANG_LIBS})
+  target_compile_definitions(${NAME}_lib PRIVATE
+    __STDC_CONSTANT_MACROS __STDC_LIMIT_MACROS)
+
+  # Executable variant (standalone tool with main())
+  if (GRAYC_BUILD_TOOLS)
+    add_executable(${NAME} ${SRC} ${GRAYC_COMMON_SOURCES})
+    target_link_libraries(${NAME} PRIVATE ${CLANG_LIBS})
+    target_compile_definitions(${NAME} PRIVATE
+      GRAYC_BUILD_TOOL=1
+      __STDC_CONSTANT_MACROS __STDC_LIMIT_MACROS)
+  endif()
 endfunction()
 
-make_mutator(JumpMutator)
-make_mutator(ExpressionMutator)
-make_mutator(DuplicateMutator)
-make_mutator(ConstantMutator)
-make_mutator(DeleteMutator)
+# Add the mutators you have sources for:
+add_grayc_mutator(ConstantMutator)
+# add_grayc_mutator(DeleteMutator)
+# add_grayc_mutator(DuplicateMutator)
+# add_grayc_mutator(ExpressionMutator)
+# add_grayc_mutator(JumpMutator)

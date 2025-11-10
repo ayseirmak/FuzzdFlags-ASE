@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/users/a_irmak/mutators/build",
+  "command": "/usr/bin/c++ -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17 -o CMakeFiles/utils-fuzzer.dir/utils-fuzzer/GrayCCustomRandom.cpp.o -c /users/a_irmak/mutators/utils-fuzzer/GrayCCustomRandom.cpp",
+  "file": "/users/a_irmak/mutators/utils-fuzzer/GrayCCustomRandom.cpp"
+},
+{
+  "directory": "/users/a_irmak/mutators/build",
+  "command": "/usr/bin/c++ -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17 -o CMakeFiles/utils-fuzzer.dir/utils-fuzzer/GrayCUtils.cpp.o -c /users/a_irmak/mutators/utils-fuzzer/GrayCUtils.cpp",
+  "file": "/users/a_irmak/mutators/utils-fuzzer/GrayCUtils.cpp"
+},
+{
+  "directory": "/users/a_irmak/mutators/build",
+  "command": "/usr/bin/c++ -I/users/a_irmak/mutators/constant-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17 -o CMakeFiles/constant-mutator.dir/constant-mutator/ConstantMutator.cpp.o -c /users/a_irmak/mutators/constant-mutator/ConstantMutator.cpp",
+  "file": "/users/a_irmak/mutators/constant-mutator/ConstantMutator.cpp"
+}
+]
