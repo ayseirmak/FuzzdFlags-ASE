@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/users/a_irmak/ff-mutators-standalone/build/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
