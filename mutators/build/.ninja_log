@@ -1,6 +1,14 @@
 # ninja log v5
-0	604	1762813745191814889	CMakeFiles/utils-fuzzer.dir/utils-fuzzer/GrayCCustomRandom.cpp.o	c18c0d4a0ee70cc6
-1	1205	1762813745791825838	CMakeFiles/utils-fuzzer.dir/utils-fuzzer/GrayCUtils.cpp.o	a605dc5567286afb
-1205	1326	1762813745911828027	libutils-fuzzer.a	98d67f5273ab79d6
-2	20154	1762813764720170822	CMakeFiles/constant-mutator.dir/constant-mutator/ConstantMutator.cpp.o	1a831f82cf8977ca
-20157	24109	1762813768680242901	constant-mutator	20a085baf428b0eb
+0	619	1762820763875656457	CMakeFiles/utils-fuzzer.dir/utils-fuzzer/GrayCCustomRandom.cpp.o	c18c0d4a0ee70cc6
+1	1289	1762820764543667139	CMakeFiles/utils-fuzzer.dir/utils-fuzzer/GrayCUtils.cpp.o	a605dc5567286afb
+1290	1391	1762820764643668738	libutils-fuzzer.a	98d67f5273ab79d6
+3	21874	1762820785099995906	CMakeFiles/jump-mutator.dir/jump-mutator/JumpMutator.cpp.o	8a8b2b5d5aba12a5
+3	21934	1762820785163996929	CMakeFiles/expression-mutator.dir/expression-mutator/ExpressionMutator.cpp.o	9b8cc4817792f020
+2	21949	1762820785179997186	CMakeFiles/delete-mutator.dir/delete-mutator/DeleteMutator.cpp.o	6c7e074f1c00aa5d
+1	22125	1762820785356000000	CMakeFiles/constant-mutator.dir/constant-mutator/ConstantMutator.cpp.o	1a831f82cf8977ca
+2	22163	1762820785392000577	CMakeFiles/duplicate-mutator.dir/duplicate-mutator/DuplicateMutator.cpp.o	175026b158bac6e
+21875	26266	1762820789468065778	jump-mutator	a858cd2259cb0221
+21934	26433	1762820789668068977	expression-mutator	5542a1aa70a0895b
+22125	26461	1762820789696069426	constant-mutator	20a085baf428b0eb
+21949	26480	1762820789716069745	delete-mutator	d0ed30ad8285be71
+22163	26596	1762820789832071602	duplicate-mutator	830472b23680979e

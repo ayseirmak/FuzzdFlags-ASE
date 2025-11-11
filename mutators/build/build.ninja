@@ -143,6 +143,146 @@ build constant-mutator: CXX_EXECUTABLE_LINKER__constant-mutator_ CMakeFiles/cons
   TARGET_FILE = constant-mutator
   TARGET_PDB = constant-mutator.pdb
 
+# =============================================================================
+# Object build statements for EXECUTABLE target delete-mutator
+
+
+#############################################
+# Order-only phony target for delete-mutator
+
+build cmake_object_order_depends_target_delete-mutator: phony || cmake_object_order_depends_target_utils-fuzzer
+
+build CMakeFiles/delete-mutator.dir/delete-mutator/DeleteMutator.cpp.o: CXX_COMPILER__delete-mutator_ /users/a_irmak/mutators/delete-mutator/DeleteMutator.cpp || cmake_object_order_depends_target_delete-mutator
+  DEP_FILE = CMakeFiles/delete-mutator.dir/delete-mutator/DeleteMutator.cpp.o.d
+  FLAGS = -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17
+  INCLUDES = -I/users/a_irmak/mutators/delete-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include
+  OBJECT_DIR = CMakeFiles/delete-mutator.dir
+  OBJECT_FILE_DIR = CMakeFiles/delete-mutator.dir/delete-mutator
+  TARGET_COMPILE_PDB = CMakeFiles/delete-mutator.dir/
+  TARGET_PDB = delete-mutator.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target delete-mutator
+
+
+#############################################
+# Link the executable delete-mutator
+
+build delete-mutator: CXX_EXECUTABLE_LINKER__delete-mutator_ CMakeFiles/delete-mutator.dir/delete-mutator/DeleteMutator.cpp.o | libutils-fuzzer.a /usr/lib/llvm-17/lib/libclangTooling.a /usr/lib/llvm-17/lib/libclangBasic.a /usr/lib/llvm-17/lib/libclangASTMatchers.a /usr/lib/llvm-17/lib/libclangFormat.a /usr/lib/llvm-17/lib/libclangToolingInclusions.a /usr/lib/llvm-17/lib/libclangFrontend.a /usr/lib/llvm-17/lib/libclangDriver.a /usr/lib/llvm-17/lib/libclangParse.a /usr/lib/llvm-17/lib/libclangSerialization.a /usr/lib/llvm-17/lib/libclangSema.a /usr/lib/llvm-17/lib/libclangEdit.a /usr/lib/llvm-17/lib/libclangAnalysis.a /usr/lib/llvm-17/lib/libclangASTMatchers.a /usr/lib/llvm-17/lib/libclangAST.a /usr/lib/llvm-17/lib/libclangSupport.a /usr/lib/llvm-17/lib/libclangToolingCore.a /usr/lib/llvm-17/lib/libclangRewrite.a /usr/lib/llvm-17/lib/libclangLex.a /usr/lib/llvm-17/lib/libclangBasic.a /usr/lib/llvm-17/lib/libLLVM-17.so.1 || libutils-fuzzer.a
+  LINK_LIBRARIES = -Wl,-rpath,/usr/lib/llvm-17/lib  libutils-fuzzer.a  /usr/lib/llvm-17/lib/libclangTooling.a  /usr/lib/llvm-17/lib/libclangBasic.a  /usr/lib/llvm-17/lib/libclangASTMatchers.a  /usr/lib/llvm-17/lib/libclangFormat.a  /usr/lib/llvm-17/lib/libclangToolingInclusions.a  /usr/lib/llvm-17/lib/libclangFrontend.a  /usr/lib/llvm-17/lib/libclangDriver.a  /usr/lib/llvm-17/lib/libclangParse.a  /usr/lib/llvm-17/lib/libclangSerialization.a  /usr/lib/llvm-17/lib/libclangSema.a  /usr/lib/llvm-17/lib/libclangEdit.a  /usr/lib/llvm-17/lib/libclangAnalysis.a  /usr/lib/llvm-17/lib/libclangASTMatchers.a  /usr/lib/llvm-17/lib/libclangAST.a  /usr/lib/llvm-17/lib/libclangSupport.a  /usr/lib/llvm-17/lib/libclangToolingCore.a  /usr/lib/llvm-17/lib/libclangRewrite.a  /usr/lib/llvm-17/lib/libclangLex.a  /usr/lib/llvm-17/lib/libclangBasic.a  /usr/lib/llvm-17/lib/libLLVM-17.so.1
+  OBJECT_DIR = CMakeFiles/delete-mutator.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/delete-mutator.dir/
+  TARGET_FILE = delete-mutator
+  TARGET_PDB = delete-mutator.pdb
+
+# =============================================================================
+# Object build statements for EXECUTABLE target duplicate-mutator
+
+
+#############################################
+# Order-only phony target for duplicate-mutator
+
+build cmake_object_order_depends_target_duplicate-mutator: phony || cmake_object_order_depends_target_utils-fuzzer
+
+build CMakeFiles/duplicate-mutator.dir/duplicate-mutator/DuplicateMutator.cpp.o: CXX_COMPILER__duplicate-mutator_ /users/a_irmak/mutators/duplicate-mutator/DuplicateMutator.cpp || cmake_object_order_depends_target_duplicate-mutator
+  DEP_FILE = CMakeFiles/duplicate-mutator.dir/duplicate-mutator/DuplicateMutator.cpp.o.d
+  FLAGS = -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17
+  INCLUDES = -I/users/a_irmak/mutators/duplicate-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include
+  OBJECT_DIR = CMakeFiles/duplicate-mutator.dir
+  OBJECT_FILE_DIR = CMakeFiles/duplicate-mutator.dir/duplicate-mutator
+  TARGET_COMPILE_PDB = CMakeFiles/duplicate-mutator.dir/
+  TARGET_PDB = duplicate-mutator.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target duplicate-mutator
+
+
+#############################################
+# Link the executable duplicate-mutator
+
+build duplicate-mutator: CXX_EXECUTABLE_LINKER__duplicate-mutator_ CMakeFiles/duplicate-mutator.dir/duplicate-mutator/DuplicateMutator.cpp.o | libutils-fuzzer.a /usr/lib/llvm-17/lib/libclangTooling.a /usr/lib/llvm-17/lib/libclangBasic.a /usr/lib/llvm-17/lib/libclangASTMatchers.a /usr/lib/llvm-17/lib/libclangFormat.a /usr/lib/llvm-17/lib/libclangToolingInclusions.a /usr/lib/llvm-17/lib/libclangFrontend.a /usr/lib/llvm-17/lib/libclangDriver.a /usr/lib/llvm-17/lib/libclangParse.a /usr/lib/llvm-17/lib/libclangSerialization.a /usr/lib/llvm-17/lib/libclangSema.a /usr/lib/llvm-17/lib/libclangEdit.a /usr/lib/llvm-17/lib/libclangAnalysis.a /usr/lib/llvm-17/lib/libclangASTMatchers.a /usr/lib/llvm-17/lib/libclangAST.a /usr/lib/llvm-17/lib/libclangSupport.a /usr/lib/llvm-17/lib/libclangToolingCore.a /usr/lib/llvm-17/lib/libclangRewrite.a /usr/lib/llvm-17/lib/libclangLex.a /usr/lib/llvm-17/lib/libclangBasic.a /usr/lib/llvm-17/lib/libLLVM-17.so.1 || libutils-fuzzer.a
+  LINK_LIBRARIES = -Wl,-rpath,/usr/lib/llvm-17/lib  libutils-fuzzer.a  /usr/lib/llvm-17/lib/libclangTooling.a  /usr/lib/llvm-17/lib/libclangBasic.a  /usr/lib/llvm-17/lib/libclangASTMatchers.a  /usr/lib/llvm-17/lib/libclangFormat.a  /usr/lib/llvm-17/lib/libclangToolingInclusions.a  /usr/lib/llvm-17/lib/libclangFrontend.a  /usr/lib/llvm-17/lib/libclangDriver.a  /usr/lib/llvm-17/lib/libclangParse.a  /usr/lib/llvm-17/lib/libclangSerialization.a  /usr/lib/llvm-17/lib/libclangSema.a  /usr/lib/llvm-17/lib/libclangEdit.a  /usr/lib/llvm-17/lib/libclangAnalysis.a  /usr/lib/llvm-17/lib/libclangASTMatchers.a  /usr/lib/llvm-17/lib/libclangAST.a  /usr/lib/llvm-17/lib/libclangSupport.a  /usr/lib/llvm-17/lib/libclangToolingCore.a  /usr/lib/llvm-17/lib/libclangRewrite.a  /usr/lib/llvm-17/lib/libclangLex.a  /usr/lib/llvm-17/lib/libclangBasic.a  /usr/lib/llvm-17/lib/libLLVM-17.so.1
+  OBJECT_DIR = CMakeFiles/duplicate-mutator.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/duplicate-mutator.dir/
+  TARGET_FILE = duplicate-mutator
+  TARGET_PDB = duplicate-mutator.pdb
+
+# =============================================================================
+# Object build statements for EXECUTABLE target jump-mutator
+
+
+#############################################
+# Order-only phony target for jump-mutator
+
+build cmake_object_order_depends_target_jump-mutator: phony || cmake_object_order_depends_target_utils-fuzzer
+
+build CMakeFiles/jump-mutator.dir/jump-mutator/JumpMutator.cpp.o: CXX_COMPILER__jump-mutator_ /users/a_irmak/mutators/jump-mutator/JumpMutator.cpp || cmake_object_order_depends_target_jump-mutator
+  DEP_FILE = CMakeFiles/jump-mutator.dir/jump-mutator/JumpMutator.cpp.o.d
+  FLAGS = -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17
+  INCLUDES = -I/users/a_irmak/mutators/jump-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include
+  OBJECT_DIR = CMakeFiles/jump-mutator.dir
+  OBJECT_FILE_DIR = CMakeFiles/jump-mutator.dir/jump-mutator
+  TARGET_COMPILE_PDB = CMakeFiles/jump-mutator.dir/
+  TARGET_PDB = jump-mutator.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target jump-mutator
+
+
+#############################################
+# Link the executable jump-mutator
+
+build jump-mutator: CXX_EXECUTABLE_LINKER__jump-mutator_ CMakeFiles/jump-mutator.dir/jump-mutator/JumpMutator.cpp.o | libutils-fuzzer.a /usr/lib/llvm-17/lib/libclangTooling.a /usr/lib/llvm-17/lib/libclangBasic.a /usr/lib/llvm-17/lib/libclangASTMatchers.a /usr/lib/llvm-17/lib/libclangFormat.a /usr/lib/llvm-17/lib/libclangToolingInclusions.a /usr/lib/llvm-17/lib/libclangFrontend.a /usr/lib/llvm-17/lib/libclangDriver.a /usr/lib/llvm-17/lib/libclangParse.a /usr/lib/llvm-17/lib/libclangSerialization.a /usr/lib/llvm-17/lib/libclangSema.a /usr/lib/llvm-17/lib/libclangEdit.a /usr/lib/llvm-17/lib/libclangAnalysis.a /usr/lib/llvm-17/lib/libclangASTMatchers.a /usr/lib/llvm-17/lib/libclangAST.a /usr/lib/llvm-17/lib/libclangSupport.a /usr/lib/llvm-17/lib/libclangToolingCore.a /usr/lib/llvm-17/lib/libclangRewrite.a /usr/lib/llvm-17/lib/libclangLex.a /usr/lib/llvm-17/lib/libclangBasic.a /usr/lib/llvm-17/lib/libLLVM-17.so.1 || libutils-fuzzer.a
+  LINK_LIBRARIES = -Wl,-rpath,/usr/lib/llvm-17/lib  libutils-fuzzer.a  /usr/lib/llvm-17/lib/libclangTooling.a  /usr/lib/llvm-17/lib/libclangBasic.a  /usr/lib/llvm-17/lib/libclangASTMatchers.a  /usr/lib/llvm-17/lib/libclangFormat.a  /usr/lib/llvm-17/lib/libclangToolingInclusions.a  /usr/lib/llvm-17/lib/libclangFrontend.a  /usr/lib/llvm-17/lib/libclangDriver.a  /usr/lib/llvm-17/lib/libclangParse.a  /usr/lib/llvm-17/lib/libclangSerialization.a  /usr/lib/llvm-17/lib/libclangSema.a  /usr/lib/llvm-17/lib/libclangEdit.a  /usr/lib/llvm-17/lib/libclangAnalysis.a  /usr/lib/llvm-17/lib/libclangASTMatchers.a  /usr/lib/llvm-17/lib/libclangAST.a  /usr/lib/llvm-17/lib/libclangSupport.a  /usr/lib/llvm-17/lib/libclangToolingCore.a  /usr/lib/llvm-17/lib/libclangRewrite.a  /usr/lib/llvm-17/lib/libclangLex.a  /usr/lib/llvm-17/lib/libclangBasic.a  /usr/lib/llvm-17/lib/libLLVM-17.so.1
+  OBJECT_DIR = CMakeFiles/jump-mutator.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/jump-mutator.dir/
+  TARGET_FILE = jump-mutator
+  TARGET_PDB = jump-mutator.pdb
+
+# =============================================================================
+# Object build statements for EXECUTABLE target expression-mutator
+
+
+#############################################
+# Order-only phony target for expression-mutator
+
+build cmake_object_order_depends_target_expression-mutator: phony || cmake_object_order_depends_target_utils-fuzzer
+
+build CMakeFiles/expression-mutator.dir/expression-mutator/ExpressionMutator.cpp.o: CXX_COMPILER__expression-mutator_ /users/a_irmak/mutators/expression-mutator/ExpressionMutator.cpp || cmake_object_order_depends_target_expression-mutator
+  DEP_FILE = CMakeFiles/expression-mutator.dir/expression-mutator/ExpressionMutator.cpp.o.d
+  FLAGS = -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17
+  INCLUDES = -I/users/a_irmak/mutators/expression-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include
+  OBJECT_DIR = CMakeFiles/expression-mutator.dir
+  OBJECT_FILE_DIR = CMakeFiles/expression-mutator.dir/expression-mutator
+  TARGET_COMPILE_PDB = CMakeFiles/expression-mutator.dir/
+  TARGET_PDB = expression-mutator.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target expression-mutator
+
+
+#############################################
+# Link the executable expression-mutator
+
+build expression-mutator: CXX_EXECUTABLE_LINKER__expression-mutator_ CMakeFiles/expression-mutator.dir/expression-mutator/ExpressionMutator.cpp.o | libutils-fuzzer.a /usr/lib/llvm-17/lib/libclangTooling.a /usr/lib/llvm-17/lib/libclangBasic.a /usr/lib/llvm-17/lib/libclangASTMatchers.a /usr/lib/llvm-17/lib/libclangFormat.a /usr/lib/llvm-17/lib/libclangToolingInclusions.a /usr/lib/llvm-17/lib/libclangFrontend.a /usr/lib/llvm-17/lib/libclangDriver.a /usr/lib/llvm-17/lib/libclangParse.a /usr/lib/llvm-17/lib/libclangSerialization.a /usr/lib/llvm-17/lib/libclangSema.a /usr/lib/llvm-17/lib/libclangEdit.a /usr/lib/llvm-17/lib/libclangAnalysis.a /usr/lib/llvm-17/lib/libclangASTMatchers.a /usr/lib/llvm-17/lib/libclangAST.a /usr/lib/llvm-17/lib/libclangSupport.a /usr/lib/llvm-17/lib/libclangToolingCore.a /usr/lib/llvm-17/lib/libclangRewrite.a /usr/lib/llvm-17/lib/libclangLex.a /usr/lib/llvm-17/lib/libclangBasic.a /usr/lib/llvm-17/lib/libLLVM-17.so.1 || libutils-fuzzer.a
+  LINK_LIBRARIES = -Wl,-rpath,/usr/lib/llvm-17/lib  libutils-fuzzer.a  /usr/lib/llvm-17/lib/libclangTooling.a  /usr/lib/llvm-17/lib/libclangBasic.a  /usr/lib/llvm-17/lib/libclangASTMatchers.a  /usr/lib/llvm-17/lib/libclangFormat.a  /usr/lib/llvm-17/lib/libclangToolingInclusions.a  /usr/lib/llvm-17/lib/libclangFrontend.a  /usr/lib/llvm-17/lib/libclangDriver.a  /usr/lib/llvm-17/lib/libclangParse.a  /usr/lib/llvm-17/lib/libclangSerialization.a  /usr/lib/llvm-17/lib/libclangSema.a  /usr/lib/llvm-17/lib/libclangEdit.a  /usr/lib/llvm-17/lib/libclangAnalysis.a  /usr/lib/llvm-17/lib/libclangASTMatchers.a  /usr/lib/llvm-17/lib/libclangAST.a  /usr/lib/llvm-17/lib/libclangSupport.a  /usr/lib/llvm-17/lib/libclangToolingCore.a  /usr/lib/llvm-17/lib/libclangRewrite.a  /usr/lib/llvm-17/lib/libclangLex.a  /usr/lib/llvm-17/lib/libclangBasic.a  /usr/lib/llvm-17/lib/libLLVM-17.so.1
+  OBJECT_DIR = CMakeFiles/expression-mutator.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/expression-mutator.dir/
+  TARGET_FILE = expression-mutator
+  TARGET_PDB = expression-mutator.pdb
+
 
 #############################################
 # Utility command for edit_cache
@@ -179,7 +319,7 @@ build utils-fuzzer: phony libutils-fuzzer.a
 #############################################
 # Folder: /users/a_irmak/mutators/build
 
-build all: phony libutils-fuzzer.a constant-mutator
+build all: phony libutils-fuzzer.a constant-mutator delete-mutator duplicate-mutator jump-mutator expression-mutator
 
 # =============================================================================
 # Built-in targets

@@ -38,3 +38,71 @@ target_link_libraries(constant-mutator
     clangBasic
     clangASTMatchers
 )
+
+# --- delete-mutator tool ---
+add_executable(delete-mutator
+  delete-mutator/DeleteMutator.cpp
+)
+target_include_directories(delete-mutator PRIVATE
+  delete-mutator
+  utils-fuzzer
+)
+
+target_link_libraries(delete-mutator
+  PRIVATE
+    utils-fuzzer
+    clangTooling
+    clangBasic
+    clangASTMatchers
+)
+
+# --- duplicate-mutator tool ---
+add_executable(duplicate-mutator
+  duplicate-mutator/DuplicateMutator.cpp
+)
+target_include_directories(duplicate-mutator PRIVATE
+  duplicate-mutator
+  utils-fuzzer
+)
+
+target_link_libraries(duplicate-mutator
+  PRIVATE
+    utils-fuzzer
+    clangTooling
+    clangBasic
+    clangASTMatchers
+)
+
+# --- jump-mutator tool ---
+add_executable(jump-mutator
+  jump-mutator/JumpMutator.cpp
+)
+target_include_directories(jump-mutator PRIVATE
+  jump-mutator
+  utils-fuzzer
+)
+
+target_link_libraries(jump-mutator
+  PRIVATE
+    utils-fuzzer
+    clangTooling
+    clangBasic
+    clangASTMatchers
+)
+
+# --- expression-mutator tool ---
+add_executable(expression-mutator
+  expression-mutator/ExpressionMutator.cpp
+)
+target_include_directories(expression-mutator PRIVATE
+  expression-mutator
+  utils-fuzzer
+)
+
+target_link_libraries(expression-mutator
+  PRIVATE
+    utils-fuzzer
+    clangTooling
+    clangBasic
+    clangASTMatchers
+)

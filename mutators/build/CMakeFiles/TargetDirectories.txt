@@ -5,5 +5,9 @@
 /users/a_irmak/mutators/build/CMakeFiles/clang-tablegen-targets.dir
 /users/a_irmak/mutators/build/CMakeFiles/utils-fuzzer.dir
 /users/a_irmak/mutators/build/CMakeFiles/constant-mutator.dir
+/users/a_irmak/mutators/build/CMakeFiles/delete-mutator.dir
+/users/a_irmak/mutators/build/CMakeFiles/duplicate-mutator.dir
+/users/a_irmak/mutators/build/CMakeFiles/jump-mutator.dir
+/users/a_irmak/mutators/build/CMakeFiles/expression-mutator.dir
 /users/a_irmak/mutators/build/CMakeFiles/edit_cache.dir
 /users/a_irmak/mutators/build/CMakeFiles/rebuild_cache.dir

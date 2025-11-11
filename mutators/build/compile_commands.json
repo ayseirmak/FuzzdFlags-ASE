@@ -13,5 +13,25 @@
   "directory": "/users/a_irmak/mutators/build",
   "command": "/usr/bin/c++ -I/users/a_irmak/mutators/constant-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17 -o CMakeFiles/constant-mutator.dir/constant-mutator/ConstantMutator.cpp.o -c /users/a_irmak/mutators/constant-mutator/ConstantMutator.cpp",
   "file": "/users/a_irmak/mutators/constant-mutator/ConstantMutator.cpp"
+},
+{
+  "directory": "/users/a_irmak/mutators/build",
+  "command": "/usr/bin/c++ -I/users/a_irmak/mutators/delete-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17 -o CMakeFiles/delete-mutator.dir/delete-mutator/DeleteMutator.cpp.o -c /users/a_irmak/mutators/delete-mutator/DeleteMutator.cpp",
+  "file": "/users/a_irmak/mutators/delete-mutator/DeleteMutator.cpp"
+},
+{
+  "directory": "/users/a_irmak/mutators/build",
+  "command": "/usr/bin/c++ -I/users/a_irmak/mutators/duplicate-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17 -o CMakeFiles/duplicate-mutator.dir/duplicate-mutator/DuplicateMutator.cpp.o -c /users/a_irmak/mutators/duplicate-mutator/DuplicateMutator.cpp",
+  "file": "/users/a_irmak/mutators/duplicate-mutator/DuplicateMutator.cpp"
+},
+{
+  "directory": "/users/a_irmak/mutators/build",
+  "command": "/usr/bin/c++ -I/users/a_irmak/mutators/jump-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17 -o CMakeFiles/jump-mutator.dir/jump-mutator/JumpMutator.cpp.o -c /users/a_irmak/mutators/jump-mutator/JumpMutator.cpp",
+  "file": "/users/a_irmak/mutators/jump-mutator/JumpMutator.cpp"
+},
+{
+  "directory": "/users/a_irmak/mutators/build",
+  "command": "/usr/bin/c++ -I/users/a_irmak/mutators/expression-mutator -I/users/a_irmak/mutators/utils-fuzzer -I/users/a_irmak/mutators/mutators/utils-fuzzer -isystem /usr/lib/llvm-17/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -std=gnu++17 -o CMakeFiles/expression-mutator.dir/expression-mutator/ExpressionMutator.cpp.o -c /users/a_irmak/mutators/expression-mutator/ExpressionMutator.cpp",
+  "file": "/users/a_irmak/mutators/expression-mutator/ExpressionMutator.cpp"
 }
 ]
