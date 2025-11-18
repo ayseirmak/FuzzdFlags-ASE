@@ -2,4 +2,4 @@
 [561413.432031] Out of memory: Killed process 2360369 (clang) total-vm:109952172kB, anon-rss:63975908kB, file-rss:4kB, shmem-rss:0kB, UID:20005 pgtables:131112kB oom_score_adj:0
 [561416.485486] oom_reaper: reaped process 2360369 (clang), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
 
-it is ended because of the out of RAM (ENV_OOM) which results crash on all compilers 
+it is failed because of the out of RAM (OOM_ENV), environment related crash which also result crash on other clang versions

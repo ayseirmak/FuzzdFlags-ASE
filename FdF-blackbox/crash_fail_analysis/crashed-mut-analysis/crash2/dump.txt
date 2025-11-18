@@ -268,4 +268,3 @@ clang version 22.0.0git (https://github.com/llvm/llvm-project.git a863fd879049b7
 Target: x86_64-unknown-linux-gnu
 Thread model: posix
 InstalledDir: /users/a_irmak/llvm-latest-build/bin
-Driver args: -fpermissive -w -Wno-implicit-function-declaration -Wno-return-type -Wno-builtin-redeclared -Wno-implicit-int -Wno-int-conversion -march=native -I/usr/include -I/users/a_irmak/llvmSS-include -Ofast -fno-unsafe-math-optimizations -ftls-model=global-dynamic -march=x86-64-v3 -ffinite-math-only -fno-keep-static-consts -fno-finite-loops -fsigned-char -fno-aligned-allocation -fexcess-precision=fast
