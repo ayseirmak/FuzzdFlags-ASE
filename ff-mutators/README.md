@@ -24,10 +24,10 @@ ff-mutators/
 cd ff-mutators/
 mkdir -p build && cd build
 cmake -G Ninja \
-  -DCMAKE_C_COMPILER=/usr/bin/clang-14 \
-  -DCMAKE_CXX_COMPILER=/usr/bin/clang++-14 \
-  -DLLVM_DIR=/usr/lib/llvm-14/lib/cmake/llvm \
-  -DClang_DIR=/usr/lib/llvm-14/lib/cmake/clang \
+  -DCMAKE_C_COMPILER=/usr/bin/clang-12 \
+  -DCMAKE_CXX_COMPILER=/usr/bin/clang++-12 \
+  -DLLVM_DIR=/usr/lib/llvm-12/lib/cmake/llvm \
+  -DClang_DIR=/usr/lib/llvm-12/lib/cmake/clang \
   -DCMAKE_BUILD_TYPE=Release ..
 ninja
 
